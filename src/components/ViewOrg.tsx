@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from 'react';
 
 export default ({ supervisorsOrg }) => {
   return (
@@ -10,8 +10,8 @@ export default ({ supervisorsOrg }) => {
         {!supervisorsOrg.length ? <div>none</div> : null}
         {supervisorsOrg.map(employee => {
           return (
-            <li key={employee.id} className="ph3 pv2 bb b--light-silver">
-              {employee.name} audit: {employee.allSups.join("->")}
+            <li key={employee.positionId} className="ph3 pv2 bb b--light-silver">
+              {employee.employeeName} audit: {employee.allSups.join('->')}
             </li>
           );
         })}

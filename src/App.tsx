@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import Select from './atoms/Select';
 import ViewOrg from './components/ViewOrg';
@@ -50,8 +50,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelectEmployee: eeId => {
-      dispatch(selectEmployee(eeId));
+    onSelectEmployee: positionId => {
+      dispatch(selectEmployee(positionId));
     },
   };
 };
