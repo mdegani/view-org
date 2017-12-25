@@ -1,6 +1,17 @@
 import * as React from 'react';
+import { OrganizationNodeWithEmployeeInfo } from '../store/organization.types';
 
-export default ({ items, label, changeFunction, selectedItem }) => {
+export default ({
+  items,
+  label,
+  changeFunction,
+  selectedItem,
+}: {
+  items: OrganizationNodeWithEmployeeInfo[];
+  label: string;
+  changeFunction: Function;
+  selectedItem: string;
+}) => {
   return (
     <form className="black-80">
       <div className="measure">
@@ -14,7 +25,7 @@ export default ({ items, label, changeFunction, selectedItem }) => {
         >
           {items.map(item => (
             <option key={item.positionId} value={item.positionId}>
-              {item.name}
+              {item.employeeName}
             </option>
           ))}
         </select>
