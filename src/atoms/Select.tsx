@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 export default ({ items, label, changeFunction, selectedItem }) => {
   return (
@@ -13,7 +13,7 @@ export default ({ items, label, changeFunction, selectedItem }) => {
           defaultValue={selectedItem}
         >
           {items.map(item => (
-            <option key={item.id} value={item.id}>
+            <option key={item.positionId} value={item.positionId}>
               {item.name}
             </option>
           ))}
