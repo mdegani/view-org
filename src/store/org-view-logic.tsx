@@ -4,7 +4,7 @@ import {
   Employee,
 } from './organization.types';
 
-// TODO this will need to change to not be locked to 0
+// Assumes the top position's supervisorId is 0
 const TOP_POSITION_SUPERVISOR_PLACEHOLDER = 0;
 
 export const getOrganizationNodeById = (
@@ -29,6 +29,7 @@ export const getOrganizationLevelOne = (
   organization.map(node => {
     return {
       positionId: node.positionId,
+      employeeId: node.employeeId,
       supervisorPositionId: node.supervisorPositionId,
       level: 1,
     };
@@ -56,6 +57,7 @@ export const assignLevel = (
 export const getAllSupervisorNodes = (
   organization: OrganizationNode[],
   // not named properly
+  // gets a row for each supervisor relationship "target" has
   target: OrganizationNode,
   accumulator?: OrganizationSectionNode[] | undefined,
 ): OrganizationSectionNode[] => {
@@ -79,60 +81,38 @@ export const getAllSupervisorNodes = (
       getNextSupervisorNode(organization, accumulator.find(
         x => x.level === _level,
       ) as OrganizationNode),
-      { positionId: target.positionId, level: _level + 1 },
+      {
+        positionId: target.positionId,
+        employeeId: target.employeeId,
+        level: _level + 1,
+      },
     ),
   ]);
 };
 
-// prev type? never[]?
 export const fullOrganizationList = (organization: OrganizationNode[]) =>
   organization.reduce((prev, curr, index, arr) => {
     return [...prev, ...getAllSupervisorNodes(arr, curr)];
   }, []);
 
-export const getFullOrganizationListWithEmployeeNames = (
-  organization,
-  employees,
+export const getOrganizationBySupervisor = (
+  organization: OrganizationNode[],
+  positionId: number,
 ) =>
-  fullOrganizationList(organization).map(fullTgtItem =>
-    Object.assign({}, fullTgtItem, {
-      employeeName: employees.find(
-        ee => ee.employeeId === fullTgtItem.positionId,
-      ).employeeName,
-    }),
-  );
-
-// export const fullSingle = (organization, eeId) =>
-//   fullOrganizationList(organization).filter(ee => ee.id === eeId);
-
-export const getOrganizationBySupervisor = (organization, employees, eeId) =>
   getOrganizationWithHorizontal(
-    getFullOrganizationListWithEmployeeNames(organization, employees)
-      .filter(ee => ee.supervisorPositionId === eeId)
-      .map(ee => {
-        return Object.assign(ee, {
-          orgSup: ee.supervisorPositionId,
-          supervisorPositionId: organization.find(
-            orgNode => orgNode.positionId === ee.positionId,
-          ).supervisorPositionId,
+    fullOrganizationList(organization)
+      .filter(
+        organizationNode =>
+          organizationNode.supervisorPositionId === positionId,
+      )
+      .map(organizationNode => {
+        return Object.assign(organizationNode, {
+          orgSup: organizationNode.supervisorPositionId,
+          supervisorPositionId: (organization.find(
+            orgNode => orgNode.positionId === organizationNode.positionId,
+          ) as OrganizationNode).supervisorPositionId,
         });
       }),
-  );
-
-// TODO: remove this, because names will come from employee object in selector
-export const organizationWithName = (
-  organization: OrganizationNode[],
-  employees: Employee[],
-) =>
-  organization.map(orgItem =>
-    // todo, object spread instead object.assign, it's nicer
-    Object.assign({}, orgItem, {
-      // assert that employee will exist, this is probably not right
-      name: (employees.find(
-        employee => employee.employeeId === orgItem.positionId,
-      ) as Employee).employeeName,
-      orgSup: orgItem.supervisorPositionId,
-    }),
   );
 
 export const getOrganizationWithHorizontal = (
@@ -207,3 +187,19 @@ export const findOrganizationTopSupervisor = (
     return !allIds.includes(orgNode.supervisorPositionId);
   }) as OrganizationNode).supervisorPositionId;
 };
+
+// even though there is a 1:1 relationship between organizationNodes --
+// organizationNodes relate to positions, around which an org structure
+// is based -- we are looking up employee details such as name for now
+export const addEmployeeInfoToOrganizationNode = (employees: Employee[]) => (
+  orgNode: OrganizationNode,
+) => ({
+  positionId: orgNode.positionId,
+  supervisorPositionId: orgNode.supervisorPositionId,
+  allSups: orgNode.allSups,
+  orgSort: orgNode.orgSort,
+  employeeId: orgNode.employeeId,
+  employeeName: (employees.find(
+    ee => ee.employeeId === orgNode.employeeId,
+  ) as Employee).employeeName,
+});
