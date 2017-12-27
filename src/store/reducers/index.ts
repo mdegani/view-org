@@ -1,7 +1,10 @@
 import { combineReducers } from "redux";
 import employeesReducer from "./employees";
+import { EmployeesState } from "../organization.types";
 
-const orgViewApp = combineReducers({
+const orgViewApp = combineReducers<{
+  employeesReducer: EmployeesState;
+}>({
   employeesReducer
 });
 

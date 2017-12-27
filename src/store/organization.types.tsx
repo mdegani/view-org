@@ -1,9 +1,8 @@
-// position
-// add emploteeId to this
 export type OrganizationNode = {
   positionId: number;
   supervisorPositionId: number;
   employeeId: number;
+  employeeName: string;
   allSups?: number[];
   orgSort?: string;
 };
@@ -12,20 +11,18 @@ export type OrganizationSectionNode = {
   positionId: number; // refactor to use organizationNode (or position)
   supervisorPositionId: number;
   employeeId: number;
+  employeeName: string;
   level: number;
 };
 
-// add a bunch of other optional properties?
-export type Employee = {
-  employeeId: number;
-  employeeName: string;
+// for redecuers/employees
+// TODO: refactor so we're consistent with "organization" vs "employee" names
+
+export type EmployeesState = {
+  selectedEmployee: number;
+  organization: OrganizationNode[];
 };
 
-export type OrganizationNodeWithEmployeeInfo = {
-  positionId: number;
-  supervisorPositionId: number;
-  allSups?: number[];
-  orgSort?: string;
-  employeeId: number;
-  employeeName: string;
+export type CombinedState = {
+  employeesReducer: EmployeesState;
 };
