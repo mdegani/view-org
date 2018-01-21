@@ -96,33 +96,6 @@ export const fullOrganizationList = (organization: OrganizationNode[]) =>
     return [...prev, ...getAllSupervisorNodes(arr, curr)];
   }, []);
 
-export const getOrganizationBySupervisor = (
-  organization: OrganizationNode[],
-  positionId: number
-) =>
-  getOrganizationWithHorizontal(
-    fullOrganizationList(organization)
-      .filter(
-        organizationNode => organizationNode.supervisorPositionId === positionId
-      )
-      .map(organizationNode => {
-        return Object.assign(organizationNode, {
-          orgSup: organizationNode.supervisorPositionId,
-          supervisorPositionId: (organization.find(
-            orgNode => orgNode.positionId === organizationNode.positionId
-          ) as OrganizationNode).supervisorPositionId
-        });
-      })
-  );
-
-export const getOrganizationWithHorizontal = (
-  organization: OrganizationNode[]
-) => {
-  return organization.map(orgItem => {
-    return getIterativeSupervisors(orgItem, organization);
-  });
-};
-
 export const getIterativeSupervisors = (
   organizationNode: OrganizationNode,
   organization: OrganizationNode[]
@@ -174,6 +147,33 @@ export const getIterativeSupervisors = (
     organization
   );
 };
+
+export const getOrganizationWithHorizontal = (
+  organization: OrganizationNode[]
+) => {
+  return organization.map(orgItem => {
+    return getIterativeSupervisors(orgItem, organization);
+  });
+};
+
+export const getOrganizationBySupervisor = (
+  organization: OrganizationNode[],
+  positionId: number
+) =>
+  getOrganizationWithHorizontal(
+    fullOrganizationList(organization)
+      .filter(
+        organizationNode => organizationNode.supervisorPositionId === positionId
+      )
+      .map(organizationNode => {
+        return Object.assign(organizationNode, {
+          orgSup: organizationNode.supervisorPositionId,
+          supervisorPositionId: (organization.find(
+            orgNode => orgNode.positionId === organizationNode.positionId
+          ) as OrganizationNode).supervisorPositionId
+        });
+      })
+  );
 
 // find the top employee's supervisor
 export const findOrganizationTopSupervisor = (
