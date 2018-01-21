@@ -55,25 +55,6 @@ const OrgView = ({
   );
 };
 
-const mapStateToProps = (state: CombinedState) => {
-  return {
-    selectedEmployee: state.employeesReducer.selectedEmployee,
-    organization: organizationWithEmployeeNames(state),
-    supervisorsOrg: supervisorsOrganizationWithEmployeeNames(state),
-    supervisorChain: organizationNodeSelectedEmployee(state)
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSelectEmployee: positionId => {
-      dispatch(selectEmployee(positionId));
-    }
-  };
-};
-
-const App = connect(mapStateToProps, mapDispatchToProps)(OrgView);
-
 const organizationNodes = state => state.employeesReducer.organization;
 
 const selectedNode = state => state.employeesReducer.selectedEmployee;
@@ -120,5 +101,24 @@ const organizationNodeSelectedEmployee = createSelector(
     });
   }
 );
+
+const mapStateToProps = (state: CombinedState) => {
+  return {
+    selectedEmployee: state.employeesReducer.selectedEmployee,
+    organization: organizationWithEmployeeNames(state),
+    supervisorsOrg: supervisorsOrganizationWithEmployeeNames(state),
+    supervisorChain: organizationNodeSelectedEmployee(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSelectEmployee: positionId => {
+      dispatch(selectEmployee(positionId));
+    }
+  };
+};
+
+const App = connect(mapStateToProps, mapDispatchToProps)(OrgView);
 
 export default App;
