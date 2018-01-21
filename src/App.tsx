@@ -6,7 +6,8 @@ import ViewOrg from "./components/ViewOrg";
 import { selectEmployee } from "./store/actions";
 import {
   getOrganizationBySupervisor,
-  getIterativeSupervisors
+  getIterativeSupervisors,
+  getOrganizationNodeById
 } from "./store/org-view-logic";
 import "./App.css";
 import { OrganizationNode, CombinedState } from "./store/organization.types";
@@ -45,6 +46,12 @@ const OrgView = ({
               </button>
             </li>
           ))}
+        </div>
+        <div className="f3">
+          {
+            getOrganizationNodeById(organization, +selectedEmployee)!
+              .employeeName
+          }
         </div>
         <ViewOrg
           supervisorsOrg={supervisorsOrg}
