@@ -27,7 +27,7 @@ export const initialOrganization: OrganizationNode[] = [
     positionId: 4,
     supervisorPositionId: 3,
     employeeId: 104,
-    employeeName: "Nicole, Team Lead, Marketinga)"
+    employeeName: "Nicole, Team Lead, Marketing"
   },
   {
     positionId: 5,
