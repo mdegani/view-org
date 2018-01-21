@@ -1,44 +1,44 @@
 import {
   OrganizationNode,
-  OrganizationSectionNode,
-  Employee,
-} from './organization.types';
+  OrganizationSectionNode
+} from "./organization.types";
 
 // Assumes the top position's supervisorId is 0
 const TOP_POSITION_SUPERVISOR_PLACEHOLDER = 0;
 
 export const getOrganizationNodeById = (
   organization: OrganizationNode[],
-  nodeId: number,
+  nodeId: number
 ): OrganizationNode | undefined => {
   return organization.find(node => node.positionId === nodeId);
 };
 
 export const getDirectReportsOfOrgNode = (
   organization: OrganizationNode[],
-  supervisorNodeId: number,
+  supervisorNodeId: number
 ): OrganizationNode[] => {
   return organization.filter(
-    node => node.supervisorPositionId === supervisorNodeId,
+    node => node.supervisorPositionId === supervisorNodeId
   );
 };
 
 export const getOrganizationLevelOne = (
-  organization: OrganizationNode[],
+  organization: OrganizationNode[]
 ): OrganizationSectionNode[] =>
   organization.map(node => {
     return {
       positionId: node.positionId,
       employeeId: node.employeeId,
+      employeeName: node.employeeName,
       supervisorPositionId: node.supervisorPositionId,
-      level: 1,
+      level: 1
     };
   });
 
 // need better name for targetId
 export const getNextSupervisorNode = (
   organization: OrganizationNode[],
-  targetId: OrganizationNode,
+  targetId: OrganizationNode
 ): OrganizationNode | undefined =>
   organization.find(node => {
     return node.positionId === targetId.supervisorPositionId;
@@ -51,7 +51,7 @@ export const atTopOfOrg = (list: OrganizationNode[]) =>
 // targetId is not named correctly
 export const assignLevel = (
   targetId: OrganizationNode,
-  level: number,
+  level: number
 ): OrganizationSectionNode => Object.assign({}, targetId, { level: level });
 
 export const getAllSupervisorNodes = (
@@ -59,12 +59,12 @@ export const getAllSupervisorNodes = (
   // not named properly
   // gets a row for each supervisor relationship "target" has
   target: OrganizationNode,
-  accumulator?: OrganizationSectionNode[] | undefined,
+  accumulator?: OrganizationSectionNode[] | undefined
 ): OrganizationSectionNode[] => {
   // first iteration:
   if (accumulator === undefined) {
     return getAllSupervisorNodes(organization, target, [
-      assignLevel(target, 1),
+      assignLevel(target, 1)
     ]);
   }
   const _level = accumulator[accumulator.length - 1].level;
@@ -79,14 +79,15 @@ export const getAllSupervisorNodes = (
     Object.assign(
       {} as OrganizationSectionNode,
       getNextSupervisorNode(organization, accumulator.find(
-        x => x.level === _level,
+        x => x.level === _level
       ) as OrganizationNode),
       {
         positionId: target.positionId,
         employeeId: target.employeeId,
-        level: _level + 1,
-      },
-    ),
+        employeeName: target.employeeName,
+        level: _level + 1
+      }
+    )
   ]);
 };
 
@@ -97,26 +98,25 @@ export const fullOrganizationList = (organization: OrganizationNode[]) =>
 
 export const getOrganizationBySupervisor = (
   organization: OrganizationNode[],
-  positionId: number,
+  positionId: number
 ) =>
   getOrganizationWithHorizontal(
     fullOrganizationList(organization)
       .filter(
-        organizationNode =>
-          organizationNode.supervisorPositionId === positionId,
+        organizationNode => organizationNode.supervisorPositionId === positionId
       )
       .map(organizationNode => {
         return Object.assign(organizationNode, {
           orgSup: organizationNode.supervisorPositionId,
           supervisorPositionId: (organization.find(
-            orgNode => orgNode.positionId === organizationNode.positionId,
-          ) as OrganizationNode).supervisorPositionId,
+            orgNode => orgNode.positionId === organizationNode.positionId
+          ) as OrganizationNode).supervisorPositionId
         });
-      }),
+      })
   );
 
 export const getOrganizationWithHorizontal = (
-  organization: OrganizationNode[],
+  organization: OrganizationNode[]
 ) => {
   return organization.map(orgItem => {
     return getIterativeSupervisors(orgItem, organization);
@@ -125,12 +125,12 @@ export const getOrganizationWithHorizontal = (
 
 export const getIterativeSupervisors = (
   organizationNode: OrganizationNode,
-  organization: OrganizationNode[],
+  organization: OrganizationNode[]
 ): OrganizationNode => {
   // first iteration
   if (!organizationNode.allSups) {
     organizationNode = Object.assign({}, organizationNode, {
-      allSups: [organizationNode.supervisorPositionId],
+      allSups: [organizationNode.supervisorPositionId]
     });
     getIterativeSupervisors(organizationNode, organization);
   }
@@ -149,14 +149,14 @@ export const getIterativeSupervisors = (
     // TODO this will probably not sort well once we have id's
     // with more than 2 digits
     // padding is probably the easiest solution
-    const orgSort = reversedAllSups.join('-');
+    const orgSort = reversedAllSups.join("-");
     const nodeWithSupervisors: OrganizationNode = Object.assign(
       {},
       organizationNode,
       {
         orgSort,
-        allSups: reversedAllSups,
-      },
+        allSups: reversedAllSups
+      }
     );
     return nodeWithSupervisors;
   }
@@ -168,16 +168,16 @@ export const getIterativeSupervisors = (
         // is that the correct assertion? assume array?
         ...(organizationNode.allSups as number[]),
         (getOrganizationNodeById(organization, lastAllSup) as OrganizationNode)
-          .supervisorPositionId,
-      ],
+          .supervisorPositionId
+      ]
     }),
-    organization,
+    organization
   );
 };
 
 // find the top employee's supervisor
 export const findOrganizationTopSupervisor = (
-  organization: OrganizationNode[],
+  organization: OrganizationNode[]
 ): number => {
   const allIds = organization.map(orgNode => {
     return orgNode.positionId;
@@ -187,19 +187,3 @@ export const findOrganizationTopSupervisor = (
     return !allIds.includes(orgNode.supervisorPositionId);
   }) as OrganizationNode).supervisorPositionId;
 };
-
-// even though there is a 1:1 relationship between organizationNodes --
-// organizationNodes relate to positions, around which an org structure
-// is based -- we are looking up employee details such as name for now
-export const addEmployeeInfoToOrganizationNode = (employees: Employee[]) => (
-  orgNode: OrganizationNode,
-) => ({
-  positionId: orgNode.positionId,
-  supervisorPositionId: orgNode.supervisorPositionId,
-  allSups: orgNode.allSups,
-  orgSort: orgNode.orgSort,
-  employeeId: orgNode.employeeId,
-  employeeName: (employees.find(
-    ee => ee.employeeId === orgNode.employeeId,
-  ) as Employee).employeeName,
-});
