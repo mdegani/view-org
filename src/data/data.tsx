@@ -18,6 +18,72 @@ export const initialOrganization: OrganizationNode[] = [
     employeeName: "Bob, CMO"
   },
   {
+    positionId: 8,
+    supervisorPositionId: 1,
+    employeeId: 108,
+    employeeName: "Clarence, CTO"
+  },
+  {
+    positionId: 9,
+    supervisorPositionId: 8,
+    employeeId: 109,
+    employeeName: "Vivi, Fortran Team Lead"
+  },
+  {
+    positionId: 10,
+    supervisorPositionId: 8,
+    employeeId: 110,
+    employeeName: "Karlee, Fortran Team Lead"
+  },
+  {
+    positionId: 11,
+    supervisorPositionId: 10,
+    employeeId: 111,
+    employeeName: "Zuriel, Dev I"
+  },
+  {
+    positionId: 12,
+    supervisorPositionId: 10,
+    employeeId: 112,
+    employeeName: "Allen, Dev I"
+  },
+  {
+    positionId: 13,
+    supervisorPositionId: 10,
+    employeeId: 113,
+    employeeName: "Alberta, Dev II"
+  },
+  {
+    positionId: 14,
+    supervisorPositionId: 10,
+    employeeId: 114,
+    employeeName: "Jaydon, Dev III"
+  },
+  {
+    positionId: 15,
+    supervisorPositionId: 9,
+    employeeId: 115,
+    employeeName: "Percy, Dev III"
+  },
+  {
+    positionId: 16,
+    supervisorPositionId: 9,
+    employeeId: 116,
+    employeeName: "Leonora, Dev I"
+  },
+  {
+    positionId: 17,
+    supervisorPositionId: 9,
+    employeeId: 117,
+    employeeName: "Bloom, Intern"
+  },
+  {
+    positionId: 18,
+    supervisorPositionId: 9,
+    employeeId: 118,
+    employeeName: "Storm, Dev II"
+  },
+  {
     positionId: 3,
     supervisorPositionId: 2,
     employeeId: 103,
