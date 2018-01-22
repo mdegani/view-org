@@ -118,11 +118,14 @@ export const getIterativeSupervisors = (
   // attach a concatenated version of the array
   // for sorting
   if (lastAllSup === findOrganizationTopSupervisor(organization)) {
-    const reversedAllSups = orgSupervisors.reverse();
-    // TODO this will probably not sort well once we have id's
-    // with more than 2 digits
+    const reversedAllSups = [
+      ...orgSupervisors.reverse(),
+      organizationNode.positionId
+    ];
     // padding is probably the easiest solution
-    const orgSort = reversedAllSups.join("-");
+    const orgSort = reversedAllSups
+      .map(supId => ("0000000000" + supId).slice(-10))
+      .join("-");
     const nodeWithSupervisors: OrganizationNode = Object.assign(
       {},
       organizationNode,
