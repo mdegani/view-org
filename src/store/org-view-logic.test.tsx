@@ -115,56 +115,56 @@ const fakeOrgHorizontal: OrganizationNode[] = [
     supervisorPositionId: 0,
     employeeId: 101,
     employeeName: "name1",
-    orgSort: "0",
-    allSups: [0]
+    orgSort: "0000000000-0000000001",
+    allSups: [0, 1]
   },
   {
     positionId: 2,
     supervisorPositionId: 1,
     employeeId: 102,
     employeeName: "name2",
-    orgSort: "0-1",
-    allSups: [0, 1]
+    orgSort: "0000000000-0000000001-0000000002",
+    allSups: [0, 1, 2]
   },
   {
     positionId: 3,
     supervisorPositionId: 1,
     employeeId: 103,
     employeeName: "name3",
-    orgSort: "0-1",
-    allSups: [0, 1]
+    orgSort: "0000000000-0000000001-0000000003",
+    allSups: [0, 1, 3]
   },
   {
     positionId: 4,
     supervisorPositionId: 3,
     employeeId: 104,
     employeeName: "name4",
-    orgSort: "0-1-3",
-    allSups: [0, 1, 3]
+    orgSort: "0000000000-0000000001-0000000003-0000000004",
+    allSups: [0, 1, 3, 4]
   },
   {
     positionId: 5,
     supervisorPositionId: 3,
     employeeId: 105,
     employeeName: "name5",
-    orgSort: "0-1-3",
-    allSups: [0, 1, 3]
+    orgSort: "0000000000-0000000001-0000000003-0000000005",
+    allSups: [0, 1, 3, 5],
   },
   {
     positionId: 6,
     supervisorPositionId: 4,
     employeeId: 106,
     employeeName: "name6",
-    orgSort: "0-1-3-4",
-    allSups: [0, 1, 3, 4]
+    orgSort: "0000000000-0000000001-0000000003-0000000004-0000000006",
+    allSups: [0, 1, 3, 4, 6]
   },
   {
     positionId: 7,
     supervisorPositionId: 2,
     employeeId: 107,
     employeeName: "name7",
-    orgSort: "0-1-2",
-    allSups: [0, 1, 2]
+    orgSort: "0000000000-0000000001-0000000002-0000000007",
+    allSups: [0, 1, 2, 7]
   }
 ];
 
@@ -180,55 +180,55 @@ const fakeOrgForSup3Horizontal: OrganizationNode[] = [
     supervisorPositionId: 3,
     employeeId: 104,
     employeeName: 'name4',
-    orgSort: "3",
-    allSups: [3]
+    orgSort: "0000000003-0000000004",
+    allSups: [3, 4]
   },
   {
     positionId: 5,
     supervisorPositionId: 3,
     employeeId: 105,
     employeeName: 'name5',
-    orgSort: "3",
-    allSups: [3]
+    orgSort: "0000000003-0000000005",
+    allSups: [3, 5]
   },
   {
     positionId: 6,
     supervisorPositionId: 4,
     employeeId: 106,
     employeeName: 'name6',
-    orgSort: "3-4",
-    allSups: [3, 4]
+    orgSort: "0000000003-0000000004-0000000006",
+    allSups: [3, 4, 6]
   }
 ];
 
 const filteredEeList3 = [
   {
-    allSups: [3],
+    allSups: [3, 4],
     positionId: 4,
     employeeId: 104,
     employeeName: 'name4',
     level: 1,
-    orgSort: "3",
+    orgSort: "0000000003-0000000004",
     orgSup: 3,
     supervisorPositionId: 3
   },
   {
-    allSups: [3],
+    allSups: [3, 5],
     positionId: 5,
     employeeId: 105,
     employeeName: 'name5',
     level: 1,
-    orgSort: "3",
+    orgSort: "0000000003-0000000005",
     orgSup: 3,
     supervisorPositionId: 3
   },
   {
-    allSups: [3, 4],
+    allSups: [3, 4, 6],
     positionId: 6,
     employeeId: 106,
     employeeName: 'name6',
     level: 2,
-    orgSort: "3-4",
+    orgSort: "0000000003-0000000004-0000000006",
     orgSup: 3,
     supervisorPositionId: 4
   }
@@ -244,8 +244,8 @@ describe("horizontal organization functions", () => {
       supervisorPositionId: 4,
       employeeId: 106,
       employeeName: 'name6',
-      orgSort: "0-1-3-4",
-      allSups: [0, 1, 3, 4]
+      orgSort: "0000000000-0000000001-0000000003-0000000004-0000000006",
+      allSups: [0, 1, 3, 4, 6]
     };
     expect(getIterativeSupervisors(fakeOrg[5], fakeOrg)).toEqual(expected);
   });
