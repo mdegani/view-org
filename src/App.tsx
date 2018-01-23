@@ -32,26 +32,32 @@ const OrgView = ({
         <div className="b f5 hot-pink">Organization View</div>
       </nav>
       <div className="ph4">
-        <div>
-          {/* this should be positions! */}
-          {/* filtering out positionId -1, temporily, until we figure out how to handle 🕴 */}
-          {supervisorChain.filter(sup => sup.positionId !== -1).map(sup => (
-            <li key={sup.employeeId}>
-              {" "}
-              <button
-                className="f6 link dim br1 ba ph3 pv2 mb2 dib black"
-                onClick={e => onSelectEmployee(sup.positionId)}
-              >
-                {sup.employeeName}
-              </button>
-            </li>
-          ))}
-        </div>
-        <div className="f3">
+        <div className="f3 pb2">
           {
             getOrganizationNodeById(organization, +selectedEmployee)!
               .employeeName
           }
+        </div>
+        <div>
+          {/* this should be positions! */}
+          {/* filtering out positionId -1, temporily, until we figure out how to handle 🕴 */}
+          {supervisorChain
+            .filter(sup => sup.positionId !== -1)
+            .map((sup, supIndex) => (
+              <a
+                href="#"
+                key={sup.employeeId}
+                className="f5 fw6 pv0 blue link dim db bl pl1 b--pink"
+                onClick={e => onSelectEmployee(sup.positionId)}
+              >
+                {supIndex > 0 ? (
+                  <span className="f6 pink db">⌄</span>
+                ) : (
+                  undefined
+                )}
+                {sup.employeeName}
+              </a>
+            ))}
         </div>
         <ViewOrg
           supervisorsOrg={supervisorsOrg}
