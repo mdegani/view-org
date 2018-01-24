@@ -28,11 +28,11 @@ const OrgView = ({
 }) => {
   return (
     <div className="App">
-      <nav className="pa4">
+      <nav className="bg-black-90 w-100 pb1 fixed">
         <div className="b f5 hot-pink">Organization View</div>
       </nav>
-      <div className="ph4">
-        <div className="f3 pb2">
+      <div className="ph4 pt4">
+        <div className="f3 pb2 bb b--pink">
           {
             getOrganizationNodeById(organization, +selectedEmployee)!
               .employeeName

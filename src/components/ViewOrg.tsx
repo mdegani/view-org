@@ -10,7 +10,7 @@ export default ({
 }) => {
   return (
     <div className="measure">
-      <ul className="list pl0 ml0 center ba b--light-silver br3 bg-white">
+      <ul className="list pl0 ml0 center">
         {!supervisorsOrg.length ? <div>none</div> : null}
         {supervisorsOrg
           .sort(
@@ -19,18 +19,15 @@ export default ({
           )
           .map(organizationNode => {
             return (
-              <li
-                key={organizationNode.positionId}
-                className="ph3 pv2 bb b--light-silver"
-              >
-                <span className="washed-blue">
-                  {"----".repeat((organizationNode.allSups || []).length)}
-                </span>
+              <li key={organizationNode.positionId} className="pa0 flex">
                 <button
-                  className="f6 link dim br1 ba ph3 pv2 mb2 dib black"
+                  className="flex items-start flex-auto f5 fw6 pa1 mt1 link dim db bl pl1 b--pink ba dib"
                   onClick={e => onSelectEmployee(organizationNode.positionId)}
                 >
-                  ➤ {organizationNode.employeeName}
+                  {(organizationNode.allSups!.splice(2) || []).map(sup => (
+                    <span key={sup} className="w1 dib" />
+                  ))}
+                  {organizationNode.employeeName}
                 </button>
               </li>
             );
