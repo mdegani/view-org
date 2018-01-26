@@ -28,16 +28,16 @@ const OrgView = ({
 }) => {
   return (
     <div className="App">
-      <nav className="bg-black-90 w-100 pb1 fixed">
-        <div className="b f5 hot-pink">Organization View</div>
-      </nav>
-      <div className="ph4 pt4">
-        <div className="f3 pb2 bb b--pink">
+      <nav className="bg-black-90 w-100 fixed flex flex-column">
+        <div className="b f5 hot-pink pv2">Organization View</div>
+        <div className="f3 pa2 bg-white overflow-scroll nowrap">
           {
             getOrganizationNodeById(organization, +selectedEmployee)!
               .employeeName
           }
         </div>
+      </nav>
+      <div className="ph4" style={{ paddingTop: "5.3rem" }}>
         <div>
           {/* this should be positions! */}
           {/* filtering out positionId -1, temporily, until we figure out how to handle 🕴 */}
@@ -47,7 +47,7 @@ const OrgView = ({
               <a
                 href="#"
                 key={sup.employeeId}
-                className="f5 fw6 pv0 blue link dim db bl pl1 b--pink"
+                className="f5 fw6 pv0 blue link dim db bl pl1 b--pink overflow-scroll nowrap"
                 onClick={e => onSelectEmployee(sup.positionId)}
               >
                 {supIndex > 0 ? (
