@@ -41,12 +41,13 @@ const OrgView = ({
                 .employeeName
             }
           </div>
-          <button
+          <a
+            href="#"
             className="f6 link dim ba ph3 pv1 mb2 dib white"
             onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}
           >
             +
-          </button>
+          </a>
         </div>
       </nav>
       <div className="ph4" style={{ paddingTop: "5.3rem" }}>
