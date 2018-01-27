@@ -43,7 +43,7 @@ const OrgView = ({
           </div>
           <a
             href="#"
-            className="f6 link dim ba ph3 pv1 mb2 dib white"
+            className="f6 link dim ph3 pv1 mb2 dib white"
             onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}
           >
             +
