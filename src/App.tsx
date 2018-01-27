@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import ViewOrg from "./components/ViewOrg";
-import { selectEmployee } from "./store/actions";
+import { selectEmployee, addNewEmployee } from "./store/actions";
 import {
   getOrganizationBySupervisor,
   getIterativeSupervisors,
@@ -16,15 +16,19 @@ const OrgView = ({
   selectedEmployee,
   organization,
   onSelectEmployee,
+  onAddNewEmployee,
   supervisorsOrg,
-  supervisorChain
+  supervisorChain,
+  nextAvailableId
 }: {
   selectedEmployee: string;
   organization: OrganizationNode[];
   // TODO: better typing for this function https://www.typescriptlang.org/docs/handbook/functions.html
   onSelectEmployee: Function;
+  onAddNewEmployee: (newPositionId: number, currentNodeId: number) => void; // TODO: is void right??
   supervisorsOrg: OrganizationNode[];
   supervisorChain: OrganizationNode[];
+  nextAvailableId: number;
 }) => {
   return (
     <div className="App">
@@ -35,6 +39,7 @@ const OrgView = ({
             getOrganizationNodeById(organization, +selectedEmployee)!
               .employeeName
           }
+          <button onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}>+</button>
         </div>
       </nav>
       <div className="ph4" style={{ paddingTop: "5.3rem" }}>
@@ -115,12 +120,20 @@ const organizationNodeSelectedEmployee = createSelector(
   }
 );
 
+const nextAvailableIdSelector = createSelector(
+  organizationWithEmployeeNames,
+  (org: OrganizationNode[]) => {
+    return Math.max(...org.map(orgNode => orgNode.positionId)) + 1;
+  }
+);
+
 const mapStateToProps = (state: CombinedState) => {
   return {
     selectedEmployee: state.employeesReducer.selectedEmployee,
     organization: organizationWithEmployeeNames(state),
     supervisorsOrg: supervisorsOrganizationWithEmployeeNames(state),
-    supervisorChain: organizationNodeSelectedEmployee(state)
+    supervisorChain: organizationNodeSelectedEmployee(state),
+    nextAvailableId: nextAvailableIdSelector(state)
   };
 };
 
@@ -128,7 +141,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onSelectEmployee: positionId => {
       dispatch(selectEmployee(positionId));
-    }
+    },
+    onAddNewEmployee: (newPositionId, currentNodeId) =>
+      dispatch(addNewEmployee(newPositionId, currentNodeId))
   };
 };
 
