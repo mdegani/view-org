@@ -34,12 +34,19 @@ const OrgView = ({
     <div className="App">
       <nav className="bg-black-90 w-100 fixed flex flex-column">
         <div className="b f5 hot-pink pv2">Organization View</div>
-        <div className="f3 pa2 bg-white overflow-scroll nowrap">
-          {
-            getOrganizationNodeById(organization, +selectedEmployee)!
-              .employeeName
-          }
-          <button onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}>+</button>
+        <div className="flex justify-between">
+          <div className="f3 pa2 bg-white overflow-scroll nowrap w-100">
+            {
+              getOrganizationNodeById(organization, +selectedEmployee)!
+                .employeeName
+            }
+          </div>
+          <button
+            className="f6 link dim ba ph3 pv1 mb2 dib white"
+            onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}
+          >
+            +
+          </button>
         </div>
       </nav>
       <div className="ph4" style={{ paddingTop: "5.3rem" }}>
