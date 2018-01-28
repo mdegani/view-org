@@ -4,7 +4,8 @@ import { employeeActions } from "../actions";
 const employeesReducer = (
   state: EmployeesState = {
     selectedEmployee: 1,
-    organization: initialOrganization
+    organization: initialOrganization,
+    showModal: false
   },
   action: employeeActions
 ): EmployeesState => {
@@ -23,6 +24,11 @@ const employeesReducer = (
             employeeName: action.payload.employeeName
           }
         ]
+      };
+    case "SHOW_MODAL":
+      return {
+        ...state,
+        showModal: action.payload
       };
     default:
       return state;

@@ -3,7 +3,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import ViewOrg from "./components/ViewOrg";
-import { selectEmployee, addNewEmployee } from "./store/actions";
+import Modal from "./components/Modal";
+import { selectEmployee, addNewEmployee, setShowModal } from "./store/actions";
 import {
   getOrganizationBySupervisor,
   getIterativeSupervisors,
@@ -19,7 +20,9 @@ const OrgView = ({
   onAddNewEmployee,
   supervisorsOrg,
   supervisorChain,
-  nextAvailableId
+  nextAvailableId,
+  onShowModalFunction,
+  showModal
 }: {
   selectedEmployee: string;
   organization: OrganizationNode[];
@@ -29,9 +32,16 @@ const OrgView = ({
   supervisorsOrg: OrganizationNode[];
   supervisorChain: OrganizationNode[];
   nextAvailableId: number;
+  onShowModalFunction: Function;
+  showModal: boolean;
 }) => {
   return (
     <div className="App">
+      {showModal ? (
+        <Modal title="Add a new person!">
+          <div>Custom modal contents.</div>
+        </Modal>
+      ) : null}
       <nav className="bg-black-90 w-100 fixed flex flex-column">
         <div className="b f5 hot-pink pv2">Organization View</div>
         <div className="flex justify-between">
@@ -45,6 +55,13 @@ const OrgView = ({
             href="#"
             className="f6 link dim ph3 pv1 mb2 dib white"
             onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}
+          >
+            +
+          </a>
+          <a
+            href="#"
+            className="f6 link dim ph3 pv1 mb2 dib white"
+            onClick={() => onShowModalFunction(true)}
           >
             +
           </a>
@@ -141,17 +158,19 @@ const mapStateToProps = (state: CombinedState) => {
     organization: organizationWithEmployeeNames(state),
     supervisorsOrg: supervisorsOrganizationWithEmployeeNames(state),
     supervisorChain: organizationNodeSelectedEmployee(state),
-    nextAvailableId: nextAvailableIdSelector(state)
+    nextAvailableId: nextAvailableIdSelector(state),
+    setShowModalFunction: setShowModal,
+    showModal: state.employeesReducer.showModal
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelectEmployee: positionId => {
-      dispatch(selectEmployee(positionId));
-    },
+    onSelectEmployee: positionId => dispatch(selectEmployee(positionId)),
     onAddNewEmployee: (newPositionId, currentNodeId) =>
-      dispatch(addNewEmployee(newPositionId, currentNodeId))
+      dispatch(addNewEmployee(newPositionId, currentNodeId)),
+    onShowModalFunction: (showModal: boolean) =>
+      dispatch(setShowModal(showModal))
   };
 };
 

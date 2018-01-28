@@ -21,6 +21,7 @@ export type OrganizationSectionNode = {
 export type EmployeesState = {
   selectedEmployee: number;
   organization: OrganizationNode[];
+  showModal: boolean;
 };
 
 export type CombinedState = {

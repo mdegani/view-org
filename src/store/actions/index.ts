@@ -14,7 +14,15 @@ type addNewEmployeeAction = {
   };
 };
 
-export type employeeActions = selectEmployeeAction | addNewEmployeeAction;
+type showModalAction = {
+  type: "SHOW_MODAL";
+  payload: boolean;
+};
+
+export type employeeActions =
+  | selectEmployeeAction
+  | addNewEmployeeAction
+  | showModalAction;
 
 export const selectEmployee = (positionId: number): selectEmployeeAction => {
   return {
@@ -34,5 +42,12 @@ export const addNewEmployee = (
       supervisorId,
       employeeName: prompt("Employee Name") || "default name" // what? you no like prompts?
     }
+  };
+};
+
+export const setShowModal = (showModal: boolean): showModalAction => {
+  return {
+    type: "SHOW_MODAL",
+    payload: showModal
   };
 };
