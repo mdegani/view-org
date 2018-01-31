@@ -14,7 +14,14 @@ type addNewEmployeeAction = {
   };
 };
 
-export type employeeActions = selectEmployeeAction | addNewEmployeeAction;
+type deleteAllEmployeesAction = {
+  type: "DELETE_ALL_EMPLOYEES";
+};
+
+export type employeeActions =
+  | selectEmployeeAction
+  | addNewEmployeeAction
+  | deleteAllEmployeesAction;
 
 export const selectEmployee = (positionId: number): selectEmployeeAction => {
   return {
@@ -34,5 +41,11 @@ export const addNewEmployee = (
       supervisorId,
       employeeName: prompt("Employee Name") || "default name" // what? you no like prompts?
     }
+  };
+};
+
+export const deleteAllEmployees = (): deleteAllEmployeesAction => {
+  return {
+    type: "DELETE_ALL_EMPLOYEES"
   };
 };

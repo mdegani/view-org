@@ -1,17 +1,20 @@
 import { EmployeesState } from "../organization.types";
 import { employeeActions } from "../actions";
+
+const initialState = {
+  selectedEmployee: 1,
+  organization: [
+    {
+      positionId: 1,
+      supervisorPositionId: 0,
+      employeeId: 101,
+      employeeName: "Mr. Big, CEO"
+    }
+  ]
+};
+
 const employeesReducer = (
-  state: EmployeesState = {
-    selectedEmployee: 1,
-    organization: [
-      {
-        positionId: 1,
-        supervisorPositionId: 0,
-        employeeId: 101,
-        employeeName: "Mr. Big, CEO"
-      }
-    ]
-  },
+  state: EmployeesState = initialState,
   action: employeeActions
 ): EmployeesState => {
   switch (action.type) {
@@ -30,6 +33,8 @@ const employeesReducer = (
           }
         ]
       };
+    case "DELETE_ALL_EMPLOYEES":
+      return initialState;
     default:
       return state;
   }
