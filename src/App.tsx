@@ -3,7 +3,12 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import ViewOrg from "./components/ViewOrg";
-import { selectEmployee, addNewEmployee } from "./store/actions";
+import {
+  selectEmployee,
+  addNewEmployee,
+  deleteAllEmployees,
+  deleteEmployee
+} from "./store/actions";
 import {
   getOrganizationBySupervisor,
   getIterativeSupervisors,
@@ -17,6 +22,8 @@ const OrgView = ({
   organization,
   onSelectEmployee,
   onAddNewEmployee,
+  onDeleteAllEmployees,
+  onDeleteEmployee,
   supervisorsOrg,
   supervisorChain,
   nextAvailableId
@@ -26,6 +33,8 @@ const OrgView = ({
   // TODO: better typing for this function https://www.typescriptlang.org/docs/handbook/functions.html
   onSelectEmployee: Function;
   onAddNewEmployee: (newPositionId: number, currentNodeId: number) => void; // TODO: is void right??
+  onDeleteAllEmployees: () => void;
+  onDeleteEmployee: (newPositionId: number) => void;
   supervisorsOrg: OrganizationNode[];
   supervisorChain: OrganizationNode[];
   nextAvailableId: number;
@@ -47,6 +56,20 @@ const OrgView = ({
             onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}
           >
             +
+          </a>
+          <a
+            href="#"
+            className="f6 link dim ph3 pv1 mb2 dib white"
+            onClick={() => onDeleteAllEmployees()}
+          >
+            del all
+          </a>
+          <a
+            href="#"
+            className="f6 link dim ph3 pv1 mb2 dib white"
+            onClick={() => onDeleteEmployee(+selectedEmployee)}
+          >
+            del one
           </a>
         </div>
       </nav>
@@ -147,11 +170,11 @@ const mapStateToProps = (state: CombinedState) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelectEmployee: positionId => {
-      dispatch(selectEmployee(positionId));
-    },
+    onSelectEmployee: positionId => dispatch(selectEmployee(positionId)),
     onAddNewEmployee: (newPositionId, currentNodeId) =>
-      dispatch(addNewEmployee(newPositionId, currentNodeId))
+      dispatch(addNewEmployee(newPositionId, currentNodeId)),
+    onDeleteAllEmployees: () => dispatch(deleteAllEmployees()),
+    onDeleteEmployee: positionId => dispatch(deleteEmployee(positionId))
   };
 };
 

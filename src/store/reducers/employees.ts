@@ -1,11 +1,20 @@
-import { initialOrganization } from "../../data/data";
 import { EmployeesState } from "../organization.types";
 import { employeeActions } from "../actions";
+
+const initialState = {
+  selectedEmployee: 1,
+  organization: [
+    {
+      positionId: 1,
+      supervisorPositionId: 0,
+      employeeId: 101,
+      employeeName: "Mr. Big, CEO"
+    }
+  ]
+};
+
 const employeesReducer = (
-  state: EmployeesState = {
-    selectedEmployee: 1,
-    organization: initialOrganization
-  },
+  state: EmployeesState = initialState,
   action: employeeActions
 ): EmployeesState => {
   switch (action.type) {
@@ -23,6 +32,27 @@ const employeesReducer = (
             employeeName: action.payload.employeeName
           }
         ]
+      };
+    case "DELETE_ALL_EMPLOYEES":
+      return initialState;
+    case "DELETE_EMPLOYEE":
+      const newSup = state.organization.find(
+        org => org.positionId === action.positionId
+      )!.supervisorPositionId;
+      return {
+        ...state,
+        selectedEmployee: newSup,
+        organization: state.organization
+          .filter(orgNode => orgNode.positionId !== action.positionId)
+          .map(node => {
+            if (+node.supervisorPositionId === action.positionId) {
+              return {
+                ...node,
+                supervisorPositionId: newSup
+              };
+            }
+            return node;
+          })
       };
     default:
       return state;
