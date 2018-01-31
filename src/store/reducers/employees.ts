@@ -1,10 +1,16 @@
-import { initialOrganization } from "../../data/data";
 import { EmployeesState } from "../organization.types";
 import { employeeActions } from "../actions";
 const employeesReducer = (
   state: EmployeesState = {
     selectedEmployee: 1,
-    organization: initialOrganization
+    organization: [
+      {
+        positionId: 1,
+        supervisorPositionId: 0,
+        employeeId: 101,
+        employeeName: "Mr. Big, CEO"
+      }
+    ]
   },
   action: employeeActions
 ): EmployeesState => {
