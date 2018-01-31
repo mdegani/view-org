@@ -6,7 +6,8 @@ import ViewOrg from "./components/ViewOrg";
 import {
   selectEmployee,
   addNewEmployee,
-  deleteAllEmployees
+  deleteAllEmployees,
+  deleteEmployee
 } from "./store/actions";
 import {
   getOrganizationBySupervisor,
@@ -22,6 +23,7 @@ const OrgView = ({
   onSelectEmployee,
   onAddNewEmployee,
   onDeleteAllEmployees,
+  onDeleteEmployee,
   supervisorsOrg,
   supervisorChain,
   nextAvailableId
@@ -32,6 +34,7 @@ const OrgView = ({
   onSelectEmployee: Function;
   onAddNewEmployee: (newPositionId: number, currentNodeId: number) => void; // TODO: is void right??
   onDeleteAllEmployees: () => void;
+  onDeleteEmployee: (newPositionId: number) => void;
   supervisorsOrg: OrganizationNode[];
   supervisorChain: OrganizationNode[];
   nextAvailableId: number;
@@ -60,6 +63,13 @@ const OrgView = ({
             onClick={() => onDeleteAllEmployees()}
           >
             del all
+          </a>
+          <a
+            href="#"
+            className="f6 link dim ph3 pv1 mb2 dib white"
+            onClick={() => onDeleteEmployee(+selectedEmployee)}
+          >
+            del one
           </a>
         </div>
       </nav>
@@ -163,7 +173,8 @@ const mapDispatchToProps = dispatch => {
     onSelectEmployee: positionId => dispatch(selectEmployee(positionId)),
     onAddNewEmployee: (newPositionId, currentNodeId) =>
       dispatch(addNewEmployee(newPositionId, currentNodeId)),
-    onDeleteAllEmployees: () => dispatch(deleteAllEmployees())
+    onDeleteAllEmployees: () => dispatch(deleteAllEmployees()),
+    onDeleteEmployee: positionId => dispatch(deleteEmployee(positionId))
   };
 };
 

@@ -35,6 +35,25 @@ const employeesReducer = (
       };
     case "DELETE_ALL_EMPLOYEES":
       return initialState;
+    case "DELETE_EMPLOYEE":
+      const newSup = state.organization.find(
+        org => org.positionId === action.positionId
+      )!.supervisorPositionId;
+      return {
+        ...state,
+        selectedEmployee: newSup,
+        organization: state.organization
+          .filter(orgNode => orgNode.positionId !== action.positionId)
+          .map(node => {
+            if (+node.supervisorPositionId === action.positionId) {
+              return {
+                ...node,
+                supervisorPositionId: newSup
+              };
+            }
+            return node;
+          })
+      };
     default:
       return state;
   }
