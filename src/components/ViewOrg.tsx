@@ -9,8 +9,8 @@ export default ({
   onSelectEmployee: Function;
 }) => {
   return (
-    <div className="measure">
-      <ul className="list pl0 ml0 center">
+    <div className="max-w-sm">
+      <ul className="list-reset pl-0 ml-0 py-4 mx-auto">
         {!supervisorsOrg.length ? <div>none</div> : null}
         {supervisorsOrg
           .sort(
@@ -19,18 +19,18 @@ export default ({
           )
           .map(organizationNode => {
             return (
-              <li key={organizationNode.positionId} className="pa0 flex">
+              <li key={organizationNode.positionId} className="p-0 flex">
                 <button
-                  className={[
-                    "flex items-start flex-auto f5 fw6 pa1 mt1 link",
-                    "dim db bl pl1 b--pink ba dib overflow-scroll nowrap"
-                  ].join(" ")}
+                  className={
+                    "flex items-start flex-auto text-sm font-semibold p-1 mt-1 no-underline" +
+                    "opacity-100 block border-l pl-1 border-hot-pink border inline-block overflow-scroll flex-no-wrap"
+                  }
                   onClick={e => onSelectEmployee(organizationNode.positionId)}
                 >
                   {(organizationNode.allSups!.splice(2) || []).map(sup => (
                     <span
                       key={sup}
-                      className="dib"
+                      className="inline-block"
                       style={{ minWidth: "2rem" }}
                     />
                   ))}
