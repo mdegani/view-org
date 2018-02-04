@@ -1,5 +1,6 @@
 // TODO: type for state
 import * as React from "react";
+import "mdd-tailwind";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import ViewOrg from "./components/ViewOrg";
@@ -41,10 +42,12 @@ const OrgView = ({
 }) => {
   return (
     <div className="App">
-      <nav className="bg-black-90 w-100 fixed flex flex-column">
-        <div className="b f5 hot-pink pv2">Organization View</div>
+      <nav className="bg-black w-full fixed flex flex-col">
+        <div className="font-bold text-base text-hot-pink py-2">
+          Organization View
+        </div>
         <div className="flex justify-between">
-          <div className="f3 pa2 bg-white overflow-scroll nowrap w-100">
+          <div className="text-2xl p-2 bg-white overflow-scroll flex-no-wrap w-full">
             {
               getOrganizationNodeById(organization, +selectedEmployee)!
                 .employeeName
@@ -52,28 +55,28 @@ const OrgView = ({
           </div>
           <a
             href="#"
-            className="f6 link dim ph3 pv1 mb2 dib white"
+            className="text-sm no-underline opacity-100 px-3 ph-1 mb-2 inline-block text-white"
             onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}
           >
             +
           </a>
           <a
             href="#"
-            className="f6 link dim ph3 pv1 mb2 dib white"
+            className="text-sm no-underline opacity-100 px-3 py-1 mb-2 inline-block text-white"
             onClick={() => onDeleteAllEmployees()}
           >
             del all
           </a>
           <a
             href="#"
-            className="f6 link dim ph3 pv1 mb2 dib white"
+            className="text-sm no-underline opacity-100 px-3 ph-1 mb-2 inline-block text-white"
             onClick={() => onDeleteEmployee(+selectedEmployee)}
           >
             del one
           </a>
         </div>
       </nav>
-      <div className="ph4" style={{ paddingTop: "5.3rem" }}>
+      <div className="px-8" style={{ paddingTop: "5.3rem" }}>
         <div>
           {/* this should be positions! */}
           {/* filtering out positionId -1, temporily, until we figure out how to handle 🕴 */}
@@ -83,11 +86,14 @@ const OrgView = ({
               <a
                 href="#"
                 key={sup.employeeId}
-                className="f5 fw6 pv0 blue link dim db bl pl1 b--pink overflow-scroll nowrap"
+                className={
+                  "text-base font-semibold py-0 text-blue no-underline opacity-100 block border-l " +
+                  "pl-1 border-hot-pink overflow-scroll flex-no-wrap"
+                }
                 onClick={e => onSelectEmployee(sup.positionId)}
               >
                 {supIndex > 0 ? (
-                  <span className="f6 pink db">⌄</span>
+                  <span className="text-sm text-hot-pink block">⌄</span>
                 ) : (
                   undefined
                 )}
