@@ -1,11 +1,11 @@
 // TODO: type for state
 import * as React from "react";
+import { Link } from "react-router-dom";
 import "mdd-tailwind";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import ViewOrg from "./components/ViewOrg";
 import {
-  selectEmployee,
   addNewEmployee,
   deleteAllEmployees,
   deleteEmployee
@@ -21,7 +21,6 @@ import { OrganizationNode, CombinedState } from "./store/organization.types";
 const OrgView = ({
   selectedEmployee,
   organization,
-  onSelectEmployee,
   onAddNewEmployee,
   onDeleteAllEmployees,
   onDeleteEmployee,
@@ -29,10 +28,9 @@ const OrgView = ({
   supervisorChain,
   nextAvailableId
 }: {
-  selectedEmployee: string;
+  selectedEmployee: number;
   organization: OrganizationNode[];
   // TODO: better typing for this function https://www.typescriptlang.org/docs/handbook/functions.html
-  onSelectEmployee: Function;
   onAddNewEmployee: (newPositionId: number, currentNodeId: number) => void; // TODO: is void right??
   onDeleteAllEmployees: () => void;
   onDeleteEmployee: (newPositionId: number) => void;
@@ -40,6 +38,7 @@ const OrgView = ({
   supervisorChain: OrganizationNode[];
   nextAvailableId: number;
 }) => {
+  selectedEmployee = selectedEmployee || 1;
   return (
     <div className="App">
       <nav className="bg-black w-full fixed flex flex-col">
@@ -83,14 +82,13 @@ const OrgView = ({
           {supervisorChain
             .filter(sup => sup.positionId !== -1)
             .map((sup, supIndex) => (
-              <a
-                href="#"
+              <Link
+                to={"/" + sup.positionId}
                 key={sup.employeeId}
                 className={
                   "text-base font-semibold py-0 text-blue no-underline opacity-100 block border-l " +
                   "pl-1 border-hot-pink overflow-scroll flex-no-wrap"
                 }
-                onClick={e => onSelectEmployee(sup.positionId)}
               >
                 {supIndex > 0 ? (
                   <span className="text-sm text-hot-pink block">⌄</span>
@@ -98,13 +96,10 @@ const OrgView = ({
                   undefined
                 )}
                 {sup.employeeName}
-              </a>
+              </Link>
             ))}
         </div>
-        <ViewOrg
-          supervisorsOrg={supervisorsOrg}
-          onSelectEmployee={onSelectEmployee}
-        />
+        <ViewOrg supervisorsOrg={supervisorsOrg} />
       </div>
     </div>
   );
@@ -112,16 +107,11 @@ const OrgView = ({
 
 const organizationNodes = state => state.employeesReducer.organization;
 
-const selectedNode = state => state.employeesReducer.selectedEmployee;
-
 // TODO Fix this:
-const supervisorsOrganizationWithEmployeeNames = createSelector(
-  organizationNodes,
-  selectedNode,
-  (orgNodes: OrganizationNode[], selectedEe: number) => {
-    return getOrganizationBySupervisor(orgNodes, selectedEe);
-  }
-);
+const supervisorsOrganizationWithEmployeeNames = (selectedNode: number) =>
+  createSelector(organizationNodes, (orgNodes: OrganizationNode[]) => {
+    return getOrganizationBySupervisor(orgNodes, selectedNode);
+  });
 
 const organizationWithEmployeeNames = createSelector(
   organizationNodes,
@@ -133,29 +123,32 @@ const organizationWithEmployeeNames = createSelector(
   }
 );
 
-const organizationNodeSelectedEmployee = createSelector(
-  organizationWithEmployeeNames,
-  selectedNode,
-  (org: OrganizationNode[], node: number): OrganizationNode[] => {
-    const selectedOrgNode = org.find(orgNode => orgNode.positionId === node);
-    return selectedOrgNode!.allSups!.map(supId => {
-      if (supId === 0) {
-        // for now the top supervisor will report to a man in a business suit levitating
-        return {
-          positionId: -1,
-          supervisorPositionId: -1,
-          employeeId: -1,
-          employeeName: "🕴"
-        };
-      }
-      return org!.find(
-        org2 =>
-          org2.employeeId ===
-          org.find(orgNode => orgNode!.positionId === supId)!.employeeId
-      )!;
-    });
-  }
-);
+const organizationNodeSelectedEmployee = (selectedNode: number) =>
+  createSelector(
+    organizationWithEmployeeNames,
+    (org: OrganizationNode[]): OrganizationNode[] => {
+      const selectedOrgNode = org.find(
+        orgNode => orgNode.positionId === selectedNode
+      );
+
+      return selectedOrgNode!.allSups!.map(supId => {
+        if (supId === 0) {
+          // for now the top supervisor will report to a man in a business suit levitating
+          return {
+            positionId: -1,
+            supervisorPositionId: -1,
+            employeeId: -1,
+            employeeName: "🕴"
+          };
+        }
+        return org!.find(
+          org2 =>
+            org2.employeeId ===
+            org.find(orgNode => orgNode!.positionId === supId)!.employeeId
+        )!;
+      });
+    }
+  );
 
 const nextAvailableIdSelector = createSelector(
   organizationWithEmployeeNames,
@@ -164,19 +157,21 @@ const nextAvailableIdSelector = createSelector(
   }
 );
 
-const mapStateToProps = (state: CombinedState) => {
+const mapStateToProps = (state: CombinedState, props) => {
+  const selectedNode = +props.match.params.nodeId;
   return {
-    selectedEmployee: state.employeesReducer.selectedEmployee,
+    selectedEmployee: selectedNode,
     organization: organizationWithEmployeeNames(state),
-    supervisorsOrg: supervisorsOrganizationWithEmployeeNames(state),
-    supervisorChain: organizationNodeSelectedEmployee(state),
+    supervisorsOrg: supervisorsOrganizationWithEmployeeNames(selectedNode)(
+      state
+    ),
+    supervisorChain: organizationNodeSelectedEmployee(selectedNode)(state),
     nextAvailableId: nextAvailableIdSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelectEmployee: positionId => dispatch(selectEmployee(positionId)),
     onAddNewEmployee: (newPositionId, currentNodeId) =>
       dispatch(addNewEmployee(newPositionId, currentNodeId)),
     onDeleteAllEmployees: () => dispatch(deleteAllEmployees()),

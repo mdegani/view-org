@@ -18,8 +18,6 @@ const employeesReducer = (
   action: employeeActions
 ): EmployeesState => {
   switch (action.type) {
-    case "SELECT_EMPLOYEE":
-      return Object.assign({}, state, { selectedEmployee: +action.positionId });
     case "ADD_EMPLOYEE":
       return {
         ...state,

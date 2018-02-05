@@ -1,10 +1,5 @@
 // not using flux standard action! liberated.
 
-type selectEmployeeAction = {
-  type: "SELECT_EMPLOYEE";
-  positionId: number;
-};
-
 type addNewEmployeeAction = {
   type: "ADD_EMPLOYEE";
   payload: {
@@ -24,17 +19,9 @@ type deleteEmployeeAction = {
 };
 
 export type employeeActions =
-  | selectEmployeeAction
   | addNewEmployeeAction
   | deleteAllEmployeesAction
   | deleteEmployeeAction;
-
-export const selectEmployee = (positionId: number): selectEmployeeAction => {
-  return {
-    type: "SELECT_EMPLOYEE",
-    positionId
-  };
-};
 
 export const addNewEmployee = (
   positionId: number,
