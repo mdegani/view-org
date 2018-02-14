@@ -1,14 +1,16 @@
-// TODO: type for state
 import * as React from "react";
 import "mdd-tailwind";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import ViewOrg from "./components/ViewOrg";
+import NodeForm from "./components/NodeForm";
 import {
   selectEmployee,
   addNewEmployee,
   deleteAllEmployees,
-  deleteEmployee
+  deleteEmployee,
+  startAddNewEmployee,
+  doneEditingNode
 } from "./store/actions";
 import {
   getOrganizationBySupervisor,
@@ -16,7 +18,11 @@ import {
   getOrganizationNodeById
 } from "./store/org-view-logic";
 import "./App.css";
-import { OrganizationNode, CombinedState } from "./store/organization.types";
+import {
+  OrganizationNode,
+  CombinedState,
+  FormState
+} from "./store/organization.types";
 
 const OrgView = ({
   selectedEmployee,
@@ -27,7 +33,12 @@ const OrgView = ({
   onDeleteEmployee,
   supervisorsOrg,
   supervisorChain,
-  nextAvailableId
+  nextAvailableId,
+  editingNode,
+  formState,
+  formTargetNode,
+  onStartAddNewEmployee,
+  onDoneEditingNode
 }: {
   selectedEmployee: string;
   organization: OrganizationNode[];
@@ -39,6 +50,11 @@ const OrgView = ({
   supervisorsOrg: OrganizationNode[];
   supervisorChain: OrganizationNode[];
   nextAvailableId: number;
+  editingNode: number;
+  formState: FormState;
+  formTargetNode: number;
+  onStartAddNewEmployee: Function;
+  onDoneEditingNode: Function;
 }) => {
   return (
     <div className="App">
@@ -56,7 +72,8 @@ const OrgView = ({
           <a
             href="#"
             className="text-sm no-underline opacity-100 px-3 ph-1 mb-2 inline-block text-white"
-            onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}
+            // onClick={() => onAddNewEmployee(nextAvailableId, +selectedEmployee)}
+            onClick={() => onStartAddNewEmployee(+selectedEmployee)}
           >
             +
           </a>
@@ -77,34 +94,44 @@ const OrgView = ({
         </div>
       </nav>
       <div className="px-8" style={{ paddingTop: "5.3rem" }}>
-        <div>
-          {/* this should be positions! */}
-          {/* filtering out positionId -1, temporily, until we figure out how to handle 🕴 */}
-          {supervisorChain
-            .filter(sup => sup.positionId !== -1)
-            .map((sup, supIndex) => (
-              <a
-                href="#"
-                key={sup.employeeId}
-                className={
-                  "text-base font-semibold py-0 text-blue no-underline opacity-100 block border-l " +
-                  "pl-1 border-hot-pink overflow-scroll flex-no-wrap"
-                }
-                onClick={e => onSelectEmployee(sup.positionId)}
-              >
-                {supIndex > 0 ? (
-                  <span className="text-sm text-hot-pink block">⌄</span>
-                ) : (
-                  undefined
-                )}
-                {sup.employeeName}
-              </a>
-            ))}
-        </div>
-        <ViewOrg
-          supervisorsOrg={supervisorsOrg}
-          onSelectEmployee={onSelectEmployee}
-        />
+        {formState === FormState.hidden ? (
+          <>
+            <div>
+              {/* this should be positions! */}
+              {/* filtering out positionId -1, temporarily, until we figure out how to handle 🕴 */}
+              {supervisorChain
+                .filter(sup => sup.positionId !== -1)
+                .map((sup, supIndex) => (
+                  <a
+                    href="#"
+                    key={sup.employeeId}
+                    className={
+                      "text-base font-semibold py-0 text-blue no-underline opacity-100 block border-l " +
+                      "pl-1 border-hot-pink overflow-scroll flex-no-wrap"
+                    }
+                    onClick={e => onSelectEmployee(sup.positionId)}
+                  >
+                    {supIndex > 0 ? (
+                      <span className="text-sm text-hot-pink block">⌄</span>
+                    ) : (
+                      undefined
+                    )}
+                    {sup.employeeName}
+                  </a>
+                ))}
+            </div>
+            <ViewOrg
+              supervisorsOrg={supervisorsOrg}
+              onSelectEmployee={onSelectEmployee}
+            />
+          </>
+        ) : (
+          <NodeForm
+            formState={formState}
+            formTargetNode={formTargetNode}
+            onDoneEditingNode={onDoneEditingNode}
+          />
+        )}
       </div>
     </div>
   );
@@ -170,7 +197,9 @@ const mapStateToProps = (state: CombinedState) => {
     organization: organizationWithEmployeeNames(state),
     supervisorsOrg: supervisorsOrganizationWithEmployeeNames(state),
     supervisorChain: organizationNodeSelectedEmployee(state),
-    nextAvailableId: nextAvailableIdSelector(state)
+    nextAvailableId: nextAvailableIdSelector(state),
+    formState: state.employeesReducer.nodeForm.state,
+    formTargetNode: state.employeesReducer.nodeForm.targetNode
   };
 };
 
@@ -180,7 +209,10 @@ const mapDispatchToProps = dispatch => {
     onAddNewEmployee: (newPositionId, currentNodeId) =>
       dispatch(addNewEmployee(newPositionId, currentNodeId)),
     onDeleteAllEmployees: () => dispatch(deleteAllEmployees()),
-    onDeleteEmployee: positionId => dispatch(deleteEmployee(positionId))
+    onDeleteEmployee: positionId => dispatch(deleteEmployee(positionId)),
+    onStartAddNewEmployee: supervisorNode =>
+      dispatch(startAddNewEmployee(supervisorNode)),
+    onDoneEditingNode: () => dispatch(doneEditingNode())
   };
 };
 

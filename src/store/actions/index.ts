@@ -23,11 +23,22 @@ type deleteEmployeeAction = {
   positionId: number;
 };
 
+type doneEditingNode = {
+  type: "DONE_EDITING_NODE";
+};
+
+type startAddNewEmployee = {
+  type: "START_ADD_NEW_EMPLOYEE";
+  supervisorNode: number;
+};
+
 export type employeeActions =
   | selectEmployeeAction
   | addNewEmployeeAction
   | deleteAllEmployeesAction
-  | deleteEmployeeAction;
+  | deleteEmployeeAction
+  | startAddNewEmployee
+  | doneEditingNode;
 
 export const selectEmployee = (positionId: number): selectEmployeeAction => {
   return {
@@ -60,5 +71,20 @@ export const deleteEmployee = (positionId: number): deleteEmployeeAction => {
   return {
     type: "DELETE_EMPLOYEE",
     positionId
+  };
+};
+
+export const startAddNewEmployee = (
+  supervisorNode: number
+): startAddNewEmployee => {
+  return {
+    type: "START_ADD_NEW_EMPLOYEE",
+    supervisorNode
+  };
+};
+
+export const doneEditingNode = () => {
+  return {
+    type: "DONE_EDITING_NODE"
   };
 };

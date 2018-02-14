@@ -1,4 +1,4 @@
-import { EmployeesState } from "../organization.types";
+import { EmployeesState, FormState } from "../organization.types";
 import { employeeActions } from "../actions";
 
 const initialState = {
@@ -10,7 +10,11 @@ const initialState = {
       employeeId: 101,
       employeeName: "Mr. Big, CEO"
     }
-  ]
+  ],
+  nodeForm: {
+    state: FormState.editing,
+    targetNode: 123
+  }
 };
 
 const employeesReducer = (
@@ -53,6 +57,22 @@ const employeesReducer = (
             }
             return node;
           })
+      };
+    case "START_ADD_NEW_EMPLOYEE":
+      return {
+        ...state,
+        nodeForm: {
+          state: FormState.addingTo,
+          targetNode: action.supervisorNode
+        }
+      };
+    case "DONE_EDITING_NODE":
+      return {
+        ...state,
+        nodeForm: {
+          state: FormState.hidden,
+          targetNode: null
+        }
       };
     default:
       return state;
