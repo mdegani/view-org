@@ -10,7 +10,8 @@ import {
   deleteAllEmployees,
   deleteEmployee,
   startAddNewEmployee,
-  doneEditingNode
+  doneEditingNode,
+  updateNewName
 } from "./store/actions";
 import {
   getOrganizationBySupervisor,
@@ -38,7 +39,9 @@ const OrgView = ({
   formState,
   formTargetNode,
   onStartAddNewEmployee,
-  onDoneEditingNode
+  onDoneEditingNode,
+  onUpdateNewName,
+  nameValid
 }: {
   selectedEmployee: string;
   organization: OrganizationNode[];
@@ -55,6 +58,8 @@ const OrgView = ({
   formTargetNode: number;
   onStartAddNewEmployee: Function;
   onDoneEditingNode: Function;
+  onUpdateNewName: Function;
+  nameValid: boolean;
 }) => {
   return (
     <div className="App">
@@ -129,7 +134,9 @@ const OrgView = ({
           <NodeForm
             formState={formState}
             formTargetNode={formTargetNode}
-            onDoneEditingNode={onDoneEditingNode}
+            onAddNewEmployee={onAddNewEmployee.bind(null, nextAvailableId)}
+            onUpdateNewName={onUpdateNewName}
+            nameValid={nameValid}
           />
         )}
       </div>
@@ -199,20 +206,22 @@ const mapStateToProps = (state: CombinedState) => {
     supervisorChain: organizationNodeSelectedEmployee(state),
     nextAvailableId: nextAvailableIdSelector(state),
     formState: state.employeesReducer.nodeForm.state,
-    formTargetNode: state.employeesReducer.nodeForm.targetNode
+    formTargetNode: state.employeesReducer.nodeForm.targetNode,
+    nameValid: state.employeesReducer.nodeForm.newName.length > 2
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onSelectEmployee: positionId => dispatch(selectEmployee(positionId)),
-    onAddNewEmployee: (newPositionId, currentNodeId) =>
-      dispatch(addNewEmployee(newPositionId, currentNodeId)),
+    onAddNewEmployee: (newPositionId, currentNodeId, employeeName) =>
+      dispatch(addNewEmployee(newPositionId, currentNodeId, employeeName)),
     onDeleteAllEmployees: () => dispatch(deleteAllEmployees()),
     onDeleteEmployee: positionId => dispatch(deleteEmployee(positionId)),
-    onStartAddNewEmployee: supervisorNode =>
-      dispatch(startAddNewEmployee(supervisorNode)),
-    onDoneEditingNode: () => dispatch(doneEditingNode())
+    onStartAddNewEmployee: (supervisorNode, newName) =>
+      dispatch(startAddNewEmployee(supervisorNode, newName)),
+    onDoneEditingNode: () => dispatch(doneEditingNode()),
+    onUpdateNewName: (newName: string) => dispatch(updateNewName(newName))
   };
 };
 

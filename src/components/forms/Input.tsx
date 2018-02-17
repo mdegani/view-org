@@ -2,10 +2,15 @@ import * as React from "react";
 
 export default ({
   type,
-  placeholder
+  placeholder,
+  onChange,
+  valid
 }: {
   type: string;
   placeholder: string;
+  // tslint:disable-next-line:no-any
+  onChange: any;
+  valid: boolean;
 }) => {
   return (
     <>
@@ -16,10 +21,15 @@ export default ({
         ].join("")}
         type={type}
         placeholder={placeholder}
+        onChange={onChange}
       />
-      <p className="text-red text-xs italic font-normal">
-        Please fill out this field.
-      </p>
+      {!valid ? (
+        <p className="text-red text-xs italic font-normal">
+          Please fill out this field.
+        </p>
+      ) : (
+        undefined
+      )}
     </>
   );
 };

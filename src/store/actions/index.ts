@@ -10,7 +10,6 @@ type addNewEmployeeAction = {
   payload: {
     positionId: number;
     supervisorId: number;
-    employeeName: string;
   };
 };
 
@@ -32,13 +31,20 @@ type startAddNewEmployee = {
   supervisorNode: number;
 };
 
+// we should centralize form stuff, because there will be a lot of inputs!
+type updateNewName = {
+  type: "UPDATE_NEW_NAME";
+  newName: string;
+};
+
 export type employeeActions =
   | selectEmployeeAction
   | addNewEmployeeAction
   | deleteAllEmployeesAction
   | deleteEmployeeAction
   | startAddNewEmployee
-  | doneEditingNode;
+  | doneEditingNode
+  | updateNewName;
 
 export const selectEmployee = (positionId: number): selectEmployeeAction => {
   return {
@@ -49,14 +55,14 @@ export const selectEmployee = (positionId: number): selectEmployeeAction => {
 
 export const addNewEmployee = (
   positionId: number,
-  supervisorId: number
+  supervisorId: number,
+  employeeName: string
 ): addNewEmployeeAction => {
   return {
     type: "ADD_EMPLOYEE",
     payload: {
       positionId,
-      supervisorId,
-      employeeName: prompt("Employee Name") || "default name" // what? you no like prompts?
+      supervisorId
     }
   };
 };
@@ -75,7 +81,8 @@ export const deleteEmployee = (positionId: number): deleteEmployeeAction => {
 };
 
 export const startAddNewEmployee = (
-  supervisorNode: number
+  supervisorNode: number,
+  newName: string
 ): startAddNewEmployee => {
   return {
     type: "START_ADD_NEW_EMPLOYEE",
@@ -86,5 +93,12 @@ export const startAddNewEmployee = (
 export const doneEditingNode = () => {
   return {
     type: "DONE_EDITING_NODE"
+  };
+};
+
+export const updateNewName = (newName: string): updateNewName => {
+  return {
+    type: "UPDATE_NEW_NAME",
+    newName
   };
 };

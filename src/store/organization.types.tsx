@@ -30,6 +30,7 @@ export type EmployeesState = {
   nodeForm: {
     state: FormState;
     targetNode: number | null;
+    newName: string;
   };
 };
 

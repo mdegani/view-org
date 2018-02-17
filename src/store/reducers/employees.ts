@@ -12,8 +12,9 @@ const initialState = {
     }
   ],
   nodeForm: {
-    state: FormState.editing,
-    targetNode: 123
+    state: FormState.hidden,
+    targetNode: 123,
+    newName: ""
   }
 };
 
@@ -27,13 +28,18 @@ const employeesReducer = (
     case "ADD_EMPLOYEE":
       return {
         ...state,
+        nodeForm: {
+          state: FormState.hidden,
+          targetNode: null,
+          newName: ""
+        },
         organization: [
           ...state.organization,
           {
             positionId: action.payload.positionId,
             supervisorPositionId: action.payload.supervisorId,
             employeeId: action.payload.positionId + 100,
-            employeeName: action.payload.employeeName
+            employeeName: state.nodeForm.newName
           }
         ]
       };
@@ -62,8 +68,17 @@ const employeesReducer = (
       return {
         ...state,
         nodeForm: {
+          ...state.nodeForm,
           state: FormState.addingTo,
           targetNode: action.supervisorNode
+        }
+      };
+    case "UPDATE_NEW_NAME":
+      return {
+        ...state,
+        nodeForm: {
+          ...state.nodeForm,
+          newName: action.newName
         }
       };
     case "DONE_EDITING_NODE":
@@ -71,7 +86,8 @@ const employeesReducer = (
         ...state,
         nodeForm: {
           state: FormState.hidden,
-          targetNode: null
+          targetNode: null,
+          newName: ""
         }
       };
     default:
