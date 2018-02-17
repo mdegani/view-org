@@ -12,7 +12,7 @@ import {
   startAddNewEmployee,
   doneEditingNode,
   updateNewName
-} from "./store/actions";
+} from "./org/actions/org.actions";
 import {
   getOrganizationBySupervisor,
   getIterativeSupervisors,

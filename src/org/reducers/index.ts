@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import employeesReducer from "./employees";
+import employeesReducer from "./org.reducer";
 import { EmployeesState } from "../../org/types/org.types";
 
 const orgViewApp = combineReducers<{

@@ -1,5 +1,5 @@
 import { EmployeesState, FormState } from "../../org/types/org.types";
-import { employeeActions } from "../actions";
+import { employeeActions } from "../actions/org.actions";
 
 const initialState = {
   selectedEmployee: 1,
