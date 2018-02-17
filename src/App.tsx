@@ -17,13 +17,13 @@ import {
   getOrganizationBySupervisor,
   getIterativeSupervisors,
   getOrganizationNodeById
-} from "./store/org-view-logic";
+} from "./org/logic/org.logic";
 import "./App.css";
 import {
   OrganizationNode,
   CombinedState,
   FormState
-} from "./store/organization.types";
+} from "./org/types/org.types";
 
 const OrgView = ({
   selectedEmployee,

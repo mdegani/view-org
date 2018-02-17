@@ -1,7 +1,4 @@
-import {
-  OrganizationNode,
-  OrganizationSectionNode
-} from "./organization.types";
+import { OrganizationNode, OrganizationSectionNode } from "../types/org.types";
 
 // Assumes the top position's supervisorId is 0
 const TOP_POSITION_SUPERVISOR_PLACEHOLDER = 0;

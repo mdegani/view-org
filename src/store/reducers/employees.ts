@@ -1,4 +1,4 @@
-import { EmployeesState, FormState } from "../organization.types";
+import { EmployeesState, FormState } from "../../org/types/org.types";
 import { employeeActions } from "../actions";
 
 const initialState = {

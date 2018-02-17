@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormState } from "../store/organization.types";
+import { FormState } from "../org/types/org.types";
 import Label from "../components/forms/Label";
 import Input from "../components/forms/Input";
 import Button from "../components/button/Button";

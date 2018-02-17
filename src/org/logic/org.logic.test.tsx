@@ -9,23 +9,55 @@ import {
   findOrganizationTopSupervisor,
   getOrganizationBySupervisor,
   getNextSupervisorNode
-} from "./org-view-logic";
-import {
-  OrganizationNode,
-  OrganizationSectionNode
-} from "./organization.types";
+} from "./org.logic";
+import { OrganizationNode, OrganizationSectionNode } from "../types/org.types";
 
 // here is a simple self-referencing
 // org chart
 
 const fakeOrg: OrganizationNode[] = [
-  { positionId: 1, supervisorPositionId: 0, employeeId: 101, employeeName: "name1" },
-  { positionId: 2, supervisorPositionId: 1, employeeId: 102, employeeName: "name2" },
-  { positionId: 3, supervisorPositionId: 1, employeeId: 103, employeeName: "name3" },
-  { positionId: 4, supervisorPositionId: 3, employeeId: 104, employeeName: "name4" },
-  { positionId: 5, supervisorPositionId: 3, employeeId: 105, employeeName: "name5" },
-  { positionId: 6, supervisorPositionId: 4, employeeId: 106, employeeName: "name6" },
-  { positionId: 7, supervisorPositionId: 2, employeeId: 107, employeeName: "name7" }
+  {
+    positionId: 1,
+    supervisorPositionId: 0,
+    employeeId: 101,
+    employeeName: "name1"
+  },
+  {
+    positionId: 2,
+    supervisorPositionId: 1,
+    employeeId: 102,
+    employeeName: "name2"
+  },
+  {
+    positionId: 3,
+    supervisorPositionId: 1,
+    employeeId: 103,
+    employeeName: "name3"
+  },
+  {
+    positionId: 4,
+    supervisorPositionId: 3,
+    employeeId: 104,
+    employeeName: "name4"
+  },
+  {
+    positionId: 5,
+    supervisorPositionId: 3,
+    employeeId: 105,
+    employeeName: "name5"
+  },
+  {
+    positionId: 6,
+    supervisorPositionId: 4,
+    employeeId: 106,
+    employeeName: "name6"
+  },
+  {
+    positionId: 7,
+    supervisorPositionId: 2,
+    employeeId: 107,
+    employeeName: "name7"
+  }
 ];
 
 // given the above org chart
@@ -34,24 +66,132 @@ const fakeOrg: OrganizationNode[] = [
 // way
 
 const fullTgt: OrganizationSectionNode[] = [
-  { positionId: 1, supervisorPositionId: 0, employeeId: 101, employeeName: 'name1', level: 1 },
-  { positionId: 2, supervisorPositionId: 1, employeeId: 102, employeeName: 'name2', level: 1 },
-  { positionId: 2, supervisorPositionId: 0, employeeId: 102, employeeName: 'name2', level: 2 },
-  { positionId: 3, supervisorPositionId: 1, employeeId: 103, employeeName: 'name3', level: 1 },
-  { positionId: 3, supervisorPositionId: 0, employeeId: 103, employeeName: 'name3', level: 2 },
-  { positionId: 4, supervisorPositionId: 3, employeeId: 104, employeeName: 'name4', level: 1 },
-  { positionId: 4, supervisorPositionId: 1, employeeId: 104, employeeName: 'name4', level: 2 },
-  { positionId: 4, supervisorPositionId: 0, employeeId: 104, employeeName: 'name4', level: 3 },
-  { positionId: 5, supervisorPositionId: 3, employeeId: 105, employeeName: 'name5', level: 1 },
-  { positionId: 5, supervisorPositionId: 1, employeeId: 105, employeeName: 'name5', level: 2 },
-  { positionId: 5, supervisorPositionId: 0, employeeId: 105, employeeName: 'name5', level: 3 },
-  { positionId: 6, supervisorPositionId: 4, employeeId: 106, employeeName: 'name6', level: 1 },
-  { positionId: 6, supervisorPositionId: 3, employeeId: 106, employeeName: 'name6', level: 2 },
-  { positionId: 6, supervisorPositionId: 1, employeeId: 106, employeeName: 'name6', level: 3 },
-  { positionId: 6, supervisorPositionId: 0, employeeId: 106, employeeName: 'name6', level: 4 },
-  { positionId: 7, supervisorPositionId: 2, employeeId: 107, employeeName: 'name7', level: 1 },
-  { positionId: 7, supervisorPositionId: 1, employeeId: 107, employeeName: 'name7', level: 2 },
-  { positionId: 7, supervisorPositionId: 0, employeeId: 107, employeeName: 'name7', level: 3 }
+  {
+    positionId: 1,
+    supervisorPositionId: 0,
+    employeeId: 101,
+    employeeName: "name1",
+    level: 1
+  },
+  {
+    positionId: 2,
+    supervisorPositionId: 1,
+    employeeId: 102,
+    employeeName: "name2",
+    level: 1
+  },
+  {
+    positionId: 2,
+    supervisorPositionId: 0,
+    employeeId: 102,
+    employeeName: "name2",
+    level: 2
+  },
+  {
+    positionId: 3,
+    supervisorPositionId: 1,
+    employeeId: 103,
+    employeeName: "name3",
+    level: 1
+  },
+  {
+    positionId: 3,
+    supervisorPositionId: 0,
+    employeeId: 103,
+    employeeName: "name3",
+    level: 2
+  },
+  {
+    positionId: 4,
+    supervisorPositionId: 3,
+    employeeId: 104,
+    employeeName: "name4",
+    level: 1
+  },
+  {
+    positionId: 4,
+    supervisorPositionId: 1,
+    employeeId: 104,
+    employeeName: "name4",
+    level: 2
+  },
+  {
+    positionId: 4,
+    supervisorPositionId: 0,
+    employeeId: 104,
+    employeeName: "name4",
+    level: 3
+  },
+  {
+    positionId: 5,
+    supervisorPositionId: 3,
+    employeeId: 105,
+    employeeName: "name5",
+    level: 1
+  },
+  {
+    positionId: 5,
+    supervisorPositionId: 1,
+    employeeId: 105,
+    employeeName: "name5",
+    level: 2
+  },
+  {
+    positionId: 5,
+    supervisorPositionId: 0,
+    employeeId: 105,
+    employeeName: "name5",
+    level: 3
+  },
+  {
+    positionId: 6,
+    supervisorPositionId: 4,
+    employeeId: 106,
+    employeeName: "name6",
+    level: 1
+  },
+  {
+    positionId: 6,
+    supervisorPositionId: 3,
+    employeeId: 106,
+    employeeName: "name6",
+    level: 2
+  },
+  {
+    positionId: 6,
+    supervisorPositionId: 1,
+    employeeId: 106,
+    employeeName: "name6",
+    level: 3
+  },
+  {
+    positionId: 6,
+    supervisorPositionId: 0,
+    employeeId: 106,
+    employeeName: "name6",
+    level: 4
+  },
+  {
+    positionId: 7,
+    supervisorPositionId: 2,
+    employeeId: 107,
+    employeeName: "name7",
+    level: 1
+  },
+  {
+    positionId: 7,
+    supervisorPositionId: 1,
+    employeeId: 107,
+    employeeName: "name7",
+    level: 2
+  },
+  {
+    positionId: 7,
+    supervisorPositionId: 0,
+    employeeId: 107,
+    employeeName: "name7",
+    level: 3
+  }
 ];
 
 it("should create the full organization list", () => {
@@ -85,21 +225,81 @@ it("get organizationNodes by direct supervisor id", () => {
 });
 it("should get level one of the organization", () => {
   const expected: OrganizationSectionNode[] = [
-    { positionId: 1, supervisorPositionId: 0, employeeId: 101, employeeName: 'name1', level: 1 },
-    { positionId: 2, supervisorPositionId: 1, employeeId: 102, employeeName: 'name2', level: 1 },
-    { positionId: 3, supervisorPositionId: 1, employeeId: 103, employeeName: 'name3', level: 1 },
-    { positionId: 4, supervisorPositionId: 3, employeeId: 104, employeeName: 'name4', level: 1 },
-    { positionId: 5, supervisorPositionId: 3, employeeId: 105, employeeName: 'name5', level: 1 },
-    { positionId: 6, supervisorPositionId: 4, employeeId: 106, employeeName: 'name6', level: 1 },
-    { positionId: 7, supervisorPositionId: 2, employeeId: 107, employeeName: 'name7', level: 1 }
+    {
+      positionId: 1,
+      supervisorPositionId: 0,
+      employeeId: 101,
+      employeeName: "name1",
+      level: 1
+    },
+    {
+      positionId: 2,
+      supervisorPositionId: 1,
+      employeeId: 102,
+      employeeName: "name2",
+      level: 1
+    },
+    {
+      positionId: 3,
+      supervisorPositionId: 1,
+      employeeId: 103,
+      employeeName: "name3",
+      level: 1
+    },
+    {
+      positionId: 4,
+      supervisorPositionId: 3,
+      employeeId: 104,
+      employeeName: "name4",
+      level: 1
+    },
+    {
+      positionId: 5,
+      supervisorPositionId: 3,
+      employeeId: 105,
+      employeeName: "name5",
+      level: 1
+    },
+    {
+      positionId: 6,
+      supervisorPositionId: 4,
+      employeeId: 106,
+      employeeName: "name6",
+      level: 1
+    },
+    {
+      positionId: 7,
+      supervisorPositionId: 2,
+      employeeId: 107,
+      employeeName: "name7",
+      level: 1
+    }
   ];
   expect(getOrganizationLevelOne(fakeOrg)).toEqual(expected);
 });
 it("should get all supervisors", () => {
   const expected: OrganizationSectionNode[] = [
-    { positionId: 4, supervisorPositionId: 3, employeeId: 104, employeeName: 'name4', level: 1 },
-    { positionId: 4, supervisorPositionId: 1, employeeId: 104, employeeName: 'name4', level: 2 },
-    { positionId: 4, supervisorPositionId: 0, employeeId: 104, employeeName: 'name4', level: 3 }
+    {
+      positionId: 4,
+      supervisorPositionId: 3,
+      employeeId: 104,
+      employeeName: "name4",
+      level: 1
+    },
+    {
+      positionId: 4,
+      supervisorPositionId: 1,
+      employeeId: 104,
+      employeeName: "name4",
+      level: 2
+    },
+    {
+      positionId: 4,
+      supervisorPositionId: 0,
+      employeeId: 104,
+      employeeName: "name4",
+      level: 3
+    }
   ];
   expect(getAllSupervisorNodes(fakeOrg, fakeOrg[3])).toEqual(expected);
 });
@@ -148,7 +348,7 @@ const fakeOrgHorizontal: OrganizationNode[] = [
     employeeId: 105,
     employeeName: "name5",
     orgSort: "0000000000-0000000001-0000000003-0000000005",
-    allSups: [0, 1, 3, 5],
+    allSups: [0, 1, 3, 5]
   },
   {
     positionId: 6,
@@ -169,9 +369,24 @@ const fakeOrgHorizontal: OrganizationNode[] = [
 ];
 
 const fakeOrgForSup3: OrganizationNode[] = [
-  { positionId: 4, supervisorPositionId: 3, employeeId: 104, employeeName: "name4" },
-  { positionId: 5, supervisorPositionId: 3, employeeId: 105, employeeName: "name5" },
-  { positionId: 6, supervisorPositionId: 4, employeeId: 106, employeeName: "name6" }
+  {
+    positionId: 4,
+    supervisorPositionId: 3,
+    employeeId: 104,
+    employeeName: "name4"
+  },
+  {
+    positionId: 5,
+    supervisorPositionId: 3,
+    employeeId: 105,
+    employeeName: "name5"
+  },
+  {
+    positionId: 6,
+    supervisorPositionId: 4,
+    employeeId: 106,
+    employeeName: "name6"
+  }
 ];
 
 const fakeOrgForSup3Horizontal: OrganizationNode[] = [
@@ -179,7 +394,7 @@ const fakeOrgForSup3Horizontal: OrganizationNode[] = [
     positionId: 4,
     supervisorPositionId: 3,
     employeeId: 104,
-    employeeName: 'name4',
+    employeeName: "name4",
     orgSort: "0000000003-0000000004",
     allSups: [3, 4]
   },
@@ -187,7 +402,7 @@ const fakeOrgForSup3Horizontal: OrganizationNode[] = [
     positionId: 5,
     supervisorPositionId: 3,
     employeeId: 105,
-    employeeName: 'name5',
+    employeeName: "name5",
     orgSort: "0000000003-0000000005",
     allSups: [3, 5]
   },
@@ -195,7 +410,7 @@ const fakeOrgForSup3Horizontal: OrganizationNode[] = [
     positionId: 6,
     supervisorPositionId: 4,
     employeeId: 106,
-    employeeName: 'name6',
+    employeeName: "name6",
     orgSort: "0000000003-0000000004-0000000006",
     allSups: [3, 4, 6]
   }
@@ -206,7 +421,7 @@ const filteredEeList3 = [
     allSups: [3, 4],
     positionId: 4,
     employeeId: 104,
-    employeeName: 'name4',
+    employeeName: "name4",
     level: 1,
     orgSort: "0000000003-0000000004",
     orgSup: 3,
@@ -216,7 +431,7 @@ const filteredEeList3 = [
     allSups: [3, 5],
     positionId: 5,
     employeeId: 105,
-    employeeName: 'name5',
+    employeeName: "name5",
     level: 1,
     orgSort: "0000000003-0000000005",
     orgSup: 3,
@@ -226,7 +441,7 @@ const filteredEeList3 = [
     allSups: [3, 4, 6],
     positionId: 6,
     employeeId: 106,
-    employeeName: 'name6',
+    employeeName: "name6",
     level: 2,
     orgSort: "0000000003-0000000004-0000000006",
     orgSup: 3,
@@ -243,7 +458,7 @@ describe("horizontal organization functions", () => {
       positionId: 6,
       supervisorPositionId: 4,
       employeeId: 106,
-      employeeName: 'name6',
+      employeeName: "name6",
       orgSort: "0000000000-0000000001-0000000003-0000000004-0000000006",
       allSups: [0, 1, 3, 4, 6]
     };
