@@ -1,4 +1,4 @@
-export type OrganizationNode = {
+export type OrgNode = {
   positionId: number;
   supervisorPositionId: number;
   employeeId: number;
@@ -7,7 +7,7 @@ export type OrganizationNode = {
   orgSort?: string;
 };
 
-export type OrganizationSectionNode = {
+export type OrgSectionNode = {
   positionId: number; // refactor to use organizationNode (or position)
   supervisorPositionId: number;
   employeeId: number;
@@ -26,7 +26,7 @@ export enum FormState {
 
 export type EmployeesState = {
   selectedEmployee: number;
-  organization: OrganizationNode[];
+  organization: OrgNode[];
   nodeForm: {
     state: FormState;
     targetNode: number | null;

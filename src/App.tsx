@@ -14,16 +14,12 @@ import {
   updateNewName
 } from "./org/actions/org.actions";
 import {
-  getOrganizationBySupervisor,
+  getOrgBySupervisor,
   getIterativeSupervisors,
-  getOrganizationNodeById
+  getOrgNodeById
 } from "./org/logic/org.logic";
 import "./App.css";
-import {
-  OrganizationNode,
-  CombinedState,
-  FormState
-} from "./org/types/org.types";
+import { OrgNode, CombinedState, FormState } from "./org/types/org.types";
 
 const OrgView = ({
   selectedEmployee,
@@ -44,14 +40,14 @@ const OrgView = ({
   nameValid
 }: {
   selectedEmployee: string;
-  organization: OrganizationNode[];
+  organization: OrgNode[];
   // TODO: better typing for this function https://www.typescriptlang.org/docs/handbook/functions.html
   onSelectEmployee: Function;
   onAddNewEmployee: (newPositionId: number, currentNodeId: number) => void; // TODO: is void right??
   onDeleteAllEmployees: () => void;
   onDeleteEmployee: (newPositionId: number) => void;
-  supervisorsOrg: OrganizationNode[];
-  supervisorChain: OrganizationNode[];
+  supervisorsOrg: OrgNode[];
+  supervisorChain: OrgNode[];
   nextAvailableId: number;
   editingNode: number;
   formState: FormState;
@@ -69,10 +65,7 @@ const OrgView = ({
         </div>
         <div className="flex justify-between">
           <div className="text-2xl p-2 bg-white overflow-scroll flex-no-wrap w-full">
-            {
-              getOrganizationNodeById(organization, +selectedEmployee)!
-                .employeeName
-            }
+            {getOrgNodeById(organization, +selectedEmployee)!.employeeName}
           </div>
           <a
             href="#"
@@ -152,14 +145,14 @@ const selectedNode = state => state.employeesReducer.selectedEmployee;
 const supervisorsOrganizationWithEmployeeNames = createSelector(
   organizationNodes,
   selectedNode,
-  (orgNodes: OrganizationNode[], selectedEe: number) => {
-    return getOrganizationBySupervisor(orgNodes, selectedEe);
+  (orgNodes: OrgNode[], selectedEe: number) => {
+    return getOrgBySupervisor(orgNodes, selectedEe);
   }
 );
 
 const organizationWithEmployeeNames = createSelector(
   organizationNodes,
-  (org: OrganizationNode[]) => {
+  (org: OrgNode[]) => {
     const orgWithAllSups = org.map(orgNode =>
       getIterativeSupervisors(orgNode, org)
     );
@@ -170,7 +163,7 @@ const organizationWithEmployeeNames = createSelector(
 const organizationNodeSelectedEmployee = createSelector(
   organizationWithEmployeeNames,
   selectedNode,
-  (org: OrganizationNode[], node: number): OrganizationNode[] => {
+  (org: OrgNode[], node: number): OrgNode[] => {
     const selectedOrgNode = org.find(orgNode => orgNode.positionId === node);
     return selectedOrgNode!.allSups!.map(supId => {
       if (supId === 0) {
@@ -193,7 +186,7 @@ const organizationNodeSelectedEmployee = createSelector(
 
 const nextAvailableIdSelector = createSelector(
   organizationWithEmployeeNames,
-  (org: OrganizationNode[]) => {
+  (org: OrgNode[]) => {
     return Math.max(...org.map(orgNode => orgNode.positionId)) + 1;
   }
 );

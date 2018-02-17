@@ -1,11 +1,11 @@
 import * as React from "react";
-import { OrganizationNode } from "../types/org.types";
+import { OrgNode } from "../types/org.types";
 
 export default ({
   supervisorsOrg,
   onSelectEmployee
 }: {
-  supervisorsOrg: OrganizationNode[];
+  supervisorsOrg: OrgNode[];
   onSelectEmployee: Function;
 }) => {
   return (

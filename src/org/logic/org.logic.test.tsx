@@ -1,21 +1,21 @@
 import {
-  fullOrganizationList,
-  getOrganizationNodeById,
+  fullOrgNodeList,
+  getOrgNodeById,
   getDirectReportsOfOrgNode,
-  getOrganizationLevelOne,
+  getOrgLevelOne,
   getAllSupervisorNodes,
-  getOrganizationWithHorizontal,
+  getOrgWithHorizontal,
   getIterativeSupervisors,
-  findOrganizationTopSupervisor,
-  getOrganizationBySupervisor,
+  findOrgTopSupervisor,
+  getOrgBySupervisor,
   getNextSupervisorNode
 } from "./org.logic";
-import { OrganizationNode, OrganizationSectionNode } from "../types/org.types";
+import { OrgNode, OrgSectionNode } from "../types/org.types";
 
 // here is a simple self-referencing
 // org chart
 
-const fakeOrg: OrganizationNode[] = [
+const fakeOrg: OrgNode[] = [
   {
     positionId: 1,
     supervisorPositionId: 0,
@@ -65,7 +65,7 @@ const fakeOrg: OrganizationNode[] = [
 // that we can filter in a simple
 // way
 
-const fullTgt: OrganizationSectionNode[] = [
+const fullTgt: OrgSectionNode[] = [
   {
     positionId: 1,
     supervisorPositionId: 0,
@@ -195,19 +195,19 @@ const fullTgt: OrganizationSectionNode[] = [
 ];
 
 it("should create the full organization list", () => {
-  expect(fullOrganizationList(fakeOrg)).toEqual(fullTgt);
+  expect(fullOrgNodeList(fakeOrg)).toEqual(fullTgt);
 });
 it("get an organizationNode by id", () => {
-  const expected: OrganizationNode = {
+  const expected: OrgNode = {
     positionId: 1,
     supervisorPositionId: 0,
     employeeId: 101,
     employeeName: "name1"
   };
-  expect(getOrganizationNodeById(fakeOrg, 1)).toEqual(expected);
+  expect(getOrgNodeById(fakeOrg, 1)).toEqual(expected);
 });
 it("get organizationNodes by direct supervisor id", () => {
-  const expected: OrganizationNode[] = [
+  const expected: OrgNode[] = [
     {
       positionId: 4,
       supervisorPositionId: 3,
@@ -224,7 +224,7 @@ it("get organizationNodes by direct supervisor id", () => {
   expect(getDirectReportsOfOrgNode(fakeOrg, 3)).toEqual(expected);
 });
 it("should get level one of the organization", () => {
-  const expected: OrganizationSectionNode[] = [
+  const expected: OrgSectionNode[] = [
     {
       positionId: 1,
       supervisorPositionId: 0,
@@ -275,10 +275,10 @@ it("should get level one of the organization", () => {
       level: 1
     }
   ];
-  expect(getOrganizationLevelOne(fakeOrg)).toEqual(expected);
+  expect(getOrgLevelOne(fakeOrg)).toEqual(expected);
 });
 it("should get all supervisors", () => {
-  const expected: OrganizationSectionNode[] = [
+  const expected: OrgSectionNode[] = [
     {
       positionId: 4,
       supervisorPositionId: 3,
@@ -309,7 +309,7 @@ it("should get next level supervisor", () => {
   ).toEqual(fakeOrg[2]);
 });
 
-const fakeOrgHorizontal: OrganizationNode[] = [
+const fakeOrgHorizontal: OrgNode[] = [
   {
     positionId: 1,
     supervisorPositionId: 0,
@@ -368,7 +368,7 @@ const fakeOrgHorizontal: OrganizationNode[] = [
   }
 ];
 
-const fakeOrgForSup3: OrganizationNode[] = [
+const fakeOrgForSup3: OrgNode[] = [
   {
     positionId: 4,
     supervisorPositionId: 3,
@@ -389,7 +389,7 @@ const fakeOrgForSup3: OrganizationNode[] = [
   }
 ];
 
-const fakeOrgForSup3Horizontal: OrganizationNode[] = [
+const fakeOrgForSup3Horizontal: OrgNode[] = [
   {
     positionId: 4,
     supervisorPositionId: 3,
@@ -451,10 +451,10 @@ const filteredEeList3 = [
 
 describe("horizontal organization functions", () => {
   it("should add orgSort and allSups properties", () => {
-    expect(getOrganizationWithHorizontal(fakeOrg)).toEqual(fakeOrgHorizontal);
+    expect(getOrgWithHorizontal(fakeOrg)).toEqual(fakeOrgHorizontal);
   });
   it("should get the horizontal org for an org node", () => {
-    const expected: OrganizationNode = {
+    const expected: OrgNode = {
       positionId: 6,
       supervisorPositionId: 4,
       employeeId: 106,
@@ -465,15 +465,15 @@ describe("horizontal organization functions", () => {
     expect(getIterativeSupervisors(fakeOrg[5], fakeOrg)).toEqual(expected);
   });
   it("should be able to do a filtered organization", () => {
-    expect(getOrganizationWithHorizontal(fakeOrgForSup3)).toEqual(
+    expect(getOrgWithHorizontal(fakeOrgForSup3)).toEqual(
       fakeOrgForSup3Horizontal
     );
   });
   it("should get the top position", () => {
-    expect(findOrganizationTopSupervisor(fakeOrg)).toEqual(0);
+    expect(findOrgTopSupervisor(fakeOrg)).toEqual(0);
   });
   it("should filter the organization", () => {
-    expect(getOrganizationBySupervisor(fakeOrg, 3)).toEqual(filteredEeList3);
+    expect(getOrgBySupervisor(fakeOrg, 3)).toEqual(filteredEeList3);
   });
 });
 
