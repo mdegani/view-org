@@ -1,9 +1,9 @@
 import * as React from "react";
-import { FormState } from "../org/types/org.types";
-import Label from "../components/forms/Label";
-import Input from "../components/forms/Input";
-import Button from "../components/button/Button";
-import Form from "../components/forms/Form";
+import { FormState } from "../types/org.types";
+import Label from "../../ui/forms/Label";
+import Input from "../../ui/forms/Input";
+import Button from "../../ui/button/Button";
+import Form from "../../ui/forms/Form";
 
 export default ({
   formState,

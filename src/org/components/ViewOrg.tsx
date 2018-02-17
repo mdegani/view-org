@@ -1,5 +1,5 @@
 import * as React from "react";
-import { OrganizationNode } from "../org/types/org.types";
+import { OrganizationNode } from "../types/org.types";
 
 export default ({
   supervisorsOrg,

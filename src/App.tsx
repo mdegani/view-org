@@ -2,8 +2,8 @@ import * as React from "react";
 import "mdd-tailwind";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
-import ViewOrg from "./components/ViewOrg";
-import NodeForm from "./components/NodeForm";
+import ViewOrg from "./org/components/ViewOrg";
+import NodeForm from "./org/components/NodeForm";
 import {
   selectEmployee,
   addNewEmployee,
