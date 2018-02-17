@@ -27,13 +27,15 @@ export default ({
                   }
                   onClick={e => onSelectEmployee(organizationNode.positionId)}
                 >
-                  {(organizationNode.allSups!.splice(2) || []).map(sup => (
-                    <span
-                      key={sup}
-                      className="inline-block"
-                      style={{ minWidth: "2rem" }}
-                    />
-                  ))}
+                  {(organizationNode.allSupervisors!.splice(2) || []).map(
+                    sup => (
+                      <span
+                        key={sup}
+                        className="inline-block"
+                        style={{ minWidth: "2rem" }}
+                      />
+                    )
+                  )}
                   {organizationNode.employeeName}
                 </button>
               </li>

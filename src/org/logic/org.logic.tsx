@@ -26,7 +26,7 @@ export const getOrgLevelOne = (org: OrgNode[]): OrgSectionNode[] =>
       employeeId: node.employeeId,
       employeeName: node.employeeName,
       supervisorPositionId: node.supervisorPositionId,
-      level: 1
+      orgLevel: 1
     };
   });
 
@@ -44,8 +44,10 @@ export const atTopOfOrg = (list: OrgNode[]) =>
   TOP_POSITION_SUPERVISOR_PLACEHOLDER;
 
 // targetId is not named correctly
-export const assignLevel = (targetId: OrgNode, level: number): OrgSectionNode =>
-  Object.assign({}, targetId, { level: level });
+export const assignLevel = (
+  targetId: OrgNode,
+  orgLevel: number
+): OrgSectionNode => Object.assign({}, targetId, { orgLevel: orgLevel });
 
 export const getAllSupervisorNodes = (
   organization: OrgNode[],
@@ -60,7 +62,7 @@ export const getAllSupervisorNodes = (
       assignLevel(target, 1)
     ]);
   }
-  const _level = accumulator[accumulator.length - 1].level;
+  const _level = accumulator[accumulator.length - 1].orgLevel;
 
   // when we reach the top of org, return:
   if (atTopOfOrg(accumulator)) {
@@ -72,13 +74,13 @@ export const getAllSupervisorNodes = (
     Object.assign(
       {} as OrgSectionNode,
       getNextSupervisorNode(organization, accumulator.find(
-        x => x.level === _level
+        x => x.orgLevel === _level
       ) as OrgNode),
       {
         positionId: target.positionId,
         employeeId: target.employeeId,
         employeeName: target.employeeName,
-        level: _level + 1
+        orgLevel: _level + 1
       }
     )
   ]);
@@ -94,19 +96,19 @@ export const getIterativeSupervisors = (
   organization: OrgNode[]
 ): OrgNode => {
   // first iteration
-  if (!organizationNode.allSups) {
+  if (!organizationNode.allSupervisors) {
     organizationNode = Object.assign({}, organizationNode, {
-      allSups: [organizationNode.supervisorPositionId]
+      allSupervisors: [organizationNode.supervisorPositionId]
     });
     getIterativeSupervisors(organizationNode, organization);
   }
 
   // need to assert this can't be undefined based on logic above
-  const orgSupervisors = organizationNode.allSups as number[];
+  const orgSupervisors = organizationNode.allSupervisors as number[];
   const lastAllSup = orgSupervisors[orgSupervisors.length - 1];
 
   // if we've reached the top we're done
-  // reverse the allSups array so supervisors appear
+  // reverse the allSupervisors array so supervisors appear
   // from highest to lower levels
   // attach a concatenated version of the array
   // for sorting
@@ -124,7 +126,7 @@ export const getIterativeSupervisors = (
       organizationNode,
       {
         orgSort,
-        allSups: reversedAllSups
+        allSupervisors: reversedAllSups
       }
     );
     return orgNodeWithSupervisors;
@@ -133,9 +135,9 @@ export const getIterativeSupervisors = (
   // get the next supervisor node
   return getIterativeSupervisors(
     Object.assign({}, organizationNode, {
-      allSups: [
+      allSupervisors: [
         // is that the correct assertion? assume array?
-        ...(organizationNode.allSups as number[]),
+        ...(organizationNode.allSupervisors as number[]),
         (getOrgNodeById(organization, lastAllSup) as OrgNode)
           .supervisorPositionId
       ]
