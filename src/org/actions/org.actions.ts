@@ -74,7 +74,7 @@ export const deleteAllOrgNodes = (): deleteAllOrgNodesAction => {
   };
 };
 
-export const deleteEmployee = (positionId: number): deleteOrgNodeAction => {
+export const deleteOrgNode = (positionId: number): deleteOrgNodeAction => {
   return {
     type: "DELETE_ORG_NODE",
     positionId

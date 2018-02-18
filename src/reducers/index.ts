@@ -1,14 +1,14 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
 import throttle from "lodash/throttle";
-import employeesReducer from "../org/reducers/org.reducer";
-import { EmployeesState } from "../org/types/org.types";
+import orgReducer from "../org/reducers/org.reducer";
+import { OrgState } from "../org/types/org.types";
 import { saveState, loadState } from "./localStorage";
 
 const orgViewReducer = combineReducers<{
-  employeesReducer: EmployeesState;
+  orgReducer: OrgState;
 }>({
-  employeesReducer
+  orgReducer
 });
 
 const persistedState = loadState();
@@ -20,6 +20,6 @@ export const store = createStore(
 
 store.subscribe(
   throttle(() => {
-    saveState({ employeesReducer: store.getState().employeesReducer });
+    saveState({ orgReducer: store.getState().orgReducer });
   }, 1000)
 );

@@ -24,7 +24,7 @@ export enum FormState {
   "editing"
 }
 
-export type EmployeesState = {
+export type OrgState = {
   selectedEmployee: number;
   organization: OrgNode[];
   nodeForm: {
@@ -35,5 +35,5 @@ export type EmployeesState = {
 };
 
 export type CombinedState = {
-  employeesReducer: EmployeesState;
+  orgReducer: OrgState;
 };

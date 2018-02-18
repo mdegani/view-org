@@ -1,4 +1,4 @@
-import { EmployeesState, FormState } from "../../org/types/org.types";
+import { OrgState, FormState } from "../../org/types/org.types";
 import { orgNodeActions } from "../actions/org.actions";
 
 const initialState = {
@@ -18,10 +18,10 @@ const initialState = {
   }
 };
 
-const employeesReducer = (
-  state: EmployeesState = initialState,
+const orgReducer = (
+  state: OrgState = initialState,
   action: orgNodeActions
-): EmployeesState => {
+): OrgState => {
   switch (action.type) {
     case "SELECT_ORG_NODE":
       return Object.assign({}, state, { selectedEmployee: +action.positionId });
@@ -95,4 +95,4 @@ const employeesReducer = (
   }
 };
 
-export default employeesReducer;
+export default orgReducer;

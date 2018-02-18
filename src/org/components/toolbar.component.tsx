@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import {
-  deleteEmployee,
+  deleteOrgNode,
   deleteAllOrgNodes,
   startAddNewOrgNode
 } from "../actions/org.actions";
@@ -57,7 +57,7 @@ const component = ({
   );
 };
 
-const organizationNodes = state => state.employeesReducer.organization;
+const organizationNodes = state => state.orgReducer.organization;
 
 const organizationWithEmployeeNames = createSelector(
   organizationNodes,
@@ -71,7 +71,7 @@ const organizationWithEmployeeNames = createSelector(
 
 const mapStateToProps = (state: CombinedState) => {
   return {
-    selectedEmployee: state.employeesReducer.selectedEmployee,
+    selectedEmployee: state.orgReducer.selectedEmployee,
     organization: organizationWithEmployeeNames(state)
   };
 };
@@ -79,7 +79,7 @@ const mapStateToProps = (state: CombinedState) => {
 const mapDispatchToProps = dispatch => {
   return {
     onDeleteAllEmployees: () => dispatch(deleteAllOrgNodes()),
-    onDeleteEmployee: positionId => dispatch(deleteEmployee(positionId)),
+    onDeleteEmployee: positionId => dispatch(deleteOrgNode(positionId)),
     onStartAddNewEmployee: (supervisorNode, newName) =>
       dispatch(startAddNewOrgNode(supervisorNode, newName))
   };

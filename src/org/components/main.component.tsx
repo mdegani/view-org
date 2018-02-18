@@ -85,9 +85,9 @@ const OrgView = ({
   );
 };
 
-const organizationNodes = state => state.employeesReducer.organization;
+const organizationNodes = state => state.orgReducer.organization;
 
-const selectedNode = state => state.employeesReducer.selectedEmployee;
+const selectedNode = state => state.orgReducer.selectedEmployee;
 
 // TODO Fix this:
 const supervisorsOrganizationWithEmployeeNames = createSelector(
@@ -144,9 +144,9 @@ const mapStateToProps = (state: CombinedState) => {
     supervisorsOrg: supervisorsOrganizationWithEmployeeNames(state),
     supervisorChain: organizationNodeSelectedEmployee(state),
     nextAvailableId: nextAvailableIdSelector(state),
-    formState: state.employeesReducer.nodeForm.state,
-    formTargetNode: state.employeesReducer.nodeForm.targetNode,
-    nameValid: state.employeesReducer.nodeForm.newName.length > 2
+    formState: state.orgReducer.nodeForm.state,
+    formTargetNode: state.orgReducer.nodeForm.targetNode,
+    nameValid: state.orgReducer.nodeForm.newName.length > 2
   };
 };
 
