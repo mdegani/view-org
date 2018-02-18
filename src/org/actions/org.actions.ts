@@ -1,65 +1,66 @@
 // not using flux standard action! liberated.
 
-type selectEmployeeAction = {
-  type: "SELECT_EMPLOYEE";
+type selectOrgNodeAction = {
+  type: "SELECT_ORG_NODE";
   positionId: number;
 };
 
-type addNewEmployeeAction = {
-  type: "ADD_EMPLOYEE";
+type addOrgNodeAction = {
+  type: "ADD_ORG_NODE";
   payload: {
     positionId: number;
     supervisorId: number;
   };
 };
 
-type deleteAllEmployeesAction = {
-  type: "DELETE_ALL_EMPLOYEES";
+type deleteAllOrgNodesAction = {
+  type: "DELETE_ALL_ORG_NODES";
 };
 
-type deleteEmployeeAction = {
-  type: "DELETE_EMPLOYEE";
+type deleteOrgNodeAction = {
+  type: "DELETE_ORG_NODE";
   positionId: number;
 };
 
-type doneEditingNode = {
-  type: "DONE_EDITING_NODE";
+type doneEditingOrgNode = {
+  type: "DONE_EDITING_ORG_NODE";
 };
 
-type startAddNewEmployee = {
-  type: "START_ADD_NEW_EMPLOYEE";
+// this just loads the form. should change
+type startAddNewOrgNode = {
+  type: "START_ADD_NEW_ORG_NODE";
   supervisorNode: number;
 };
 
 // we should centralize form stuff, because there will be a lot of inputs!
-type updateNewName = {
-  type: "UPDATE_NEW_NAME";
+type updateNewEmployeeName = {
+  type: "UPDATE_NEW_EMPLOYEE_NAME";
   newName: string;
 };
 
-export type employeeActions =
-  | selectEmployeeAction
-  | addNewEmployeeAction
-  | deleteAllEmployeesAction
-  | deleteEmployeeAction
-  | startAddNewEmployee
-  | doneEditingNode
-  | updateNewName;
+export type orgNodeActions =
+  | selectOrgNodeAction
+  | addOrgNodeAction
+  | deleteAllOrgNodesAction
+  | deleteOrgNodeAction
+  | startAddNewOrgNode
+  | doneEditingOrgNode
+  | updateNewEmployeeName;
 
-export const selectEmployee = (positionId: number): selectEmployeeAction => {
+export const selectOrgNode = (positionId: number): selectOrgNodeAction => {
   return {
-    type: "SELECT_EMPLOYEE",
+    type: "SELECT_ORG_NODE",
     positionId
   };
 };
 
-export const addNewEmployee = (
+export const addOrgNode = (
   positionId: number,
   supervisorId: number,
   employeeName: string
-): addNewEmployeeAction => {
+): addOrgNodeAction => {
   return {
-    type: "ADD_EMPLOYEE",
+    type: "ADD_ORG_NODE",
     payload: {
       positionId,
       supervisorId
@@ -67,38 +68,40 @@ export const addNewEmployee = (
   };
 };
 
-export const deleteAllEmployees = (): deleteAllEmployeesAction => {
+export const deleteAllOrgNodes = (): deleteAllOrgNodesAction => {
   return {
-    type: "DELETE_ALL_EMPLOYEES"
+    type: "DELETE_ALL_ORG_NODES"
   };
 };
 
-export const deleteEmployee = (positionId: number): deleteEmployeeAction => {
+export const deleteEmployee = (positionId: number): deleteOrgNodeAction => {
   return {
-    type: "DELETE_EMPLOYEE",
+    type: "DELETE_ORG_NODE",
     positionId
   };
 };
 
-export const startAddNewEmployee = (
+export const startAddNewOrgNode = (
   supervisorNode: number,
   newName: string
-): startAddNewEmployee => {
+): startAddNewOrgNode => {
   return {
-    type: "START_ADD_NEW_EMPLOYEE",
+    type: "START_ADD_NEW_ORG_NODE",
     supervisorNode
   };
 };
 
 export const doneEditingNode = () => {
   return {
-    type: "DONE_EDITING_NODE"
+    type: "DONE_EDITING_ORG_NODE"
   };
 };
 
-export const updateNewName = (newName: string): updateNewName => {
+export const updateNewEmployeeName = (
+  newName: string
+): updateNewEmployeeName => {
   return {
-    type: "UPDATE_NEW_NAME",
+    type: "UPDATE_NEW_EMPLOYEE_NAME",
     newName
   };
 };

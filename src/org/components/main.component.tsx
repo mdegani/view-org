@@ -5,9 +5,9 @@ import Toolbar from "./toolbar.component";
 import ViewOrg from "./viewOrg.component";
 import NodeForm from "./nodeForm.component";
 import {
-  selectEmployee,
-  addNewEmployee,
-  updateNewName
+  selectOrgNode,
+  addOrgNode,
+  updateNewEmployeeName
 } from "../actions/org.actions";
 import {
   getOrgBySupervisor,
@@ -152,10 +152,11 @@ const mapStateToProps = (state: CombinedState) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelectEmployee: positionId => dispatch(selectEmployee(positionId)),
+    onSelectEmployee: positionId => dispatch(selectOrgNode(positionId)),
     onAddNewEmployee: (newPositionId, currentNodeId, employeeName) =>
-      dispatch(addNewEmployee(newPositionId, currentNodeId, employeeName)),
-    onUpdateNewName: (newName: string) => dispatch(updateNewName(newName))
+      dispatch(addOrgNode(newPositionId, currentNodeId, employeeName)),
+    onUpdateNewName: (newName: string) =>
+      dispatch(updateNewEmployeeName(newName))
   };
 };
 

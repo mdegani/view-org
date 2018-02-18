@@ -1,5 +1,5 @@
 import { EmployeesState, FormState } from "../../org/types/org.types";
-import { employeeActions } from "../actions/org.actions";
+import { orgNodeActions } from "../actions/org.actions";
 
 const initialState = {
   selectedEmployee: 1,
@@ -20,12 +20,12 @@ const initialState = {
 
 const employeesReducer = (
   state: EmployeesState = initialState,
-  action: employeeActions
+  action: orgNodeActions
 ): EmployeesState => {
   switch (action.type) {
-    case "SELECT_EMPLOYEE":
+    case "SELECT_ORG_NODE":
       return Object.assign({}, state, { selectedEmployee: +action.positionId });
-    case "ADD_EMPLOYEE":
+    case "ADD_ORG_NODE":
       return {
         ...state,
         nodeForm: {
@@ -43,9 +43,9 @@ const employeesReducer = (
           }
         ]
       };
-    case "DELETE_ALL_EMPLOYEES":
+    case "DELETE_ALL_ORG_NODES":
       return initialState;
-    case "DELETE_EMPLOYEE":
+    case "DELETE_ORG_NODE":
       const newSup = state.organization.find(
         org => org.positionId === action.positionId
       )!.supervisorPositionId;
@@ -64,7 +64,7 @@ const employeesReducer = (
             return node;
           })
       };
-    case "START_ADD_NEW_EMPLOYEE":
+    case "START_ADD_NEW_ORG_NODE":
       return {
         ...state,
         nodeForm: {
@@ -73,7 +73,7 @@ const employeesReducer = (
           targetNode: action.supervisorNode
         }
       };
-    case "UPDATE_NEW_NAME":
+    case "UPDATE_NEW_EMPLOYEE_NAME":
       return {
         ...state,
         nodeForm: {
@@ -81,7 +81,7 @@ const employeesReducer = (
           newName: action.newName
         }
       };
-    case "DONE_EDITING_NODE":
+    case "DONE_EDITING_ORG_NODE":
       return {
         ...state,
         nodeForm: {

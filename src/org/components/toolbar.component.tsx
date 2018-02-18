@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import {
   deleteEmployee,
-  deleteAllEmployees,
-  startAddNewEmployee
+  deleteAllOrgNodes,
+  startAddNewOrgNode
 } from "../actions/org.actions";
 import { OrgNode, CombinedState } from "../types/org.types";
 import { getOrgNodeById, getIterativeSupervisors } from "../logic/org.logic";
@@ -78,10 +78,10 @@ const mapStateToProps = (state: CombinedState) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onDeleteAllEmployees: () => dispatch(deleteAllEmployees()),
+    onDeleteAllEmployees: () => dispatch(deleteAllOrgNodes()),
     onDeleteEmployee: positionId => dispatch(deleteEmployee(positionId)),
     onStartAddNewEmployee: (supervisorNode, newName) =>
-      dispatch(startAddNewEmployee(supervisorNode, newName))
+      dispatch(startAddNewOrgNode(supervisorNode, newName))
   };
 };
 
