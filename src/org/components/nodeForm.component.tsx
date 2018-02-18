@@ -32,7 +32,6 @@ export default ({
             <Input
               type="text"
               placeholder="Jane"
-              // value={"state name"}
               onChange={handleChange}
               valid={nameValid}
             />
