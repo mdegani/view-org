@@ -1,11 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
-import {
-  deleteOrgNode,
-  deleteAllOrgNodes,
-  startAddNewOrgNode
-} from "../actions/org.actions";
+import { deleteOrgNode, deleteAllOrgNodes } from "../actions/org.actions";
+import { startAddNewOrgNode } from "../actions/org-node-form.actions";
 import { OrgNode, CombinedState } from "../types/org.types";
 import { getOrgNodeById, getIterativeSupervisors } from "../logic/org-logic";
 

@@ -4,13 +4,15 @@ export default ({
   type,
   placeholder,
   onChange,
-  valid
+  valid,
+  value
 }: {
   type: string;
   placeholder: string;
   // tslint:disable-next-line:no-any
   onChange: any;
   valid: boolean;
+  value: string;
 }) => {
   return (
     <>
@@ -22,6 +24,7 @@ export default ({
         type={type}
         placeholder={placeholder}
         onChange={onChange}
+        value={value}
       />
       {!valid ? (
         <p className="text-red text-xs italic font-normal">

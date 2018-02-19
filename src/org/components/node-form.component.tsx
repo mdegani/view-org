@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormState } from "../types/org.types";
+import { OrgNodeFormState } from "../types/org.types";
 import Label from "../../ui/forms/label.component";
 import Input from "../../ui/forms/input.component";
 import Button from "../../ui/button/button.component";
@@ -12,7 +12,7 @@ export default ({
   onUpdateNewName,
   nameValid
 }: {
-  formState: FormState;
+  formState: OrgNodeFormState;
   formTargetNode: number;
   onAddNewOrgNode: Function;
   onUpdateNewName: Function;
@@ -24,7 +24,7 @@ export default ({
   return (
     <Form
       className="w-full max-w-md"
-      onSubmit={() => onAddNewOrgNode(formTargetNode)}
+      onSubmit={() => onAddNewOrgNode(formTargetNode, formState.newName)}
     >
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -33,6 +33,7 @@ export default ({
               type="text"
               placeholder="Jane"
               onChange={handleChange}
+              value={formState.newName}
               valid={nameValid}
             />
           </Label>

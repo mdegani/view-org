@@ -4,16 +4,21 @@ import { createSelector } from "reselect";
 import Toolbar from "./toolbar.component";
 import ViewOrg from "./view-org.component";
 import NodeForm from "./node-form.component";
+import { selectOrgNode, addOrgNode } from "../actions/org.actions";
 import {
-  selectOrgNode,
-  addOrgNode,
-  updateNewEmployeeName
-} from "../actions/org.actions";
+  updateNewEmployeeName,
+  doneEditingNode
+} from "../actions/org-node-form.actions";
 import {
   getOrgBySupervisor,
   getIterativeSupervisors
 } from "../logic/org-logic";
-import { OrgNode, CombinedState, FormState } from "../types/org.types";
+import {
+  OrgNode,
+  CombinedState,
+  FormStateEnum,
+  OrgNodeFormState
+} from "../types/org.types";
 
 const OrgView = ({
   onSelectOrgNode,
@@ -32,7 +37,7 @@ const OrgView = ({
   supervisorsOrg: OrgNode[];
   supervisorChain: OrgNode[];
   nextAvailableId: number;
-  formState: FormState;
+  formState: OrgNodeFormState;
   formTargetNode: number;
   onUpdateNewName: Function;
   nameValid: boolean;
@@ -41,7 +46,7 @@ const OrgView = ({
     <div className="App">
       <Toolbar />
       <div className="px-8" style={{ paddingTop: "5.3rem" }}>
-        {formState === FormState.hidden ? (
+        {formState.state === FormStateEnum.hidden ? (
           <>
             <div>
               {/* filtering out positionId -1, temporarily, until we figure out how to handle 🕴 */}
@@ -145,17 +150,19 @@ const mapStateToProps = (state: CombinedState) => {
     supervisorsOrg: supervisorsOrganizationWithEmployeeNames(state),
     supervisorChain: orgForSelectedOrgNode(state),
     nextAvailableId: nextAvailableIdSelector(state),
-    formState: state.orgReducer.nodeForm.state,
-    formTargetNode: state.orgReducer.nodeForm.targetNode,
-    nameValid: state.orgReducer.nodeForm.newName.length > 2
+    formState: state.orgNodeFormReducer,
+    formTargetNode: state.orgNodeFormReducer.targetNode,
+    nameValid: state.orgNodeFormReducer.newName.length > 2
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onSelectOrgNode: positionId => dispatch(selectOrgNode(positionId)),
-    onAddNewOrgNode: (newPositionId, currentNodeId, employeeName) =>
-      dispatch(addOrgNode(newPositionId, currentNodeId, employeeName)),
+    onAddNewOrgNode: (newPositionId, currentNodeId, employeeName) => {
+      dispatch(addOrgNode(newPositionId, currentNodeId, employeeName));
+      dispatch(doneEditingNode());
+    },
     onUpdateNewName: (newName: string) =>
       dispatch(updateNewEmployeeName(newName))
   };
