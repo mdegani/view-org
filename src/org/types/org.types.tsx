@@ -8,14 +8,14 @@ export type OrgNode = {
 };
 
 export type OrgSectionNode = {
-  positionId: number; // refactor to use organizationNode (or position)
+  positionId: number;
   supervisorPositionId: number;
   employeeId: number;
   employeeName: string;
   orgLevel: number;
 };
 
-export enum FormState {
+export enum FormStateEnum {
   "hidden",
   "addingTo",
   "editing"
@@ -24,13 +24,15 @@ export enum FormState {
 export type OrgState = {
   selectedOrgNode: number;
   organization: OrgNode[];
-  nodeForm: {
-    state: FormState;
-    targetNode: number | null;
-    newName: string;
-  };
+};
+
+export type OrgNodeFormState = {
+  state: FormStateEnum;
+  targetNode: number | null;
+  newName: string;
 };
 
 export type CombinedState = {
   orgReducer: OrgState;
+  orgNodeFormReducer: OrgNodeFormState;
 };
