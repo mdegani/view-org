@@ -7,7 +7,7 @@ import {
   startAddNewOrgNode
 } from "../actions/org.actions";
 import { OrgNode, CombinedState } from "../types/org.types";
-import { getOrgNodeById, getIterativeSupervisors } from "../logic/org.logic";
+import { getOrgNodeById, getIterativeSupervisors } from "../logic/org-logic";
 
 const component = ({
   organization,
