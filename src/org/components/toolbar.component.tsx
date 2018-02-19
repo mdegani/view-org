@@ -11,16 +11,16 @@ import { getOrgNodeById, getIterativeSupervisors } from "../logic/org.logic";
 
 const component = ({
   organization,
-  selectedEmployee,
-  onStartAddNewEmployee,
-  onDeleteAllEmployees,
-  onDeleteEmployee
+  selectedOrgNode,
+  onStartAddNewOrgNode,
+  onDeleteAllOrgNodes,
+  onDeleteOrgNode
 }: {
   organization: OrgNode[];
-  selectedEmployee: string;
-  onStartAddNewEmployee: Function;
-  onDeleteAllEmployees: () => void;
-  onDeleteEmployee: (newPositionId: number) => void;
+  selectedOrgNode: string;
+  onStartAddNewOrgNode: Function;
+  onDeleteAllOrgNodes: () => void;
+  onDeleteOrgNode: (newPositionId: number) => void;
 }) => {
   return (
     <nav className="bg-black w-full fixed flex flex-col">
@@ -29,26 +29,26 @@ const component = ({
       </div>
       <div className="flex justify-between">
         <div className="text-2xl p-2 bg-white overflow-scroll flex-no-wrap w-full">
-          {getOrgNodeById(organization, +selectedEmployee)!.employeeName}
+          {getOrgNodeById(organization, +selectedOrgNode)!.employeeName}
         </div>
         <a
           href="#"
           className="text-sm no-underline opacity-100 px-3 ph-1 mb-2 inline-block text-white"
-          onClick={() => onStartAddNewEmployee(+selectedEmployee)}
+          onClick={() => onStartAddNewOrgNode(+selectedOrgNode)}
         >
           +
         </a>
         <a
           href="#"
           className="text-sm no-underline opacity-100 px-3 py-1 mb-2 inline-block text-white"
-          onClick={() => onDeleteAllEmployees()}
+          onClick={() => onDeleteAllOrgNodes()}
         >
           del all
         </a>
         <a
           href="#"
           className="text-sm no-underline opacity-100 px-3 ph-1 mb-2 inline-block text-white"
-          onClick={() => onDeleteEmployee(+selectedEmployee)}
+          onClick={() => onDeleteOrgNode(+selectedOrgNode)}
         >
           del one
         </a>
@@ -71,16 +71,16 @@ const organizationWithEmployeeNames = createSelector(
 
 const mapStateToProps = (state: CombinedState) => {
   return {
-    selectedEmployee: state.orgReducer.selectedEmployee,
+    selectedOrgNode: state.orgReducer.selectedEmployee,
     organization: organizationWithEmployeeNames(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onDeleteAllEmployees: () => dispatch(deleteAllOrgNodes()),
-    onDeleteEmployee: positionId => dispatch(deleteOrgNode(positionId)),
-    onStartAddNewEmployee: (supervisorNode, newName) =>
+    onDeleteAllOrgNodes: () => dispatch(deleteAllOrgNodes()),
+    onDeleteOrgNode: positionId => dispatch(deleteOrgNode(positionId)),
+    onStartAddNewOrgNode: (supervisorNode, newName) =>
       dispatch(startAddNewOrgNode(supervisorNode, newName))
   };
 };

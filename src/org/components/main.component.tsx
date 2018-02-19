@@ -16,8 +16,8 @@ import {
 import { OrgNode, CombinedState, FormState } from "../types/org.types";
 
 const OrgView = ({
-  onSelectEmployee,
-  onAddNewEmployee,
+  onSelectOrgNode,
+  onAddNewOrgNode,
   supervisorsOrg,
   supervisorChain,
   nextAvailableId,
@@ -27,8 +27,8 @@ const OrgView = ({
   nameValid
 }: {
   // TODO: better typing for this function https://www.typescriptlang.org/docs/handbook/functions.html
-  onSelectEmployee: Function;
-  onAddNewEmployee: (newPositionId: number, currentNodeId: number) => void; // TODO: is void right??
+  onSelectOrgNode: Function;
+  onAddNewOrgNode: (newPositionId: number, currentNodeId: number) => void; // TODO: is void right??
   supervisorsOrg: OrgNode[];
   supervisorChain: OrgNode[];
   nextAvailableId: number;
@@ -55,7 +55,7 @@ const OrgView = ({
                       "text-base font-semibold py-0 text-blue no-underline opacity-100 block border-l " +
                       "pl-1 border-hot-pink overflow-scroll flex-no-wrap"
                     }
-                    onClick={e => onSelectEmployee(sup.positionId)}
+                    onClick={e => onSelectOrgNode(sup.positionId)}
                   >
                     {supIndex > 0 ? (
                       <span className="text-sm text-hot-pink block">⌄</span>
@@ -68,14 +68,14 @@ const OrgView = ({
             </div>
             <ViewOrg
               supervisorsOrg={supervisorsOrg}
-              onSelectEmployee={onSelectEmployee}
+              onSelectOrgNode={onSelectOrgNode}
             />
           </>
         ) : (
           <NodeForm
             formState={formState}
             formTargetNode={formTargetNode}
-            onAddNewEmployee={onAddNewEmployee.bind(null, nextAvailableId)}
+            onAddNewOrgNode={onAddNewOrgNode.bind(null, nextAvailableId)}
             onUpdateNewName={onUpdateNewName}
             nameValid={nameValid}
           />
@@ -152,8 +152,8 @@ const mapStateToProps = (state: CombinedState) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelectEmployee: positionId => dispatch(selectOrgNode(positionId)),
-    onAddNewEmployee: (newPositionId, currentNodeId, employeeName) =>
+    onSelectOrgNode: positionId => dispatch(selectOrgNode(positionId)),
+    onAddNewOrgNode: (newPositionId, currentNodeId, employeeName) =>
       dispatch(addOrgNode(newPositionId, currentNodeId, employeeName)),
     onUpdateNewName: (newName: string) =>
       dispatch(updateNewEmployeeName(newName))

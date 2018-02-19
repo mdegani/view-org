@@ -171,7 +171,7 @@ export const getOrgBySupervisor = (
       })
   );
 
-// find the top employee's supervisor
+// find the top org node's supervisor
 export const findOrgTopSupervisor = (organization: OrgNode[]): number => {
   const allIds = organization.map(orgNode => {
     return orgNode.positionId;
