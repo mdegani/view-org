@@ -3,7 +3,7 @@ import logger from "redux-logger";
 import throttle from "lodash/throttle";
 import orgReducer from "../org/reducers/org.reducer";
 import { OrgState } from "../org/types/org.types";
-import { saveState, loadState } from "./localStorage";
+import { saveState, loadState } from "./local-storage";
 
 const orgViewReducer = combineReducers<{
   orgReducer: OrgState;

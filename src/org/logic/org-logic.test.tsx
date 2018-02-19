@@ -9,7 +9,7 @@ import {
   findOrgTopSupervisor,
   getOrgBySupervisor,
   getNextSupervisorNode
-} from "./org.logic";
+} from "./org-logic";
 import { OrgNode, OrgSectionNode } from "../types/org.types";
 
 // here is a simple self-referencing

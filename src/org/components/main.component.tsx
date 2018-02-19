@@ -2,8 +2,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import Toolbar from "./toolbar.component";
-import ViewOrg from "./viewOrg.component";
-import NodeForm from "./nodeForm.component";
+import ViewOrg from "./view-org.component";
+import NodeForm from "./node-form.component";
 import {
   selectOrgNode,
   addOrgNode,
@@ -12,7 +12,7 @@ import {
 import {
   getOrgBySupervisor,
   getIterativeSupervisors
-} from "../logic/org.logic";
+} from "../logic/org-logic";
 import { OrgNode, CombinedState, FormState } from "../types/org.types";
 
 const OrgView = ({
