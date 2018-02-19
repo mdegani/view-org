@@ -2,7 +2,7 @@ import { OrgState, FormState } from "../../org/types/org.types";
 import { orgNodeActions } from "../actions/org.actions";
 
 const initialState = {
-  selectedEmployee: 1,
+  selectedOrgNode: 1,
   organization: [
     {
       positionId: 1,
@@ -24,7 +24,7 @@ const orgReducer = (
 ): OrgState => {
   switch (action.type) {
     case "SELECT_ORG_NODE":
-      return Object.assign({}, state, { selectedEmployee: +action.positionId });
+      return Object.assign({}, state, { selectedOrgNode: +action.positionId });
     case "ADD_ORG_NODE":
       return {
         ...state,
@@ -51,7 +51,7 @@ const orgReducer = (
       )!.supervisorPositionId;
       return {
         ...state,
-        selectedEmployee: newSup,
+        selectedOrgNode: newSup,
         organization: state.organization
           .filter(orgNode => orgNode.positionId !== action.positionId)
           .map(node => {

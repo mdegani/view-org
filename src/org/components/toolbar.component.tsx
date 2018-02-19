@@ -71,7 +71,7 @@ const organizationWithEmployeeNames = createSelector(
 
 const mapStateToProps = (state: CombinedState) => {
   return {
-    selectedOrgNode: state.orgReducer.selectedEmployee,
+    selectedOrgNode: state.orgReducer.selectedOrgNode,
     organization: organizationWithEmployeeNames(state)
   };
 };

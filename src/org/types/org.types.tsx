@@ -15,9 +15,6 @@ export type OrgSectionNode = {
   orgLevel: number;
 };
 
-// for reducers/employees
-// TODO: refactor so we're consistent with "organization" vs "employee" names
-
 export enum FormState {
   "hidden",
   "addingTo",
@@ -25,7 +22,7 @@ export enum FormState {
 }
 
 export type OrgState = {
-  selectedEmployee: number;
+  selectedOrgNode: number;
   organization: OrgNode[];
   nodeForm: {
     state: FormState;
