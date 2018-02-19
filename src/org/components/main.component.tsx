@@ -7,7 +7,7 @@ import NodeForm from "./node-form.component";
 import { selectOrgNode, addOrgNode } from "../actions/org.actions";
 import {
   updateNewEmployeeName,
-  doneEditingNode
+  setCloseNewOrgNodeForm
 } from "../actions/org-node-form.actions";
 import {
   getOrgBySupervisor,
@@ -161,7 +161,7 @@ const mapDispatchToProps = dispatch => {
     onSelectOrgNode: positionId => dispatch(selectOrgNode(positionId)),
     onAddNewOrgNode: (newPositionId, currentNodeId, employeeName) => {
       dispatch(addOrgNode(newPositionId, currentNodeId, employeeName));
-      dispatch(doneEditingNode());
+      dispatch(setCloseNewOrgNodeForm());
     },
     onUpdateNewName: (newName: string) =>
       dispatch(updateNewEmployeeName(newName))

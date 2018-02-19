@@ -12,7 +12,7 @@ const orgReducer = (
   action: orgNodeFormActions
 ): OrgNodeFormState => {
   switch (action.type) {
-    case "START_ADD_NEW_ORG_NODE":
+    case "SET_OPEN_NEW_ORG_NODE_FORM":
       return {
         ...state,
         state: FormStateEnum.addingTo,
@@ -23,7 +23,7 @@ const orgReducer = (
         ...state,
         newName: action.newName
       };
-    case "DONE_EDITING_ORG_NODE":
+    case "SET_CLOSE_NEW_ORG_NODE_FORM":
       return {
         ...state,
         state: FormStateEnum.hidden,

@@ -3,19 +3,18 @@ type updateNewEmployeeName = {
   newName: string;
 };
 
-// this just loads the form. should change
-type startAddNewOrgNode = {
-  type: "START_ADD_NEW_ORG_NODE";
+type setOpenNewOrgNodeForm = {
+  type: "SET_OPEN_NEW_ORG_NODE_FORM";
   supervisorNode: number;
 };
 
 type doneEditingOrgNode = {
-  type: "DONE_EDITING_ORG_NODE";
+  type: "SET_CLOSE_NEW_ORG_NODE_FORM";
 };
 
 export type orgNodeFormActions =
   | updateNewEmployeeName
-  | startAddNewOrgNode
+  | setOpenNewOrgNodeForm
   | doneEditingOrgNode;
 
 export const updateNewEmployeeName = (
@@ -27,18 +26,18 @@ export const updateNewEmployeeName = (
   };
 };
 
-export const startAddNewOrgNode = (
+export const setOpenNewOrgNodeForm = (
   supervisorNode: number,
   newName: string
-): startAddNewOrgNode => {
+): setOpenNewOrgNodeForm => {
   return {
-    type: "START_ADD_NEW_ORG_NODE",
+    type: "SET_OPEN_NEW_ORG_NODE_FORM",
     supervisorNode
   };
 };
 
-export const doneEditingNode = () => {
+export const setCloseNewOrgNodeForm = () => {
   return {
-    type: "DONE_EDITING_ORG_NODE"
+    type: "SET_CLOSE_NEW_ORG_NODE_FORM"
   };
 };
