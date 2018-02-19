@@ -11,6 +11,7 @@
     "react-redux": "^5.0.6",
     "react-scripts-ts": "2.12.0",
     "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
     "reselect": "^3.0.1"
   },
   "scripts": {
@@ -28,6 +29,7 @@
     "@types/react": "^16.0.31",
     "@types/react-dom": "^16.0.3",
     "lint-staged": "^6.0.0",
+    "nightmare": "^2.10.0",
     "prettier": "1.9.2",
     "tslint-config-prettier": "^1.6.0"
   },

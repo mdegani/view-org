@@ -1,22 +1,19 @@
-export type OrganizationNode = {
+export type OrgNode = {
   positionId: number;
   supervisorPositionId: number;
   employeeId: number;
   employeeName: string;
-  allSups?: number[];
+  allSupervisors?: number[];
   orgSort?: string;
 };
 
-export type OrganizationSectionNode = {
+export type OrgSectionNode = {
   positionId: number; // refactor to use organizationNode (or position)
   supervisorPositionId: number;
   employeeId: number;
   employeeName: string;
-  level: number;
+  orgLevel: number;
 };
-
-// for reducers/employees
-// TODO: refactor so we're consistent with "organization" vs "employee" names
 
 export enum FormState {
   "hidden",
@@ -24,9 +21,9 @@ export enum FormState {
   "editing"
 }
 
-export type EmployeesState = {
-  selectedEmployee: number;
-  organization: OrganizationNode[];
+export type OrgState = {
+  selectedOrgNode: number;
+  organization: OrgNode[];
   nodeForm: {
     state: FormState;
     targetNode: number | null;
@@ -35,5 +32,5 @@ export type EmployeesState = {
 };
 
 export type CombinedState = {
-  employeesReducer: EmployeesState;
+  orgReducer: OrgState;
 };
