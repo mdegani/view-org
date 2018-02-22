@@ -1,5 +1,5 @@
-type updateNewEmployeeName = {
-  type: "UPDATE_NEW_EMPLOYEE_NAME";
+type updateNewOrgNodeFormValues = {
+  type: "UPDATE_NEW_ORG_NODE_FORM_VALUES";
   newName: string;
 };
 
@@ -13,15 +13,15 @@ type doneEditingOrgNode = {
 };
 
 export type orgNodeFormActions =
-  | updateNewEmployeeName
+  | updateNewOrgNodeFormValues
   | setOpenNewOrgNodeForm
   | doneEditingOrgNode;
 
-export const updateNewEmployeeName = (
+export const updateNewOrgNodeFormValues = (
   newName: string
-): updateNewEmployeeName => {
+): updateNewOrgNodeFormValues => {
   return {
-    type: "UPDATE_NEW_EMPLOYEE_NAME",
+    type: "UPDATE_NEW_ORG_NODE_FORM_VALUES",
     newName
   };
 };

@@ -6,7 +6,7 @@ import ViewOrg from "./view-org.component";
 import NodeForm from "./node-form.component";
 import { selectOrgNode, addOrgNode } from "../actions/org.actions";
 import {
-  updateNewEmployeeName,
+  updateNewOrgNodeFormValues,
   setCloseNewOrgNodeForm
 } from "../actions/org-node-form.actions";
 import {
@@ -164,7 +164,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(setCloseNewOrgNodeForm());
     },
     onUpdateNewName: (newName: string) =>
-      dispatch(updateNewEmployeeName(newName))
+      dispatch(updateNewOrgNodeFormValues(newName))
   };
 };
 

@@ -18,7 +18,7 @@ const orgReducer = (
         state: FormStateEnum.addingTo,
         targetNode: action.supervisorNode
       };
-    case "UPDATE_NEW_EMPLOYEE_NAME":
+    case "UPDATE_NEW_ORG_NODE_FORM_VALUES":
       return {
         ...state,
         newName: action.newName
