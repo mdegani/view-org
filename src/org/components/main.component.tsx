@@ -6,8 +6,10 @@ import ViewOrg from "./view-org.component";
 import NodeForm from "./node-form.component";
 import { selectOrgNode, addOrgNode } from "../actions/org.actions";
 import {
-  updateNewOrgNodeFormValues,
-  setCloseNewOrgNodeForm
+  setCloseNewOrgNodeForm,
+  saveFormValueString,
+  FormInstance,
+  resetForms
 } from "../actions/org-node-form.actions";
 import {
   getOrgBySupervisor,
@@ -17,7 +19,7 @@ import {
   OrgNode,
   CombinedState,
   FormStateEnum,
-  OrgNodeFormState
+  FormField
 } from "../types/org.types";
 
 const OrgView = ({
@@ -29,7 +31,8 @@ const OrgView = ({
   formState,
   formTargetNode,
   onUpdateNewName,
-  nameValid
+  nameValid,
+  formValuesState
 }: {
   // TODO: better typing for this function https://www.typescriptlang.org/docs/handbook/functions.html
   onSelectOrgNode: Function;
@@ -37,16 +40,17 @@ const OrgView = ({
   supervisorsOrg: OrgNode[];
   supervisorChain: OrgNode[];
   nextAvailableId: number;
-  formState: OrgNodeFormState;
+  formState: FormStateEnum;
   formTargetNode: number;
   onUpdateNewName: Function;
   nameValid: boolean;
+  formValuesState: FormField;
 }) => {
   return (
     <div className="App">
       <Toolbar />
       <div className="px-8" style={{ paddingTop: "5.3rem" }}>
-        {formState.state === FormStateEnum.hidden ? (
+        {formState === FormStateEnum.hidden ? (
           <>
             <div>
               {/* filtering out positionId -1, temporarily, until we figure out how to handle 🕴 */}
@@ -83,6 +87,7 @@ const OrgView = ({
             onAddNewOrgNode={onAddNewOrgNode.bind(null, nextAvailableId)}
             onUpdateNewName={onUpdateNewName}
             nameValid={nameValid}
+            formValuesState={formValuesState}
           />
         )}
       </div>
@@ -113,6 +118,9 @@ const organizationWithEmployeeNames = createSelector(
     return orgWithAllSups;
   }
 );
+
+const addNewNodeFormState = (state: CombinedState) =>
+  state.formReducer[FormInstance.NewNodeForm];
 
 const orgForSelectedOrgNode = createSelector(
   organizationWithEmployeeNames,
@@ -150,9 +158,10 @@ const mapStateToProps = (state: CombinedState) => {
     supervisorsOrg: supervisorsOrganizationWithEmployeeNames(state),
     supervisorChain: orgForSelectedOrgNode(state),
     nextAvailableId: nextAvailableIdSelector(state),
-    formState: state.orgNodeFormReducer,
+    formState: state.orgNodeFormReducer.state,
     formTargetNode: state.orgNodeFormReducer.targetNode,
-    nameValid: state.orgNodeFormReducer.newName.length > 2
+    formValuesState: addNewNodeFormState(state)
+    // nameValid: state.orgNodeFormReducer.newName.length > 2
   };
 };
 
@@ -162,9 +171,10 @@ const mapDispatchToProps = dispatch => {
     onAddNewOrgNode: (newPositionId, currentNodeId, employeeName) => {
       dispatch(addOrgNode(newPositionId, currentNodeId, employeeName));
       dispatch(setCloseNewOrgNodeForm());
+      dispatch(resetForms());
     },
     onUpdateNewName: (newName: string) =>
-      dispatch(updateNewOrgNodeFormValues(newName))
+      dispatch(saveFormValueString(FormInstance.NewNodeForm, "name", newName))
   };
 };
 

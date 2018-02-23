@@ -1,5 +1,5 @@
 import * as React from "react";
-import { OrgNodeFormState } from "../types/org.types";
+import { FormStateEnum, FormField } from "../types/org.types";
 import Label from "../../ui/forms/label.component";
 import Input from "../../ui/forms/input.component";
 import Button from "../../ui/button/button.component";
@@ -10,13 +10,15 @@ export default ({
   formTargetNode,
   onAddNewOrgNode,
   onUpdateNewName,
-  nameValid
+  nameValid,
+  formValuesState
 }: {
-  formState: OrgNodeFormState;
+  formState: FormStateEnum;
   formTargetNode: number;
   onAddNewOrgNode: Function;
   onUpdateNewName: Function;
   nameValid: boolean;
+  formValuesState: FormField;
 }) => {
   const handleChange = e => {
     onUpdateNewName(e.target.value);
@@ -24,7 +26,9 @@ export default ({
   return (
     <Form
       className="w-full max-w-md"
-      onSubmit={() => onAddNewOrgNode(formTargetNode, formState.newName)}
+      onSubmit={() => {
+        onAddNewOrgNode(formTargetNode, formValuesState.name);
+      }}
     >
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -33,7 +37,8 @@ export default ({
               type="text"
               placeholder="Jane"
               onChange={handleChange}
-              value={formState.newName}
+              // type assertion is not ideal here:
+              value={formValuesState && (formValuesState.name as string)}
               valid={nameValid}
             />
           </Label>

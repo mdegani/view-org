@@ -1,3 +1,5 @@
+import { FormInstance } from "../actions/org-node-form.actions";
+
 export type OrgNode = {
   positionId: number;
   supervisorPositionId: number;
@@ -29,10 +31,16 @@ export type OrgState = {
 export type OrgNodeFormState = {
   state: FormStateEnum;
   targetNode: number | null;
-  newName: string;
 };
 
 export type CombinedState = {
   orgReducer: OrgState;
   orgNodeFormReducer: OrgNodeFormState;
+  formReducer: FormState;
+};
+
+export type FormState = { [form in FormInstance]?: FormField };
+
+export type FormField = {
+  [field: string]: string | number | boolean;
 };
