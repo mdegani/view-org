@@ -1,10 +1,10 @@
 import * as React from "react";
 import { FormStateEnum, AddNewOrgNodeFormState } from "../types/org.types";
-import Label from "../../ui/forms/label.component";
-import Input from "../../ui/forms/input.component";
-import Button from "../../ui/button/button.component";
-import Form from "../../ui/forms/form.component";
-import { FormInstance } from "../actions/org-node-form.actions";
+import Label from "../../forms/components/form/label.component";
+import Input from "../../forms/components/form/input.component";
+import Button from "../../forms/components/button/button.component";
+import Form from "../../forms/components/form/form.component";
+import { FormInstance } from "../../forms/actions/from.actions";
 
 export default ({
   formState,

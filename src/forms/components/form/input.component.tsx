@@ -1,10 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { CombinedState } from "../../org/types/org.types";
+import { CombinedState } from "../../../org/types/org.types";
 import {
   saveFormValueString,
   FormInstance
-} from "../../org/actions/org-node-form.actions";
+} from "../../../forms/actions/from.actions";
 
 const textInput = ({
   placeholder,
