@@ -1,10 +1,9 @@
-import { FormInstance } from "../actions/org-node-form.actions";
-
 export type OrgNode = {
   positionId: number;
   supervisorPositionId: number;
   employeeId: number;
   employeeName: string;
+  positionName?: string;
   allSupervisors?: number[];
   orgSort?: string;
 };
@@ -39,7 +38,19 @@ export type CombinedState = {
   formReducer: FormState;
 };
 
-export type FormState = { [form in FormInstance]?: FormField };
+export enum Fields {
+  "name",
+  "lastName"
+}
+
+export type AddNewOrgNodeFormState = {
+  name: string;
+  lastName: string;
+};
+
+export type FormState = {
+  "new-node-form"?: AddNewOrgNodeFormState;
+};
 
 export type FormField = {
   [field: string]: string | number | boolean;

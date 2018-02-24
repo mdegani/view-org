@@ -19,7 +19,7 @@ import {
   OrgNode,
   CombinedState,
   FormStateEnum,
-  FormField
+  AddNewOrgNodeFormState
 } from "../types/org.types";
 
 const OrgView = ({
@@ -44,7 +44,7 @@ const OrgView = ({
   formTargetNode: number;
   onUpdateNewName: Function;
   nameValid: boolean;
-  formValuesState: FormField;
+  formValuesState: AddNewOrgNodeFormState;
 }) => {
   return (
     <div className="App">
@@ -161,7 +161,6 @@ const mapStateToProps = (state: CombinedState) => {
     formState: state.orgNodeFormReducer.state,
     formTargetNode: state.orgNodeFormReducer.targetNode,
     formValuesState: addNewNodeFormState(state)
-    // nameValid: state.orgNodeFormReducer.newName.length > 2
   };
 };
 
@@ -173,8 +172,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(setCloseNewOrgNodeForm());
       dispatch(resetForms());
     },
-    onUpdateNewName: (newName: string) =>
-      dispatch(saveFormValueString(FormInstance.NewNodeForm, "name", newName))
+    onUpdateNewName: (field: string, newValue: string) =>
+      dispatch(saveFormValueString(FormInstance.NewNodeForm, field, newValue))
   };
 };
 

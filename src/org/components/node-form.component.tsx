@@ -1,9 +1,10 @@
 import * as React from "react";
-import { FormStateEnum, FormField } from "../types/org.types";
+import { FormStateEnum, AddNewOrgNodeFormState } from "../types/org.types";
 import Label from "../../ui/forms/label.component";
 import Input from "../../ui/forms/input.component";
 import Button from "../../ui/button/button.component";
 import Form from "../../ui/forms/form.component";
+import { FormInstance } from "../actions/org-node-form.actions";
 
 export default ({
   formState,
@@ -18,11 +19,8 @@ export default ({
   onAddNewOrgNode: Function;
   onUpdateNewName: Function;
   nameValid: boolean;
-  formValuesState: FormField;
+  formValuesState: AddNewOrgNodeFormState;
 }) => {
-  const handleChange = e => {
-    onUpdateNewName(e.target.value);
-  };
   return (
     <Form
       className="w-full max-w-md"
@@ -34,12 +32,16 @@ export default ({
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <Label text="First Name">
             <Input
-              type="text"
               placeholder="Jane"
-              onChange={handleChange}
-              // type assertion is not ideal here:
-              value={formValuesState && (formValuesState.name as string)}
-              valid={nameValid}
+              fieldName="name"
+              formName={FormInstance.NewNodeForm}
+            />
+          </Label>
+          <Label text="Last Name">
+            <Input
+              placeholder="Doe"
+              fieldName="lastName"
+              formName={FormInstance.NewNodeForm}
             />
           </Label>
         </div>
