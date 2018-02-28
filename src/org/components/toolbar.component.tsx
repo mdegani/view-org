@@ -2,20 +2,20 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
 import { deleteOrgNode, deleteAllOrgNodes } from "../actions/org.actions";
-import { startAddNewOrgNode } from "../actions/org-node-form.actions";
+import { setOpenNewOrgNodeForm } from "../actions/org-node-form.actions";
 import { OrgNode, CombinedState } from "../types/org.types";
 import { getOrgNodeById, getIterativeSupervisors } from "../logic/org-logic";
 
 const component = ({
   organization,
   selectedOrgNode,
-  onStartAddNewOrgNode,
+  onSetOpenNewOrgNodeForm,
   onDeleteAllOrgNodes,
   onDeleteOrgNode
 }: {
   organization: OrgNode[];
   selectedOrgNode: string;
-  onStartAddNewOrgNode: Function;
+  onSetOpenNewOrgNodeForm: Function;
   onDeleteAllOrgNodes: () => void;
   onDeleteOrgNode: (newPositionId: number) => void;
 }) => {
@@ -31,7 +31,7 @@ const component = ({
         <a
           href="#"
           className="text-sm no-underline opacity-100 px-3 ph-1 mb-2 inline-block text-white"
-          onClick={() => onStartAddNewOrgNode(+selectedOrgNode)}
+          onClick={() => onSetOpenNewOrgNodeForm(+selectedOrgNode)}
         >
           +
         </a>
@@ -77,8 +77,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onDeleteAllOrgNodes: () => dispatch(deleteAllOrgNodes()),
     onDeleteOrgNode: positionId => dispatch(deleteOrgNode(positionId)),
-    onStartAddNewOrgNode: (supervisorNode, newName) =>
-      dispatch(startAddNewOrgNode(supervisorNode, newName))
+    onSetOpenNewOrgNodeForm: (supervisorNode, newName) =>
+      dispatch(setOpenNewOrgNodeForm(supervisorNode, newName))
   };
 };
 

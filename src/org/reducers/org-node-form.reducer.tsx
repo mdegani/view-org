@@ -3,8 +3,7 @@ import { orgNodeFormActions } from "../actions/org-node-form.actions";
 
 const initialState: OrgNodeFormState = {
   state: FormStateEnum.hidden,
-  targetNode: 123,
-  newName: ""
+  targetNode: 123
 };
 
 const orgReducer = (
@@ -12,23 +11,17 @@ const orgReducer = (
   action: orgNodeFormActions
 ): OrgNodeFormState => {
   switch (action.type) {
-    case "START_ADD_NEW_ORG_NODE":
+    case "SET_OPEN_NEW_ORG_NODE_FORM":
       return {
         ...state,
         state: FormStateEnum.addingTo,
         targetNode: action.supervisorNode
       };
-    case "UPDATE_NEW_EMPLOYEE_NAME":
-      return {
-        ...state,
-        newName: action.newName
-      };
-    case "DONE_EDITING_ORG_NODE":
+    case "SET_CLOSE_NEW_ORG_NODE_FORM":
       return {
         ...state,
         state: FormStateEnum.hidden,
-        targetNode: null,
-        newName: ""
+        targetNode: null
       };
     default:
       return state;

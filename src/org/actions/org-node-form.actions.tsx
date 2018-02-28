@@ -1,44 +1,119 @@
-type updateNewEmployeeName = {
-  type: "UPDATE_NEW_EMPLOYEE_NAME";
-  newName: string;
-};
+export enum FormInstance {
+  NewNodeForm = "new-node-form",
+  EditNodeForm = "edit-node-form"
+}
 
-// this just loads the form. should change
-type startAddNewOrgNode = {
-  type: "START_ADD_NEW_ORG_NODE";
-  supervisorNode: number;
-};
-
-type doneEditingOrgNode = {
-  type: "DONE_EDITING_ORG_NODE";
-};
-
-export type orgNodeFormActions =
-  | updateNewEmployeeName
-  | startAddNewOrgNode
-  | doneEditingOrgNode;
-
-export const updateNewEmployeeName = (
-  newName: string
-): updateNewEmployeeName => {
-  return {
-    type: "UPDATE_NEW_EMPLOYEE_NAME",
-    newName
+type SaveFormValueString = {
+  type: "SAVE_FORM_VALUE_STRING";
+  payload: {
+    form: FormInstance;
+    field: string;
+    value: string;
   };
 };
 
-export const startAddNewOrgNode = (
+type SaveFormValueNumber = {
+  type: "SAVE_FORM_VALUE_NUMBER";
+  payload: {
+    form: FormInstance;
+    field: string;
+    value: number;
+  };
+};
+
+type SaveFormValueBoolean = {
+  type: "SAVE_FORM_VALUE_BOOLEAN";
+  payload: {
+    form: FormInstance;
+    field: string;
+    value: boolean;
+  };
+};
+
+type ResetForms = {
+  type: "RESET_FORMS";
+};
+
+type SetOpenNewOrgNodeForm = {
+  type: "SET_OPEN_NEW_ORG_NODE_FORM";
+  supervisorNode: number;
+};
+
+type DoneEditingOrgNode = {
+  type: "SET_CLOSE_NEW_ORG_NODE_FORM";
+};
+
+export type orgNodeFormActions = SetOpenNewOrgNodeForm | DoneEditingOrgNode;
+
+export type FormActions =
+  | SaveFormValueString
+  | SaveFormValueNumber
+  | SaveFormValueBoolean
+  | ResetForms;
+
+export const setOpenNewOrgNodeForm = (
   supervisorNode: number,
   newName: string
-): startAddNewOrgNode => {
+): SetOpenNewOrgNodeForm => {
   return {
-    type: "START_ADD_NEW_ORG_NODE",
+    type: "SET_OPEN_NEW_ORG_NODE_FORM",
     supervisorNode
   };
 };
 
-export const doneEditingNode = () => {
+export const setCloseNewOrgNodeForm = () => {
   return {
-    type: "DONE_EDITING_ORG_NODE"
+    type: "SET_CLOSE_NEW_ORG_NODE_FORM"
+  };
+};
+
+export const saveFormValueString = (
+  form: FormInstance,
+  field: string,
+  value: string
+): SaveFormValueString => {
+  return {
+    type: "SAVE_FORM_VALUE_STRING",
+    payload: {
+      form,
+      field,
+      value
+    }
+  };
+};
+
+export const saveFormValueNumber = (
+  form: FormInstance,
+  field: string,
+  value: number
+): SaveFormValueNumber => {
+  return {
+    type: "SAVE_FORM_VALUE_NUMBER",
+    payload: {
+      form,
+      field,
+      value
+    }
+  };
+};
+
+export const saveFormValueBoolean = (
+  form: FormInstance,
+  field: string,
+  value: boolean
+): SaveFormValueBoolean => {
+  return {
+    type: "SAVE_FORM_VALUE_BOOLEAN",
+    payload: {
+      form,
+      field,
+      value
+    }
+  };
+};
+
+export const resetForms = (): ResetForms => {
+  return {
+    type: "RESET_FORMS"
   };
 };

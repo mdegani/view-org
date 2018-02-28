@@ -3,6 +3,7 @@ export type OrgNode = {
   supervisorPositionId: number;
   employeeId: number;
   employeeName: string;
+  positionName?: string;
   allSupervisors?: number[];
   orgSort?: string;
 };
@@ -29,10 +30,28 @@ export type OrgState = {
 export type OrgNodeFormState = {
   state: FormStateEnum;
   targetNode: number | null;
-  newName: string;
 };
 
 export type CombinedState = {
   orgReducer: OrgState;
   orgNodeFormReducer: OrgNodeFormState;
+  formReducer: FormState;
+};
+
+export enum Fields {
+  "name",
+  "lastName"
+}
+
+export type AddNewOrgNodeFormState = {
+  name: string;
+  lastName: string;
+};
+
+export type FormState = {
+  "new-node-form"?: AddNewOrgNodeFormState;
+};
+
+export type FormField = {
+  [field: string]: string | number | boolean;
 };
