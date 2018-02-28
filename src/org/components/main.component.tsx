@@ -5,12 +5,12 @@ import Toolbar from "./toolbar.component";
 import ViewOrg from "./view-org.component";
 import NodeForm from "./node-form.component";
 import { selectOrgNode, addOrgNode } from "../actions/org.actions";
+import { setCloseNewOrgNodeForm } from "../actions/org-node-form.actions";
 import {
-  setCloseNewOrgNodeForm,
   saveFormValueString,
   FormInstance,
   resetForms
-} from "../actions/org-node-form.actions";
+} from "../../forms/actions/from.actions";
 import {
   getOrgBySupervisor,
   getIterativeSupervisors

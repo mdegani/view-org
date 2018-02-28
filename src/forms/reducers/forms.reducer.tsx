@@ -1,5 +1,5 @@
 import { FormState } from "../../org/types/org.types";
-import { FormActions } from "../actions/org-node-form.actions";
+import { FormActions } from "../actions/from.actions";
 
 // pre-populate forms with values here
 const initialState: FormState = {
