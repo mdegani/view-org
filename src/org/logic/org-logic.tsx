@@ -26,7 +26,14 @@ export const getOrgLevelOne = (org: OrgNode[]): OrgSectionNode[] =>
       employeeId: node.employeeId,
       employeeName: node.employeeName,
       supervisorPositionId: node.supervisorPositionId,
-      orgLevel: 1
+      orgLevel: 1,
+      employee: {
+        id: node.employee.id,
+        firstName: node.employee.firstName,
+        lastName: node.employee.lastName,
+        gender: node.employee.gender,
+        photoUrl: node.employee.photoUrl
+      }
     };
   });
 

@@ -134,7 +134,14 @@ const orgForSelectedOrgNode = createSelector(
           positionId: -1,
           supervisorPositionId: -1,
           employeeId: -1,
-          employeeName: "🕴"
+          employeeName: "🕴",
+          employee: {
+            id: -1,
+            firstName: "",
+            lastName: "",
+            gender: "",
+            photoUrl: ""
+          }
         };
       }
       return org!.find(

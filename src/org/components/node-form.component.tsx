@@ -44,6 +44,7 @@ export default ({
               formName={FormInstance.NewNodeForm}
             />
           </Label>
+          <img src={formValuesState.picture} alt="employee picture" />
         </div>
       </div>
       <Button />

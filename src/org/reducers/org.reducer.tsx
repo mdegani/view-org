@@ -8,7 +8,14 @@ const initialState: OrgState = {
       positionId: 1,
       supervisorPositionId: 0,
       employeeId: 101,
-      employeeName: "Mr. Big, CEO"
+      employeeName: "Mr. Big, CEO",
+      employee: {
+        id: 101,
+        firstName: "Guy",
+        lastName: "Smiley",
+        gender: "male",
+        photoUrl: ""
+      }
     }
   ]
 };
@@ -29,7 +36,14 @@ const orgReducer = (
             positionId: action.payload.positionId,
             supervisorPositionId: action.payload.supervisorId,
             employeeId: action.payload.positionId + 100,
-            employeeName: action.payload.employeeName
+            employeeName: action.payload.employeeName,
+            employee: {
+              id: action.payload.positionId + 100,
+              firstName: action.payload.employeeName,
+              lastName: action.payload.employeeName,
+              gender: action.payload.employeeName,
+              photoUrl: ""
+            }
           }
         ]
       };

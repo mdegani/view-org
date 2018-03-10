@@ -5,7 +5,8 @@ import { FormActions } from "../actions/from.actions";
 const initialState: FormState = {
   "new-node-form": {
     name: "",
-    lastName: ""
+    lastName: "",
+    picture: ""
   }
 };
 

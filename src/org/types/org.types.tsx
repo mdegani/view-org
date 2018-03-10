@@ -1,6 +1,15 @@
+export type Employee = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  photoUrl: string;
+  gender: string;
+};
+
 export type OrgNode = {
   positionId: number;
   supervisorPositionId: number;
+  employee: Employee;
   employeeId: number;
   employeeName: string;
   positionName?: string;
@@ -11,6 +20,7 @@ export type OrgNode = {
 export type OrgSectionNode = {
   positionId: number;
   supervisorPositionId: number;
+  employee: Employee;
   employeeId: number;
   employeeName: string;
   orgLevel: number;
@@ -46,6 +56,7 @@ export enum Fields {
 export type AddNewOrgNodeFormState = {
   name: string;
   lastName: string;
+  picture: string;
 };
 
 export type FormState = {
