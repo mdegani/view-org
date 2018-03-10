@@ -34,7 +34,8 @@ export default ({
                       style={{ minWidth: "2rem" }}
                     />
                   ))}
-                  {orgNode.employeeName}
+                  {/* TODO: whole name, or abbreviated name */}
+                  {orgNode.employee.firstName}
                 </button>
               </li>
             );

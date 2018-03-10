@@ -59,7 +59,8 @@ const OrgView = ({
                 .map((sup, supIndex) => (
                   <a
                     href="#"
-                    key={sup.employeeId}
+                    // TODO: is sup.employee.id the right key? Shouldn't it be the position id?
+                    key={sup.employee.id}
                     className={
                       "text-base font-semibold py-0 text-blue no-underline opacity-100 block border-l " +
                       "pl-1 border-hot-pink overflow-scroll flex-no-wrap"
@@ -71,7 +72,8 @@ const OrgView = ({
                     ) : (
                       undefined
                     )}
-                    {sup.employeeName}
+                    {/* TODO: showing employee name, concatenated */}
+                    {sup.employee.lastName + " " + sup.employee.firstName}
                   </a>
                 ))}
             </div>
@@ -137,8 +139,8 @@ const orgForSelectedOrgNode = createSelector(
           employeeName: "🕴",
           employee: {
             id: -1,
-            firstName: "",
-            lastName: "",
+            firstName: "🕴",
+            lastName: "🕴",
             gender: "",
             photoUrl: ""
           }
@@ -146,8 +148,8 @@ const orgForSelectedOrgNode = createSelector(
       }
       return org!.find(
         org2 =>
-          org2.employeeId ===
-          org.find(orgNode => orgNode!.positionId === supId)!.employeeId
+          org2.employee.id ===
+          org.find(orgNode => orgNode!.positionId === supId)!.employee.id
       )!;
     });
   }

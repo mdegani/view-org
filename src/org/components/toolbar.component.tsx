@@ -26,7 +26,8 @@ const component = ({
       </div>
       <div className="flex justify-between">
         <div className="text-2xl p-2 bg-white overflow-scroll flex-no-wrap w-full">
-          {getOrgNodeById(organization, +selectedOrgNode)!.employeeName}
+          {getOrgNodeById(organization, +selectedOrgNode)!.employee.firstName +
+            "Last Name Too!"}
         </div>
         <a
           href="#"

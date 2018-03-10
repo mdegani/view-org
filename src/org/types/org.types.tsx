@@ -10,8 +10,6 @@ export type OrgNode = {
   positionId: number;
   supervisorPositionId: number;
   employee: Employee;
-  employeeId: number;
-  employeeName: string;
   positionName?: string;
   allSupervisors?: number[];
   orgSort?: string;
@@ -21,8 +19,6 @@ export type OrgSectionNode = {
   positionId: number;
   supervisorPositionId: number;
   employee: Employee;
-  employeeId: number;
-  employeeName: string;
   orgLevel: number;
 };
 

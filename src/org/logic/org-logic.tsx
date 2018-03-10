@@ -23,8 +23,6 @@ export const getOrgLevelOne = (org: OrgNode[]): OrgSectionNode[] =>
   org.map(node => {
     return {
       positionId: node.positionId,
-      employeeId: node.employeeId,
-      employeeName: node.employeeName,
       supervisorPositionId: node.supervisorPositionId,
       orgLevel: 1,
       employee: {
@@ -85,8 +83,9 @@ export const getAllSupervisorNodes = (
       ) as OrgNode),
       {
         positionId: target.positionId,
-        employeeId: target.employeeId,
-        employeeName: target.employeeName,
+        employee: target.employee,
+        // employeeId: target.employeeId,  // TODO: remove this crap
+        // employeeName: target.employeeName,
         orgLevel: _level + 1
       }
     )
