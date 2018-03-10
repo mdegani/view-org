@@ -9,7 +9,9 @@ type addOrgNodeAction = {
   payload: {
     positionId: number;
     supervisorId: number;
-    employeeName: string;
+    employeeFirstName: string;
+    employeeLastName: string;
+    employeeGender: string;
   };
 };
 
@@ -38,14 +40,18 @@ export const selectOrgNode = (positionId: number): selectOrgNodeAction => {
 export const addOrgNode = (
   positionId: number,
   supervisorId: number,
-  employeeName: string
+  employeeFirstName: string,
+  employeeLastName: string,
+  employeeGender: string
 ): addOrgNodeAction => {
   return {
     type: "ADD_ORG_NODE",
     payload: {
       positionId,
       supervisorId,
-      employeeName
+      employeeFirstName,
+      employeeLastName,
+      employeeGender
     }
   };
 };

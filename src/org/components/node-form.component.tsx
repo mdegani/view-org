@@ -16,7 +16,7 @@ export default ({
 }: {
   formState: FormStateEnum;
   formTargetNode: number;
-  onAddNewOrgNode: Function;
+  onAddNewOrgNode: Function; // TODO: type, see type below...
   onUpdateNewName: Function;
   nameValid: boolean;
   formValuesState: AddNewOrgNodeFormState;
@@ -25,7 +25,12 @@ export default ({
     <Form
       className="w-full max-w-md"
       onSubmit={() => {
-        onAddNewOrgNode(formTargetNode, formValuesState.name);
+        onAddNewOrgNode(
+          formTargetNode,
+          formValuesState.firstName,
+          formValuesState.lastName,
+          formValuesState.gender
+        );
       }}
     >
       <div className="flex flex-wrap -mx-3 mb-6">
@@ -33,7 +38,7 @@ export default ({
           <Label text="First Name">
             <Input
               placeholder="Jane"
-              fieldName="name"
+              fieldName="firstName"
               formName={FormInstance.NewNodeForm}
             />
           </Label>

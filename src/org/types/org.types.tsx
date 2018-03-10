@@ -45,13 +45,16 @@ export type CombinedState = {
 };
 
 export enum Fields {
-  "name",
-  "lastName"
+  "firstName",
+  "lastName",
+  "gender",
+  "picture"
 }
 
 export type AddNewOrgNodeFormState = {
-  name: string;
+  firstName: string;
   lastName: string;
+  gender: string;
   picture: string;
 };
 

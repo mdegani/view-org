@@ -84,8 +84,6 @@ export const getAllSupervisorNodes = (
       {
         positionId: target.positionId,
         employee: target.employee,
-        // employeeId: target.employeeId,  // TODO: remove this crap
-        // employeeName: target.employeeName,
         orgLevel: _level + 1
       }
     )

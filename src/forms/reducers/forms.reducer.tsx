@@ -4,8 +4,9 @@ import { FormActions } from "../actions/from.actions";
 // pre-populate forms with values here
 const initialState: FormState = {
   "new-node-form": {
-    name: "",
+    firstName: "",
     lastName: "",
+    gender: "",
     picture: ""
   }
 };

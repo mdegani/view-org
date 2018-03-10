@@ -73,7 +73,7 @@ const OrgView = ({
                       undefined
                     )}
                     {/* TODO: showing employee name, concatenated */}
-                    {sup.employee.lastName + " " + sup.employee.firstName}
+                    {sup.employee.lastName + ", " + sup.employee.firstName}
                   </a>
                 ))}
             </div>
@@ -176,8 +176,22 @@ const mapStateToProps = (state: CombinedState) => {
 const mapDispatchToProps = dispatch => {
   return {
     onSelectOrgNode: positionId => dispatch(selectOrgNode(positionId)),
-    onAddNewOrgNode: (newPositionId, currentNodeId, employeeName) => {
-      dispatch(addOrgNode(newPositionId, currentNodeId, employeeName));
+    onAddNewOrgNode: (
+      newPositionId,
+      currentNodeId,
+      employeeFirstName,
+      EmployeeLastName,
+      EmployeeGender
+    ) => {
+      dispatch(
+        addOrgNode(
+          newPositionId,
+          currentNodeId,
+          employeeFirstName,
+          EmployeeLastName,
+          EmployeeGender
+        )
+      );
       dispatch(setCloseNewOrgNodeForm());
       dispatch(resetForms());
     },

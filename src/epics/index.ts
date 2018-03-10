@@ -47,7 +47,7 @@ const checkout = action$ => {
         return Observable.from([
           saveFormValueString(
             FormInstance.NewNodeForm,
-            "name",
+            "firstName",
             response.name.first
           ),
           saveFormValueString(

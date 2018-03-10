@@ -35,7 +35,9 @@ export default ({
                     />
                   ))}
                   {/* TODO: whole name, or abbreviated name */}
-                  {orgNode.employee.firstName}
+                  {orgNode.employee.lastName +
+                    ", " +
+                    orgNode.employee.firstName}
                 </button>
               </li>
             );

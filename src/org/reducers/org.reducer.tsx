@@ -35,9 +35,9 @@ const orgReducer = (
             supervisorPositionId: action.payload.supervisorId,
             employee: {
               id: action.payload.positionId + 100,
-              firstName: action.payload.employeeName,
-              lastName: action.payload.employeeName,
-              gender: action.payload.employeeName,
+              firstName: action.payload.employeeFirstName,
+              lastName: action.payload.employeeLastName,
+              gender: action.payload.employeeGender,
               photoUrl: ""
             }
           }
