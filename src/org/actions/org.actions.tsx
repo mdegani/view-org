@@ -12,6 +12,7 @@ type addOrgNodeAction = {
     employeeFirstName: string;
     employeeLastName: string;
     employeeGender: string;
+    photoUrl: string;
   };
 };
 
@@ -42,7 +43,8 @@ export const addOrgNode = (
   supervisorId: number,
   employeeFirstName: string,
   employeeLastName: string,
-  employeeGender: string
+  employeeGender: string,
+  photoUrl: string
 ): addOrgNodeAction => {
   return {
     type: "ADD_ORG_NODE",
@@ -51,7 +53,8 @@ export const addOrgNode = (
       supervisorId,
       employeeFirstName,
       employeeLastName,
-      employeeGender
+      employeeGender,
+      photoUrl
     }
   };
 };

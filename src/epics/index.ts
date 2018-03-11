@@ -5,6 +5,7 @@ import {
   saveFormValueString,
   FormInstance
 } from "../forms/actions/from.actions";
+import { addOrgNode } from "../org/actions/org.actions";
 // import * as actions from "../org/actions/org.actions";
 
 type RandomNamePayload = {
@@ -35,7 +36,33 @@ type RandomNamePayload = {
   nat: string;
 };
 
-const checkout = action$ => {
+const createTopManager = action$ => {
+  return action$.ofType("DELETE_ALL_ORG_NODES").switchMap(() => {
+    return Observable.ajax(
+      "https://randomuser.me/api/?nat=ca&inc=name,gender,dob,id,login,picture&noinfo"
+    )
+      .map(data => {
+        return data.response.results[0];
+      })
+      .switchMap((response: RandomNamePayload) => {
+        return Observable.from([
+          addOrgNode(
+            1,
+            0,
+            response.name.first,
+            response.name.last,
+            response.gender,
+            response.picture.large
+          )
+        ]);
+      })
+      .catch(error => {
+        return Observable.from([addOrgNode(1, 0, "", "", "", "")]);
+      });
+  });
+};
+
+const setNewEmployeeDefaults = action$ => {
   return action$.ofType("SET_OPEN_NEW_ORG_NODE_FORM").switchMap(() => {
     return Observable.ajax(
       "https://randomuser.me/api/?nat=ca&inc=name,gender,dob,id,login,picture&noinfo"
@@ -57,6 +84,16 @@ const checkout = action$ => {
           ),
           saveFormValueString(
             FormInstance.NewNodeForm,
+            "gender",
+            response.gender
+          ),
+          saveFormValueString(
+            FormInstance.NewNodeForm,
+            "lastName",
+            response.name.last
+          ),
+          saveFormValueString(
+            FormInstance.NewNodeForm,
             "picture",
             response.picture.large
           )
@@ -65,4 +102,4 @@ const checkout = action$ => {
   });
 };
 
-export const rootEpic = combineEpics(checkout);
+export const rootEpic = combineEpics(setNewEmployeeDefaults, createTopManager);

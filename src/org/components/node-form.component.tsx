@@ -29,7 +29,8 @@ export default ({
           formTargetNode,
           formValuesState.firstName,
           formValuesState.lastName,
-          formValuesState.gender
+          formValuesState.gender,
+          formValuesState.picture
         );
       }}
     >

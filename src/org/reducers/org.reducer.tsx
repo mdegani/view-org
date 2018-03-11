@@ -3,19 +3,7 @@ import { orgNodeActions } from "../actions/org.actions";
 
 const initialState: OrgState = {
   selectedOrgNode: 1,
-  organization: [
-    {
-      positionId: 1,
-      supervisorPositionId: 0,
-      employee: {
-        id: 101,
-        firstName: "Guy",
-        lastName: "Smiley",
-        gender: "male",
-        photoUrl: ""
-      }
-    }
-  ]
+  organization: []
 };
 
 const orgReducer = (
@@ -38,7 +26,7 @@ const orgReducer = (
               firstName: action.payload.employeeFirstName,
               lastName: action.payload.employeeLastName,
               gender: action.payload.employeeGender,
-              photoUrl: ""
+              photoUrl: action.payload.photoUrl
             }
           }
         ]

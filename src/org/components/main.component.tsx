@@ -129,6 +129,9 @@ const orgForSelectedOrgNode = createSelector(
   selectedNode,
   (org: OrgNode[], node: number): OrgNode[] => {
     const selectedOrgNode = org.find(orgNode => orgNode.positionId === node);
+    if (!selectedOrgNode) {
+      return org;
+    }
     return selectedOrgNode!.allSupervisors!.map(supId => {
       if (supId === 0) {
         // for now the top supervisor will report to a man in a business suit levitating
@@ -180,16 +183,18 @@ const mapDispatchToProps = dispatch => {
       newPositionId,
       currentNodeId,
       employeeFirstName,
-      EmployeeLastName,
-      EmployeeGender
+      employeeLastName,
+      employeeGender,
+      employeePhotoUrl
     ) => {
       dispatch(
         addOrgNode(
           newPositionId,
           currentNodeId,
           employeeFirstName,
-          EmployeeLastName,
-          EmployeeGender
+          employeeLastName,
+          employeeGender,
+          employeePhotoUrl
         )
       );
       dispatch(setCloseNewOrgNodeForm());
