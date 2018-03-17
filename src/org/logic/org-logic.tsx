@@ -5,9 +5,9 @@ const TOP_POSITION_SUPERVISOR_PLACEHOLDER = 0;
 
 export const getOrgNodeById = (
   org: OrgNode[],
-  orgNodeId: number
+  positionId: number
 ): OrgNode | undefined => {
-  return org.find(node => node.positionId === orgNodeId);
+  return org.find(orgNode => orgNode.positionId === positionId);
 };
 
 export const getDirectReportsOfOrgNode = (
@@ -19,8 +19,8 @@ export const getDirectReportsOfOrgNode = (
   );
 };
 
-export const getOrgLevelOne = (org: OrgNode[]): OrgSectionNode[] =>
-  org.map(node => {
+export const getOrgLevelOne = (orgNode: OrgNode[]): OrgSectionNode[] =>
+  orgNode.map(node => {
     return {
       positionId: node.positionId,
       supervisorPositionId: node.supervisorPositionId,
@@ -31,7 +31,10 @@ export const getOrgLevelOne = (org: OrgNode[]): OrgSectionNode[] =>
         lastName: node.employee.lastName,
         gender: node.employee.gender,
         photoUrl: node.employee.photoUrl
-      }
+      },
+      // TODO, in all cases where we have this optional orgSort, we should be using
+      // object spread to entirely omit the property when it's absent, rather than assign empty string
+      orgSort: node.orgSort || ""
     };
   });
 
@@ -44,27 +47,25 @@ export const getNextSupervisorNode = (
     return node.positionId === targetId.supervisorPositionId;
   });
 
+// TODO: this function has no test and looks crappy
 export const atTopOfOrg = (list: OrgNode[]) =>
   list[list.length - 1].supervisorPositionId ===
   TOP_POSITION_SUPERVISOR_PLACEHOLDER;
 
-// targetId is not named correctly
 export const assignLevel = (
-  targetId: OrgNode,
+  orgNode: OrgNode,
   orgLevel: number
-): OrgSectionNode => Object.assign({}, targetId, { orgLevel: orgLevel });
+): OrgSectionNode => ({ ...orgNode, ...{ orgLevel: orgLevel } });
 
 export const getAllSupervisorNodes = (
+  orgNode: OrgNode,
   organization: OrgNode[],
-  // not named properly
-  // gets a row for each supervisor relationship "target" has
-  target: OrgNode,
   accumulator?: OrgSectionNode[] | undefined
 ): OrgSectionNode[] => {
   // first iteration:
   if (accumulator === undefined) {
-    return getAllSupervisorNodes(organization, target, [
-      assignLevel(target, 1)
+    return getAllSupervisorNodes(orgNode, organization, [
+      assignLevel(orgNode, 1)
     ]);
   }
   const _level = accumulator[accumulator.length - 1].orgLevel;
@@ -74,25 +75,25 @@ export const getAllSupervisorNodes = (
     return accumulator;
   }
 
-  return getAllSupervisorNodes(organization, target, [
+  return getAllSupervisorNodes(orgNode, organization, [
     ...accumulator,
-    Object.assign(
-      {} as OrgSectionNode,
-      getNextSupervisorNode(organization, accumulator.find(
+    {
+      ...getNextSupervisorNode(organization, accumulator.find(
+        // TODO: create a generic node finding function
         x => x.orgLevel === _level
-      ) as OrgNode),
-      {
-        positionId: target.positionId,
-        employee: target.employee,
+      ) as OrgNode)!,
+      ...{
+        positionId: orgNode.positionId,
+        employee: orgNode.employee,
         orgLevel: _level + 1
       }
-    )
+    }
   ]);
 };
 
-export const fullOrgNodeList = (organization: OrgNode[]) =>
+export const fullOrgNodeList = (organization: OrgNode[]): OrgSectionNode[] =>
   organization.reduce((prev, curr, index, arr) => {
-    return [...prev, ...getAllSupervisorNodes(arr, curr)];
+    return [...prev, ...getAllSupervisorNodes(curr, arr)];
   }, []);
 
 export const getIterativeSupervisors = (
@@ -101,9 +102,12 @@ export const getIterativeSupervisors = (
 ): OrgNode => {
   // first iteration
   if (!organizationNode.allSupervisors) {
-    organizationNode = Object.assign({}, organizationNode, {
-      allSupervisors: [organizationNode.supervisorPositionId]
-    });
+    organizationNode = {
+      ...organizationNode,
+      ...{
+        allSupervisors: [organizationNode.supervisorPositionId]
+      }
+    };
     getIterativeSupervisors(organizationNode, organization);
   }
 
@@ -125,27 +129,29 @@ export const getIterativeSupervisors = (
     const orgSort = reversedAllSups
       .map(supId => ("0000000000" + supId).slice(-10))
       .join("-");
-    const orgNodeWithSupervisors: OrgNode = Object.assign(
-      {},
-      organizationNode,
-      {
+    const orgNodeWithSupervisors: OrgNode = {
+      ...organizationNode,
+      ...{
         orgSort,
         allSupervisors: reversedAllSups
       }
-    );
+    };
     return orgNodeWithSupervisors;
   }
 
   // get the next supervisor node
   return getIterativeSupervisors(
-    Object.assign({}, organizationNode, {
-      allSupervisors: [
-        // is that the correct assertion? assume array?
-        ...(organizationNode.allSupervisors as number[]),
-        (getOrgNodeById(organization, lastAllSup) as OrgNode)
-          .supervisorPositionId
-      ]
-    }),
+    {
+      ...organizationNode,
+      ...{
+        allSupervisors: [
+          // is that the correct assertion? assume array?
+          ...(organizationNode.allSupervisors as number[]),
+          (getOrgNodeById(organization, lastAllSup) as OrgNode)
+            .supervisorPositionId
+        ]
+      }
+    },
     organization
   );
 };

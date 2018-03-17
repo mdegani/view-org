@@ -4,12 +4,14 @@ export type OrgNodeKeys = {
   positionId: number;
   supervisorPositionId: number;
   allSupervisors?: number[];
+  orgSort?: string;
 };
 
 export type OrgSectionNodeKeys = {
   positionId: number;
   supervisorPositionId: number;
   orgLevel: number;
+  orgSort?: string;
 };
 
 export const createOrgNode = (posSuper: OrgNodeKeys): OrgNode => ({
@@ -21,7 +23,8 @@ export const createOrgNode = (posSuper: OrgNodeKeys): OrgNode => ({
     lastName: "last name " + posSuper.positionId,
     gender: "gender " + posSuper.positionId,
     photoUrl: ""
-  }
+  },
+  orgSort: posSuper.orgSort || ""
 });
 
 export const createOrg = (orgNodeKeysList: OrgNodeKeys[]) =>
@@ -29,24 +32,28 @@ export const createOrg = (orgNodeKeysList: OrgNodeKeys[]) =>
     return createOrgNode(posSuper);
   });
 
+export const createOrgSectionNode = (
+  orgSectionNodeKeys: OrgSectionNodeKeys
+): OrgSectionNode => ({
+  positionId: orgSectionNodeKeys.positionId,
+  supervisorPositionId: orgSectionNodeKeys.supervisorPositionId,
+  employee: {
+    id: 100 + orgSectionNodeKeys.positionId,
+    firstName: "first name " + orgSectionNodeKeys.positionId,
+    lastName: "last name " + orgSectionNodeKeys.positionId,
+    gender: "gender " + orgSectionNodeKeys.positionId,
+    photoUrl: ""
+  },
+  orgLevel: orgSectionNodeKeys.orgLevel,
+  orgSort: orgSectionNodeKeys.orgSort || ""
+});
+
 export const createOrgSection = (
   orgSectionNodeKeysList: OrgSectionNodeKeys[]
 ) =>
   orgSectionNodeKeysList.map(
-    (orgSectionNodeKeys: OrgSectionNodeKeys): OrgSectionNode => {
-      return {
-        positionId: orgSectionNodeKeys.positionId,
-        supervisorPositionId: orgSectionNodeKeys.supervisorPositionId,
-        employee: {
-          id: 100 + orgSectionNodeKeys.positionId,
-          firstName: "first name " + orgSectionNodeKeys.positionId,
-          lastName: "last name " + orgSectionNodeKeys.positionId,
-          gender: "gender " + orgSectionNodeKeys.positionId,
-          photoUrl: ""
-        },
-        orgLevel: orgSectionNodeKeys.orgLevel
-      };
-    }
+    (orgSectionNodeKeys: OrgSectionNodeKeys): OrgSectionNode =>
+      createOrgSectionNode(orgSectionNodeKeys)
   );
 
 const fakeOrgRelationships: OrgNodeKeys[] = [
