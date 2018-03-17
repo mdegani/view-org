@@ -24,8 +24,10 @@ import {
   createOrgSectionNode
 } from "./testHelpers/fake-org-generator";
 
-it("should create the full organization list", () => {
-  expect(fullOrgNodeList(fakeOrg)).toEqual(fullTgt);
+describe("fullOrgNodeList", () => {
+  it("should create the full organization list", () => {
+    expect(fullOrgNodeList(fakeOrg)).toEqual(fullTgt);
+  });
 });
 
 // NOMOCK: could use a two item OrgNode[]
@@ -89,15 +91,17 @@ describe("getOrgLevelOne", () => {
   });
 });
 
-it("should get all supervisors", () => {
-  const expected: OrgSectionNode[] = createOrgSection(
-    [[4, 3, 1], [4, 1, 2], [4, 0, 3]].map(item => ({
-      positionId: item[0],
-      supervisorPositionId: item[1],
-      orgLevel: item[2]
-    }))
-  );
-  expect(getAllSupervisorNodes(fakeOrg, fakeOrg[3])).toEqual(expected);
+describe("getAllSupervisorNodes", () => {
+  it("should get all supervisors", () => {
+    const expected: OrgSectionNode[] = createOrgSection(
+      [[4, 3, 1], [4, 1, 2], [4, 0, 3]].map(item => ({
+        positionId: item[0],
+        supervisorPositionId: item[1],
+        orgLevel: item[2]
+      }))
+    );
+    expect(getAllSupervisorNodes(fakeOrg[3], fakeOrg)).toEqual(expected);
+  });
 });
 
 describe("getNextSupervisorNode", () => {
@@ -133,24 +137,36 @@ describe("horizontal organization functions", () => {
   it("should add orgSort and allSupervisors properties", () => {
     expect(getOrgWithHorizontal(fakeOrg)).toEqual(fakeOrgHorizontal);
   });
-  it("should get the horizontal org for an org node", () => {
-    const expected = createOrdNodeWithSup({
-      positionId: 6,
-      supervisorPositionId: 4,
-      allSupervisors: [0, 1, 3, 4, 6]
+
+  describe("getIterativeSupervisors", () => {
+    it("should get the horizontal org for an org node", () => {
+      const expected = createOrdNodeWithSup({
+        positionId: 6,
+        supervisorPositionId: 4,
+        allSupervisors: [0, 1, 3, 4, 6]
+      });
+      expect(getIterativeSupervisors(fakeOrg[5], fakeOrg)).toEqual(expected);
     });
-    expect(getIterativeSupervisors(fakeOrg[5], fakeOrg)).toEqual(expected);
   });
-  it("should be able to do a filtered organization", () => {
-    expect(getOrgWithHorizontal(fakeOrgForSup3)).toEqual(
-      fakeOrgForSup3Horizontal
-    );
+
+  describe("getOrgWithHorizontal", () => {
+    it("should be able to do a filtered organization", () => {
+      expect(getOrgWithHorizontal(fakeOrgForSup3)).toEqual(
+        fakeOrgForSup3Horizontal
+      );
+    });
   });
-  it("should get the top position", () => {
-    expect(findOrgTopSupervisor(fakeOrg)).toEqual(0);
+
+  describe("findOrgTopSupervisor", () => {
+    it("should get the top position", () => {
+      expect(findOrgTopSupervisor(fakeOrg)).toEqual(0);
+    });
   });
-  it("should filter the organization", () => {
-    expect(getOrgBySupervisor(fakeOrg, 3)).toEqual(filteredEeList3);
+
+  describe("getOrgBySupervisor", () => {
+    it("should filter the organization", () => {
+      expect(getOrgBySupervisor(fakeOrg, 3)).toEqual(filteredEeList3);
+    });
   });
 });
 
