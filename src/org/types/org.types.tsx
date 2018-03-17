@@ -20,6 +20,7 @@ export type OrgSectionNode = {
   supervisorPositionId: number;
   employee: Employee;
   orgLevel: number;
+  orgSort?: string;
 };
 
 export enum FormStateEnum {

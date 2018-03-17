@@ -8,7 +8,8 @@ import {
   getIterativeSupervisors,
   findOrgTopSupervisor,
   getOrgBySupervisor,
-  getNextSupervisorNode
+  getNextSupervisorNode,
+  assignLevel
 } from "./org-logic";
 import { OrgNode, OrgSectionNode } from "../types/org.types";
 import {
@@ -19,44 +20,75 @@ import {
   fakeOrg,
   fullTgt,
   fakeOrgHorizontal,
-  createOrdNodeWithSupFiltered
+  createOrdNodeWithSupFiltered,
+  createOrgSectionNode
 } from "./testHelpers/fake-org-generator";
 
 it("should create the full organization list", () => {
   expect(fullOrgNodeList(fakeOrg)).toEqual(fullTgt);
 });
-it("get an organizationNode by id", () => {
-  const expected: OrgNode = createOrgNode({
-    positionId: 1,
-    supervisorPositionId: 0
+
+// NOMOCK: could use a two item OrgNode[]
+describe("getOrgNodeById", () => {
+  it("should get an OrgNode by positionId", () => {
+    const expected: OrgNode = createOrgNode({
+      positionId: 1,
+      supervisorPositionId: 0
+    });
+    expect(getOrgNodeById(fakeOrg, 1)).toEqual(expected);
   });
-  expect(getOrgNodeById(fakeOrg, 1)).toEqual(expected);
 });
-it("get organizationNodes by direct supervisor id", () => {
-  const expected: OrgNode[] = createOrg([
-    { positionId: 4, supervisorPositionId: 3 },
-    { positionId: 5, supervisorPositionId: 3 }
-  ]);
-  expect(getDirectReportsOfOrgNode(fakeOrg, 3)).toEqual(expected);
+
+// NOMOCK: could use a two item OrgNode[]
+describe("getDirectReportsOfOrgNode", () => {
+  it("should get OrgNode[] by supervisorPositionId", () => {
+    const expected: OrgNode[] = createOrg([
+      { positionId: 4, supervisorPositionId: 3 },
+      { positionId: 5, supervisorPositionId: 3 }
+    ]);
+    expect(getDirectReportsOfOrgNode(fakeOrg, 3)).toEqual(expected);
+  });
 });
-it("should get level one of the organization", () => {
-  const expected: OrgSectionNode[] = createOrgSection(
-    [
-      [1, 0, 1],
-      [2, 1, 1],
-      [3, 1, 1],
-      [4, 3, 1],
-      [5, 3, 1],
-      [6, 4, 1],
-      [7, 2, 1]
-    ].map(item => ({
-      positionId: item[0],
-      supervisorPositionId: item[1],
-      orgLevel: item[2]
-    }))
-  );
-  expect(getOrgLevelOne(fakeOrg)).toEqual(expected);
+
+describe("assignLevel", () => {
+  it("should convert an OrgNode into and OrgSectionNode with a given level", () => {
+    const expected: OrgSectionNode = createOrgSectionNode({
+      positionId: 1,
+      supervisorPositionId: 0,
+      orgLevel: 7,
+      orgSort: "org-sort-string"
+    });
+    const startingOrgNode = createOrgNode({
+      positionId: 1,
+      supervisorPositionId: 0,
+      orgSort: "org-sort-string"
+    });
+    const actual = assignLevel(startingOrgNode, 7);
+    expect(actual).toEqual(expected);
+  });
 });
+
+describe("getOrgLevelOne", () => {
+  it("should map an OrgNode[] to OrgSectionNode[] with orgLevel as 1 for each", () => {
+    const expected: OrgSectionNode[] = createOrgSection(
+      [
+        [1, 0, 1],
+        [2, 1, 1],
+        [3, 1, 1],
+        [4, 3, 1],
+        [5, 3, 1],
+        [6, 4, 1],
+        [7, 2, 1]
+      ].map(item => ({
+        positionId: item[0],
+        supervisorPositionId: item[1],
+        orgLevel: item[2]
+      }))
+    );
+    expect(getOrgLevelOne(fakeOrg)).toEqual(expected);
+  });
+});
+
 it("should get all supervisors", () => {
   const expected: OrgSectionNode[] = createOrgSection(
     [[4, 3, 1], [4, 1, 2], [4, 0, 3]].map(item => ({
@@ -67,13 +99,16 @@ it("should get all supervisors", () => {
   );
   expect(getAllSupervisorNodes(fakeOrg, fakeOrg[3])).toEqual(expected);
 });
-it("should get next level supervisor", () => {
-  expect(
-    getNextSupervisorNode(
-      fakeOrg,
-      Object.assign({}, fakeOrg[3], { orgLevel: 1 })
-    )
-  ).toEqual(fakeOrg[2]);
+
+describe("getNextSupervisorNode", () => {
+  it("should get next level supervisor OrgNode", () => {
+    expect(
+      getNextSupervisorNode(
+        fakeOrg,
+        Object.assign({}, fakeOrg[3], { orgLevel: 1 })
+      )
+    ).toEqual(fakeOrg[2]);
+  });
 });
 
 const fakeOrgForSup3 = createOrg([

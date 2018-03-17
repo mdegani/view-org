@@ -5,9 +5,9 @@ const TOP_POSITION_SUPERVISOR_PLACEHOLDER = 0;
 
 export const getOrgNodeById = (
   org: OrgNode[],
-  orgNodeId: number
+  positionId: number
 ): OrgNode | undefined => {
-  return org.find(node => node.positionId === orgNodeId);
+  return org.find(orgNode => orgNode.positionId === positionId);
 };
 
 export const getDirectReportsOfOrgNode = (
@@ -19,8 +19,8 @@ export const getDirectReportsOfOrgNode = (
   );
 };
 
-export const getOrgLevelOne = (org: OrgNode[]): OrgSectionNode[] =>
-  org.map(node => {
+export const getOrgLevelOne = (orgNode: OrgNode[]): OrgSectionNode[] =>
+  orgNode.map(node => {
     return {
       positionId: node.positionId,
       supervisorPositionId: node.supervisorPositionId,
@@ -31,7 +31,10 @@ export const getOrgLevelOne = (org: OrgNode[]): OrgSectionNode[] =>
         lastName: node.employee.lastName,
         gender: node.employee.gender,
         photoUrl: node.employee.photoUrl
-      }
+      },
+      // TODO, in all cases where we have this optional orgSort, we should be using
+      // object spread to entirely omit the property when it's absent, rather than assign empty string
+      orgSort: node.orgSort || ""
     };
   });
 
@@ -44,15 +47,16 @@ export const getNextSupervisorNode = (
     return node.positionId === targetId.supervisorPositionId;
   });
 
+// TODO: this function has no test and looks crappy
 export const atTopOfOrg = (list: OrgNode[]) =>
   list[list.length - 1].supervisorPositionId ===
   TOP_POSITION_SUPERVISOR_PLACEHOLDER;
 
 // targetId is not named correctly
 export const assignLevel = (
-  targetId: OrgNode,
+  orgNode: OrgNode,
   orgLevel: number
-): OrgSectionNode => Object.assign({}, targetId, { orgLevel: orgLevel });
+): OrgSectionNode => Object.assign({}, orgNode, { orgLevel: orgLevel });
 
 export const getAllSupervisorNodes = (
   organization: OrgNode[],
