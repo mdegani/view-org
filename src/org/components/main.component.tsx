@@ -34,15 +34,21 @@ const OrgView = ({
   nameValid,
   formValuesState
 }: {
-  // TODO: better typing for this function https://www.typescriptlang.org/docs/handbook/functions.html
-  onSelectOrgNode: Function;
-  onAddNewOrgNode: (newPositionId: number, currentNodeId: number) => void; // TODO: is void right??
+  onSelectOrgNode: (positionId: number) => void;
+  onAddNewOrgNode: (
+    newPositionId: number,
+    currentNodeId: number,
+    employeeFirstName: string,
+    employeeLastName: string,
+    employeeGender: string,
+    employeePhotoUrl: string
+  ) => void;
   supervisorsOrg: OrgNode[];
   supervisorChain: OrgNode[];
   nextAvailableId: number;
   formState: FormStateEnum;
   formTargetNode: number;
-  onUpdateNewName: Function;
+  onUpdateNewName: (field: string, newValue: string) => void;
   nameValid: boolean;
   formValuesState: AddNewOrgNodeFormState;
 }) => {
@@ -59,7 +65,7 @@ const OrgView = ({
                 .map((sup, supIndex) => (
                   <a
                     href="#"
-                    key={sup.employeeId}
+                    key={sup.positionId}
                     className={
                       "text-base font-semibold py-0 text-blue no-underline opacity-100 block border-l " +
                       "pl-1 border-hot-pink overflow-scroll flex-no-wrap"
@@ -71,7 +77,8 @@ const OrgView = ({
                     ) : (
                       undefined
                     )}
-                    {sup.employeeName}
+                    {/* TODO: showing employee name, concatenated */}
+                    {sup.employee.lastName + ", " + sup.employee.firstName}
                   </a>
                 ))}
             </div>
@@ -127,6 +134,9 @@ const orgForSelectedOrgNode = createSelector(
   selectedNode,
   (org: OrgNode[], node: number): OrgNode[] => {
     const selectedOrgNode = org.find(orgNode => orgNode.positionId === node);
+    if (!selectedOrgNode) {
+      return org;
+    }
     return selectedOrgNode!.allSupervisors!.map(supId => {
       if (supId === 0) {
         // for now the top supervisor will report to a man in a business suit levitating
@@ -134,13 +144,20 @@ const orgForSelectedOrgNode = createSelector(
           positionId: -1,
           supervisorPositionId: -1,
           employeeId: -1,
-          employeeName: "🕴"
+          employeeName: "🕴",
+          employee: {
+            id: -1,
+            firstName: "🕴",
+            lastName: "🕴",
+            gender: "",
+            photoUrl: ""
+          }
         };
       }
       return org!.find(
         org2 =>
-          org2.employeeId ===
-          org.find(orgNode => orgNode!.positionId === supId)!.employeeId
+          org2.employee.id ===
+          org.find(orgNode => orgNode!.positionId === supId)!.employee.id
       )!;
     });
   }
@@ -167,8 +184,24 @@ const mapStateToProps = (state: CombinedState) => {
 const mapDispatchToProps = dispatch => {
   return {
     onSelectOrgNode: positionId => dispatch(selectOrgNode(positionId)),
-    onAddNewOrgNode: (newPositionId, currentNodeId, employeeName) => {
-      dispatch(addOrgNode(newPositionId, currentNodeId, employeeName));
+    onAddNewOrgNode: (
+      newPositionId: number,
+      currentNodeId: number,
+      employeeFirstName: string,
+      employeeLastName: string,
+      employeeGender: string,
+      employeePhotoUrl: string
+    ) => {
+      dispatch(
+        addOrgNode(
+          newPositionId,
+          currentNodeId,
+          employeeFirstName,
+          employeeLastName,
+          employeeGender,
+          employeePhotoUrl
+        )
+      );
       dispatch(setCloseNewOrgNodeForm());
       dispatch(resetForms());
     },

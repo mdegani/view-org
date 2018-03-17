@@ -19,14 +19,23 @@ const component = ({
   onDeleteAllOrgNodes: () => void;
   onDeleteOrgNode: (newPositionId: number) => void;
 }) => {
-  return (
+  return getOrgNodeById(organization, +selectedOrgNode) ? (
     <nav className="bg-black w-full fixed flex flex-col">
       <div className="font-bold text-base text-hot-pink py-2">
         Organization View
       </div>
       <div className="flex justify-between">
         <div className="text-2xl p-2 bg-white overflow-scroll flex-no-wrap w-full">
-          {getOrgNodeById(organization, +selectedOrgNode)!.employeeName}
+          {getOrgNodeById(organization, +selectedOrgNode)!.employee.lastName +
+            ", " +
+            getOrgNodeById(organization, +selectedOrgNode)!.employee.firstName}
+          <img
+            src={
+              getOrgNodeById(organization, +selectedOrgNode)!.employee.photoUrl
+            }
+            alt=""
+            style={{ maxWidth: "20px" }}
+          />
         </div>
         <a
           href="#"
@@ -51,6 +60,8 @@ const component = ({
         </a>
       </div>
     </nav>
+  ) : (
+    <div>No Employees!</div>
   );
 };
 

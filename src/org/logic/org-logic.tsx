@@ -23,10 +23,15 @@ export const getOrgLevelOne = (org: OrgNode[]): OrgSectionNode[] =>
   org.map(node => {
     return {
       positionId: node.positionId,
-      employeeId: node.employeeId,
-      employeeName: node.employeeName,
       supervisorPositionId: node.supervisorPositionId,
-      orgLevel: 1
+      orgLevel: 1,
+      employee: {
+        id: node.employee.id,
+        firstName: node.employee.firstName,
+        lastName: node.employee.lastName,
+        gender: node.employee.gender,
+        photoUrl: node.employee.photoUrl
+      }
     };
   });
 
@@ -78,8 +83,7 @@ export const getAllSupervisorNodes = (
       ) as OrgNode),
       {
         positionId: target.positionId,
-        employeeId: target.employeeId,
-        employeeName: target.employeeName,
+        employee: target.employee,
         orgLevel: _level + 1
       }
     )
@@ -162,12 +166,13 @@ export const getOrgBySupervisor = (
         organizationNode => organizationNode.supervisorPositionId === positionId
       )
       .map(organizationNode => {
-        return Object.assign(organizationNode, {
-          orgSup: organizationNode.supervisorPositionId,
+        return {
+          positionId: organizationNode.positionId,
+          employee: organizationNode.employee,
           supervisorPositionId: (organization.find(
             orgNode => orgNode.positionId === organizationNode.positionId
           ) as OrgNode).supervisorPositionId
-        });
+        };
       })
   );
 

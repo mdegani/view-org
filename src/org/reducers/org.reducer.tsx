@@ -3,14 +3,7 @@ import { orgNodeActions } from "../actions/org.actions";
 
 const initialState: OrgState = {
   selectedOrgNode: 1,
-  organization: [
-    {
-      positionId: 1,
-      supervisorPositionId: 0,
-      employeeId: 101,
-      employeeName: "Mr. Big, CEO"
-    }
-  ]
+  organization: []
 };
 
 const orgReducer = (
@@ -28,8 +21,13 @@ const orgReducer = (
           {
             positionId: action.payload.positionId,
             supervisorPositionId: action.payload.supervisorId,
-            employeeId: action.payload.positionId + 100,
-            employeeName: action.payload.employeeName
+            employee: {
+              id: action.payload.positionId + 100,
+              firstName: action.payload.employeeFirstName,
+              lastName: action.payload.employeeLastName,
+              gender: action.payload.employeeGender,
+              photoUrl: action.payload.photoUrl
+            }
           }
         ]
       };

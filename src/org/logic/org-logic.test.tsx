@@ -11,296 +11,60 @@ import {
   getNextSupervisorNode
 } from "./org-logic";
 import { OrgNode, OrgSectionNode } from "../types/org.types";
-
-// here is a simple self-referencing
-// org chart
-
-const fakeOrg: OrgNode[] = [
-  {
-    positionId: 1,
-    supervisorPositionId: 0,
-    employeeId: 101,
-    employeeName: "name1"
-  },
-  {
-    positionId: 2,
-    supervisorPositionId: 1,
-    employeeId: 102,
-    employeeName: "name2"
-  },
-  {
-    positionId: 3,
-    supervisorPositionId: 1,
-    employeeId: 103,
-    employeeName: "name3"
-  },
-  {
-    positionId: 4,
-    supervisorPositionId: 3,
-    employeeId: 104,
-    employeeName: "name4"
-  },
-  {
-    positionId: 5,
-    supervisorPositionId: 3,
-    employeeId: 105,
-    employeeName: "name5"
-  },
-  {
-    positionId: 6,
-    supervisorPositionId: 4,
-    employeeId: 106,
-    employeeName: "name6"
-  },
-  {
-    positionId: 7,
-    supervisorPositionId: 2,
-    employeeId: 107,
-    employeeName: "name7"
-  }
-];
-
-// given the above org chart
-// we want the following, so
-// that we can filter in a simple
-// way
-
-const fullTgt: OrgSectionNode[] = [
-  {
-    positionId: 1,
-    supervisorPositionId: 0,
-    employeeId: 101,
-    employeeName: "name1",
-    orgLevel: 1
-  },
-  {
-    positionId: 2,
-    supervisorPositionId: 1,
-    employeeId: 102,
-    employeeName: "name2",
-    orgLevel: 1
-  },
-  {
-    positionId: 2,
-    supervisorPositionId: 0,
-    employeeId: 102,
-    employeeName: "name2",
-    orgLevel: 2
-  },
-  {
-    positionId: 3,
-    supervisorPositionId: 1,
-    employeeId: 103,
-    employeeName: "name3",
-    orgLevel: 1
-  },
-  {
-    positionId: 3,
-    supervisorPositionId: 0,
-    employeeId: 103,
-    employeeName: "name3",
-    orgLevel: 2
-  },
-  {
-    positionId: 4,
-    supervisorPositionId: 3,
-    employeeId: 104,
-    employeeName: "name4",
-    orgLevel: 1
-  },
-  {
-    positionId: 4,
-    supervisorPositionId: 1,
-    employeeId: 104,
-    employeeName: "name4",
-    orgLevel: 2
-  },
-  {
-    positionId: 4,
-    supervisorPositionId: 0,
-    employeeId: 104,
-    employeeName: "name4",
-    orgLevel: 3
-  },
-  {
-    positionId: 5,
-    supervisorPositionId: 3,
-    employeeId: 105,
-    employeeName: "name5",
-    orgLevel: 1
-  },
-  {
-    positionId: 5,
-    supervisorPositionId: 1,
-    employeeId: 105,
-    employeeName: "name5",
-    orgLevel: 2
-  },
-  {
-    positionId: 5,
-    supervisorPositionId: 0,
-    employeeId: 105,
-    employeeName: "name5",
-    orgLevel: 3
-  },
-  {
-    positionId: 6,
-    supervisorPositionId: 4,
-    employeeId: 106,
-    employeeName: "name6",
-    orgLevel: 1
-  },
-  {
-    positionId: 6,
-    supervisorPositionId: 3,
-    employeeId: 106,
-    employeeName: "name6",
-    orgLevel: 2
-  },
-  {
-    positionId: 6,
-    supervisorPositionId: 1,
-    employeeId: 106,
-    employeeName: "name6",
-    orgLevel: 3
-  },
-  {
-    positionId: 6,
-    supervisorPositionId: 0,
-    employeeId: 106,
-    employeeName: "name6",
-    orgLevel: 4
-  },
-  {
-    positionId: 7,
-    supervisorPositionId: 2,
-    employeeId: 107,
-    employeeName: "name7",
-    orgLevel: 1
-  },
-  {
-    positionId: 7,
-    supervisorPositionId: 1,
-    employeeId: 107,
-    employeeName: "name7",
-    orgLevel: 2
-  },
-  {
-    positionId: 7,
-    supervisorPositionId: 0,
-    employeeId: 107,
-    employeeName: "name7",
-    orgLevel: 3
-  }
-];
+import {
+  createOrgNode,
+  createOrg,
+  createOrdNodeWithSup,
+  createOrgSection,
+  fakeOrg,
+  fullTgt,
+  fakeOrgHorizontal,
+  createOrdNodeWithSupFiltered
+} from "./testHelpers/fake-org-generator";
 
 it("should create the full organization list", () => {
   expect(fullOrgNodeList(fakeOrg)).toEqual(fullTgt);
 });
 it("get an organizationNode by id", () => {
-  const expected: OrgNode = {
+  const expected: OrgNode = createOrgNode({
     positionId: 1,
-    supervisorPositionId: 0,
-    employeeId: 101,
-    employeeName: "name1"
-  };
+    supervisorPositionId: 0
+  });
   expect(getOrgNodeById(fakeOrg, 1)).toEqual(expected);
 });
 it("get organizationNodes by direct supervisor id", () => {
-  const expected: OrgNode[] = [
-    {
-      positionId: 4,
-      supervisorPositionId: 3,
-      employeeId: 104,
-      employeeName: "name4"
-    },
-    {
-      positionId: 5,
-      supervisorPositionId: 3,
-      employeeId: 105,
-      employeeName: "name5"
-    }
-  ];
+  const expected: OrgNode[] = createOrg([
+    { positionId: 4, supervisorPositionId: 3 },
+    { positionId: 5, supervisorPositionId: 3 }
+  ]);
   expect(getDirectReportsOfOrgNode(fakeOrg, 3)).toEqual(expected);
 });
 it("should get level one of the organization", () => {
-  const expected: OrgSectionNode[] = [
-    {
-      positionId: 1,
-      supervisorPositionId: 0,
-      employeeId: 101,
-      employeeName: "name1",
-      orgLevel: 1
-    },
-    {
-      positionId: 2,
-      supervisorPositionId: 1,
-      employeeId: 102,
-      employeeName: "name2",
-      orgLevel: 1
-    },
-    {
-      positionId: 3,
-      supervisorPositionId: 1,
-      employeeId: 103,
-      employeeName: "name3",
-      orgLevel: 1
-    },
-    {
-      positionId: 4,
-      supervisorPositionId: 3,
-      employeeId: 104,
-      employeeName: "name4",
-      orgLevel: 1
-    },
-    {
-      positionId: 5,
-      supervisorPositionId: 3,
-      employeeId: 105,
-      employeeName: "name5",
-      orgLevel: 1
-    },
-    {
-      positionId: 6,
-      supervisorPositionId: 4,
-      employeeId: 106,
-      employeeName: "name6",
-      orgLevel: 1
-    },
-    {
-      positionId: 7,
-      supervisorPositionId: 2,
-      employeeId: 107,
-      employeeName: "name7",
-      orgLevel: 1
-    }
-  ];
+  const expected: OrgSectionNode[] = createOrgSection(
+    [
+      [1, 0, 1],
+      [2, 1, 1],
+      [3, 1, 1],
+      [4, 3, 1],
+      [5, 3, 1],
+      [6, 4, 1],
+      [7, 2, 1]
+    ].map(item => ({
+      positionId: item[0],
+      supervisorPositionId: item[1],
+      orgLevel: item[2]
+    }))
+  );
   expect(getOrgLevelOne(fakeOrg)).toEqual(expected);
 });
 it("should get all supervisors", () => {
-  const expected: OrgSectionNode[] = [
-    {
-      positionId: 4,
-      supervisorPositionId: 3,
-      employeeId: 104,
-      employeeName: "name4",
-      orgLevel: 1
-    },
-    {
-      positionId: 4,
-      supervisorPositionId: 1,
-      employeeId: 104,
-      employeeName: "name4",
-      orgLevel: 2
-    },
-    {
-      positionId: 4,
-      supervisorPositionId: 0,
-      employeeId: 104,
-      employeeName: "name4",
-      orgLevel: 3
-    }
-  ];
+  const expected: OrgSectionNode[] = createOrgSection(
+    [[4, 3, 1], [4, 1, 2], [4, 0, 3]].map(item => ({
+      positionId: item[0],
+      supervisorPositionId: item[1],
+      orgLevel: item[2]
+    }))
+  );
   expect(getAllSupervisorNodes(fakeOrg, fakeOrg[3])).toEqual(expected);
 });
 it("should get next level supervisor", () => {
@@ -312,159 +76,34 @@ it("should get next level supervisor", () => {
   ).toEqual(fakeOrg[2]);
 });
 
-const fakeOrgHorizontal: OrgNode[] = [
-  {
-    positionId: 1,
-    supervisorPositionId: 0,
-    employeeId: 101,
-    employeeName: "name1",
-    orgSort: "0000000000-0000000001",
-    allSupervisors: [0, 1]
-  },
-  {
-    positionId: 2,
-    supervisorPositionId: 1,
-    employeeId: 102,
-    employeeName: "name2",
-    orgSort: "0000000000-0000000001-0000000002",
-    allSupervisors: [0, 1, 2]
-  },
-  {
-    positionId: 3,
-    supervisorPositionId: 1,
-    employeeId: 103,
-    employeeName: "name3",
-    orgSort: "0000000000-0000000001-0000000003",
-    allSupervisors: [0, 1, 3]
-  },
-  {
-    positionId: 4,
-    supervisorPositionId: 3,
-    employeeId: 104,
-    employeeName: "name4",
-    orgSort: "0000000000-0000000001-0000000003-0000000004",
-    allSupervisors: [0, 1, 3, 4]
-  },
-  {
-    positionId: 5,
-    supervisorPositionId: 3,
-    employeeId: 105,
-    employeeName: "name5",
-    orgSort: "0000000000-0000000001-0000000003-0000000005",
-    allSupervisors: [0, 1, 3, 5]
-  },
-  {
-    positionId: 6,
-    supervisorPositionId: 4,
-    employeeId: 106,
-    employeeName: "name6",
-    orgSort: "0000000000-0000000001-0000000003-0000000004-0000000006",
-    allSupervisors: [0, 1, 3, 4, 6]
-  },
-  {
-    positionId: 7,
-    supervisorPositionId: 2,
-    employeeId: 107,
-    employeeName: "name7",
-    orgSort: "0000000000-0000000001-0000000002-0000000007",
-    allSupervisors: [0, 1, 2, 7]
-  }
-];
+const fakeOrgForSup3 = createOrg([
+  { positionId: 4, supervisorPositionId: 3 },
+  { positionId: 5, supervisorPositionId: 3 },
+  { positionId: 6, supervisorPositionId: 4 }
+]);
 
-const fakeOrgForSup3: OrgNode[] = [
-  {
-    positionId: 4,
-    supervisorPositionId: 3,
-    employeeId: 104,
-    employeeName: "name4"
-  },
-  {
-    positionId: 5,
-    supervisorPositionId: 3,
-    employeeId: 105,
-    employeeName: "name5"
-  },
-  {
-    positionId: 6,
-    supervisorPositionId: 4,
-    employeeId: 106,
-    employeeName: "name6"
-  }
-];
-
-const fakeOrgForSup3Horizontal: OrgNode[] = [
-  {
-    positionId: 4,
-    supervisorPositionId: 3,
-    employeeId: 104,
-    employeeName: "name4",
-    orgSort: "0000000003-0000000004",
-    allSupervisors: [3, 4]
-  },
-  {
-    positionId: 5,
-    supervisorPositionId: 3,
-    employeeId: 105,
-    employeeName: "name5",
-    orgSort: "0000000003-0000000005",
-    allSupervisors: [3, 5]
-  },
-  {
-    positionId: 6,
-    supervisorPositionId: 4,
-    employeeId: 106,
-    employeeName: "name6",
-    orgSort: "0000000003-0000000004-0000000006",
-    allSupervisors: [3, 4, 6]
-  }
-];
+const fakeOrgForSup3Horizontal = [
+  { positionId: 4, supervisorPositionId: 3, allSupervisors: [3, 4] },
+  { positionId: 5, supervisorPositionId: 3, allSupervisors: [3, 5] },
+  { positionId: 6, supervisorPositionId: 4, allSupervisors: [3, 4, 6] }
+].map(createOrdNodeWithSup);
 
 const filteredEeList3 = [
-  {
-    allSupervisors: [3, 4],
-    positionId: 4,
-    employeeId: 104,
-    employeeName: "name4",
-    orgLevel: 1,
-    orgSort: "0000000003-0000000004",
-    orgSup: 3,
-    supervisorPositionId: 3
-  },
-  {
-    allSupervisors: [3, 5],
-    positionId: 5,
-    employeeId: 105,
-    employeeName: "name5",
-    orgLevel: 1,
-    orgSort: "0000000003-0000000005",
-    orgSup: 3,
-    supervisorPositionId: 3
-  },
-  {
-    allSupervisors: [3, 4, 6],
-    positionId: 6,
-    employeeId: 106,
-    employeeName: "name6",
-    orgLevel: 2,
-    orgSort: "0000000003-0000000004-0000000006",
-    orgSup: 3,
-    supervisorPositionId: 4
-  }
-];
+  { positionId: 4, supervisorPositionId: 3, allSupervisors: [3, 4] }, // orgLevel was 1
+  { positionId: 5, supervisorPositionId: 3, allSupervisors: [3, 5] }, // orgLevel was 1
+  { positionId: 6, supervisorPositionId: 4, allSupervisors: [3, 4, 6] } // orgLevel was 2
+].map(createOrdNodeWithSupFiltered);
 
 describe("horizontal organization functions", () => {
   it("should add orgSort and allSupervisors properties", () => {
     expect(getOrgWithHorizontal(fakeOrg)).toEqual(fakeOrgHorizontal);
   });
   it("should get the horizontal org for an org node", () => {
-    const expected: OrgNode = {
+    const expected = createOrdNodeWithSup({
       positionId: 6,
       supervisorPositionId: 4,
-      employeeId: 106,
-      employeeName: "name6",
-      orgSort: "0000000000-0000000001-0000000003-0000000004-0000000006",
       allSupervisors: [0, 1, 3, 4, 6]
-    };
+    });
     expect(getIterativeSupervisors(fakeOrg[5], fakeOrg)).toEqual(expected);
   });
   it("should be able to do a filtered organization", () => {
