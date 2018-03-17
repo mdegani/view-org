@@ -166,12 +166,13 @@ export const getOrgBySupervisor = (
         organizationNode => organizationNode.supervisorPositionId === positionId
       )
       .map(organizationNode => {
-        return Object.assign(organizationNode, {
-          orgSup: organizationNode.supervisorPositionId,
+        return {
+          positionId: organizationNode.positionId,
+          employee: organizationNode.employee,
           supervisorPositionId: (organization.find(
             orgNode => orgNode.positionId === organizationNode.positionId
           ) as OrgNode).supervisorPositionId
-        });
+        };
       })
   );
 

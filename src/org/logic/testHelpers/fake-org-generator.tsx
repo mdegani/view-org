@@ -1,83 +1,99 @@
 import { OrgNode, OrgSectionNode } from "../../types/org.types";
 
-export const createOrgNode = (posSuper: number[]): OrgNode => ({
-  positionId: posSuper[0],
-  supervisorPositionId: posSuper[1],
+export type OrgNodeKeys = {
+  positionId: number;
+  supervisorPositionId: number;
+  allSupervisors?: number[];
+};
+
+export type OrgSectionNodeKeys = {
+  positionId: number;
+  supervisorPositionId: number;
+  orgLevel: number;
+};
+
+export const createOrgNode = (posSuper: OrgNodeKeys): OrgNode => ({
+  positionId: posSuper.positionId,
+  supervisorPositionId: posSuper.supervisorPositionId,
   employee: {
-    id: 100 + posSuper[0],
-    firstName: "first name " + posSuper[0],
-    lastName: "last name " + posSuper[0],
-    gender: "gender " + posSuper[0],
+    id: 100 + posSuper.positionId,
+    firstName: "first name " + posSuper.positionId,
+    lastName: "last name " + posSuper.positionId,
+    gender: "gender " + posSuper.positionId,
     photoUrl: ""
   }
 });
 
-export const createOrg = (posSuperList: number[][]) =>
-  posSuperList.map((posSuper: number[]): OrgNode => {
+export const createOrg = (orgNodeKeysList: OrgNodeKeys[]) =>
+  orgNodeKeysList.map((posSuper: OrgNodeKeys): OrgNode => {
     return createOrgNode(posSuper);
   });
 
-export const createOrgSection = (posSuperLevelList: number[][]) =>
-  posSuperLevelList.map((posSuperLevel: number[]): OrgSectionNode => {
-    return {
-      positionId: posSuperLevel[0],
-      supervisorPositionId: posSuperLevel[1],
-      employee: {
-        id: 100 + posSuperLevel[0],
-        firstName: "first name " + posSuperLevel[0],
-        lastName: "last name " + posSuperLevel[0],
-        gender: "gender " + posSuperLevel[0],
-        photoUrl: ""
-      },
-      orgLevel: posSuperLevel[2]
-    };
-  });
+export const createOrgSection = (
+  orgSectionNodeKeysList: OrgSectionNodeKeys[]
+) =>
+  orgSectionNodeKeysList.map(
+    (orgSectionNodeKeys: OrgSectionNodeKeys): OrgSectionNode => {
+      return {
+        positionId: orgSectionNodeKeys.positionId,
+        supervisorPositionId: orgSectionNodeKeys.supervisorPositionId,
+        employee: {
+          id: 100 + orgSectionNodeKeys.positionId,
+          firstName: "first name " + orgSectionNodeKeys.positionId,
+          lastName: "last name " + orgSectionNodeKeys.positionId,
+          gender: "gender " + orgSectionNodeKeys.positionId,
+          photoUrl: ""
+        },
+        orgLevel: orgSectionNodeKeys.orgLevel
+      };
+    }
+  );
 
-const fakeOrgRelationships = [
-  [1, 0],
-  [2, 1],
-  [3, 1],
-  [4, 3],
-  [5, 3],
-  [6, 4],
-  [7, 2]
-]; // [positionId, supervisorPositionId]
+const fakeOrgRelationships: OrgNodeKeys[] = [
+  { positionId: 1, supervisorPositionId: 0 },
+  { positionId: 2, supervisorPositionId: 1 },
+  { positionId: 3, supervisorPositionId: 1 },
+  { positionId: 4, supervisorPositionId: 3 },
+  { positionId: 5, supervisorPositionId: 3 },
+  { positionId: 6, supervisorPositionId: 4 },
+  { positionId: 7, supervisorPositionId: 2 }
+];
 
 export const fakeOrg: OrgNode[] = createOrg(fakeOrgRelationships);
 
-const fakeOrgFullTargetRelationships = [
-  [1, 0, 1],
-  [2, 1, 1],
-  [2, 0, 2],
-  [3, 1, 1],
-  [3, 0, 2],
-  [4, 3, 1],
-  [4, 1, 2],
-  [4, 0, 3],
-  [5, 3, 1],
-  [5, 1, 2],
-  [5, 0, 3],
-  [6, 4, 1],
-  [6, 3, 2],
-  [6, 1, 3],
-  [6, 0, 4],
-  [7, 2, 1],
-  [7, 1, 2],
-  [7, 0, 3]
-]; // [positionId, supervisorPositionId, orgLevel]
+const fakeOrgFullTargetRelationships: OrgSectionNodeKeys[] = [
+  { positionId: 1, supervisorPositionId: 0, orgLevel: 1 },
+  { positionId: 2, supervisorPositionId: 1, orgLevel: 1 },
+  { positionId: 2, supervisorPositionId: 0, orgLevel: 2 },
+  { positionId: 3, supervisorPositionId: 1, orgLevel: 1 },
+  { positionId: 3, supervisorPositionId: 0, orgLevel: 2 },
+  { positionId: 4, supervisorPositionId: 3, orgLevel: 1 },
+  { positionId: 4, supervisorPositionId: 1, orgLevel: 2 },
+  { positionId: 4, supervisorPositionId: 0, orgLevel: 3 },
+  { positionId: 5, supervisorPositionId: 3, orgLevel: 1 },
+  { positionId: 5, supervisorPositionId: 1, orgLevel: 2 },
+  { positionId: 5, supervisorPositionId: 0, orgLevel: 3 },
+  { positionId: 6, supervisorPositionId: 4, orgLevel: 1 },
+  { positionId: 6, supervisorPositionId: 3, orgLevel: 2 },
+  { positionId: 6, supervisorPositionId: 1, orgLevel: 3 },
+  { positionId: 6, supervisorPositionId: 0, orgLevel: 4 },
+  { positionId: 7, supervisorPositionId: 2, orgLevel: 1 },
+  { positionId: 7, supervisorPositionId: 1, orgLevel: 2 },
+  { positionId: 7, supervisorPositionId: 0, orgLevel: 3 }
+];
 
 export const fullTgt: OrgSectionNode[] = createOrgSection(
   fakeOrgFullTargetRelationships
 );
 
-const fakeOrgHorizontalRelationships = [
-  [1, 0, [0, 1]],
-  [2, 1, [0, 1, 2]],
-  [3, 1, [0, 1, 3]],
-  [4, 3, [0, 1, 3, 4]],
-  [5, 3, [0, 1, 3, 5]],
-  [6, 4, [0, 1, 3, 4, 6]],
-  [7, 2, [0, 1, 2, 7]]
+const fakeOrgHorizontalRelationships: OrgNodeKeys[] = [
+  { positionId: 1, supervisorPositionId: 0, allSupervisors: [0, 1] },
+  { positionId: 2, supervisorPositionId: 1, allSupervisors: [0, 1, 2] },
+  { positionId: 3, supervisorPositionId: 1, allSupervisors: [0, 1, 3] },
+  { positionId: 4, supervisorPositionId: 3, allSupervisors: [0, 1, 3, 4] },
+  { positionId: 5, supervisorPositionId: 3, allSupervisors: [0, 1, 3, 5] },
+  { positionId: 6, supervisorPositionId: 4, allSupervisors: [0, 1, 3, 4, 6] },
+  { positionId: 7, supervisorPositionId: 2, allSupervisors: [0, 1, 2, 7] }
 ];
 
 // TODO: this needs a test!
@@ -95,18 +111,19 @@ const createOrgSortString = (ids: number[]): string => {
 // TODO: better types for the array of array inputs
 // TODO: instead of getting values out of, could use variables (or just use objects with properties as above)
 // tslint:disable-next-line:no-any
-export const createOrdNodeWithSup = (posSuperSort: any): OrgNode => ({
-  positionId: posSuperSort[0],
-  supervisorPositionId: posSuperSort[1],
+export const createOrdNodeWithSup = (orgNodeKeys: OrgNodeKeys): OrgNode => ({
+  positionId: orgNodeKeys.positionId,
+  supervisorPositionId: orgNodeKeys.supervisorPositionId,
   employee: {
-    id: 100 + posSuperSort[0],
-    firstName: "first name " + posSuperSort[0],
-    lastName: "last name " + posSuperSort[0],
-    gender: "gender " + posSuperSort[0],
+    id: 100 + orgNodeKeys.positionId,
+    firstName: "first name " + orgNodeKeys.positionId,
+    lastName: "last name " + orgNodeKeys.positionId,
+    gender: "gender " + orgNodeKeys.positionId,
     photoUrl: ""
   },
-  orgSort: createOrgSortString(posSuperSort[2]),
-  allSupervisors: posSuperSort[2]
+  // fix "!"
+  orgSort: createOrgSortString(orgNodeKeys.allSupervisors!),
+  allSupervisors: orgNodeKeys.allSupervisors
 });
 
 export const fakeOrgHorizontal: OrgNode[] = fakeOrgHorizontalRelationships.map(
@@ -114,19 +131,20 @@ export const fakeOrgHorizontal: OrgNode[] = fakeOrgHorizontalRelationships.map(
 );
 
 export const createOrdNodeWithSupFiltered = (
-  posSuperSortOrgLevelSup: any
-): any => ({
-  positionId: posSuperSortOrgLevelSup[0],
-  supervisorPositionId: posSuperSortOrgLevelSup[1],
-  orgLevel: posSuperSortOrgLevelSup[3],
-  orgSup: posSuperSortOrgLevelSup[2][0],
+  posSuperSortOrgLevelSup: OrgNodeKeys
+): OrgNode => ({
+  positionId: posSuperSortOrgLevelSup.positionId,
+  supervisorPositionId: posSuperSortOrgLevelSup.supervisorPositionId,
+  // orgLevel: posSuperSortOrgLevelSup.orgLevel,
+  // orgSup: posSuperSortOrgLevelSup.allSupervisors[0],
   employee: {
-    id: 100 + posSuperSortOrgLevelSup[0],
-    firstName: "first name " + posSuperSortOrgLevelSup[0],
-    lastName: "last name " + posSuperSortOrgLevelSup[0],
-    gender: "gender " + posSuperSortOrgLevelSup[0],
+    id: 100 + posSuperSortOrgLevelSup.positionId,
+    firstName: "first name " + posSuperSortOrgLevelSup.positionId,
+    lastName: "last name " + posSuperSortOrgLevelSup.positionId,
+    gender: "gender " + posSuperSortOrgLevelSup.positionId,
     photoUrl: ""
   },
-  orgSort: createOrgSortString(posSuperSortOrgLevelSup[2]),
-  allSupervisors: posSuperSortOrgLevelSup[2]
+  // fix the "!"
+  orgSort: createOrgSortString(posSuperSortOrgLevelSup.allSupervisors!),
+  allSupervisors: posSuperSortOrgLevelSup.allSupervisors
 });
