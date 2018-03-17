@@ -19,6 +19,10 @@ const component = ({
   onDeleteAllOrgNodes: () => void;
   onDeleteOrgNode: (newPositionId: number) => void;
 }) => {
+  if (!getOrgNodeById(organization, +selectedOrgNode)) {
+    onDeleteAllOrgNodes();
+  }
+
   return getOrgNodeById(organization, +selectedOrgNode) ? (
     <nav className="bg-black w-full fixed flex flex-col">
       <div className="font-bold text-base text-hot-pink py-2">
