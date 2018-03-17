@@ -96,21 +96,20 @@ const fakeOrgHorizontalRelationships: OrgNodeKeys[] = [
   { positionId: 7, supervisorPositionId: 2, allSupervisors: [0, 1, 2, 7] }
 ];
 
-// TODO: this needs a test!
-const createOrgSortString = (ids: number[]): string => {
+export const getNumberLength = (val: number) => ("" + val).length;
+
+export const padOrgSortStringSegment = (id: number, padding) =>
+  padding.substring(0, padding.length - getNumberLength(id)) + id + "";
+
+export const createOrgSortString = (ids: number[]): string => {
   return ids
     .map((id: number, idx: number) => {
-      const padding = "0000000000";
-      const idLength = ("" + id).length;
-      const paddedId: string = padding.substring(0, 10 - idLength) + id + "";
+      const paddedId: string = padOrgSortStringSegment(id, "0000000000");
       return idx === 0 ? paddedId : "-" + paddedId;
     })
     .join("");
 };
 
-// TODO: better types for the array of array inputs
-// TODO: instead of getting values out of, could use variables (or just use objects with properties as above)
-// tslint:disable-next-line:no-any
 export const createOrdNodeWithSup = (orgNodeKeys: OrgNodeKeys): OrgNode => ({
   positionId: orgNodeKeys.positionId,
   supervisorPositionId: orgNodeKeys.supervisorPositionId,
@@ -135,8 +134,6 @@ export const createOrdNodeWithSupFiltered = (
 ): OrgNode => ({
   positionId: posSuperSortOrgLevelSup.positionId,
   supervisorPositionId: posSuperSortOrgLevelSup.supervisorPositionId,
-  // orgLevel: posSuperSortOrgLevelSup.orgLevel,
-  // orgSup: posSuperSortOrgLevelSup.allSupervisors[0],
   employee: {
     id: 100 + posSuperSortOrgLevelSup.positionId,
     firstName: "first name " + posSuperSortOrgLevelSup.positionId,

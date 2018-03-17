@@ -34,15 +34,21 @@ const OrgView = ({
   nameValid,
   formValuesState
 }: {
-  // TODO: better typing for this function https://www.typescriptlang.org/docs/handbook/functions.html
-  onSelectOrgNode: Function;
-  onAddNewOrgNode: (newPositionId: number, currentNodeId: number) => void; // TODO: is void right??
+  onSelectOrgNode: (positionId: number) => void;
+  onAddNewOrgNode: (
+    newPositionId: number,
+    currentNodeId: number,
+    employeeFirstName: string,
+    employeeLastName: string,
+    employeeGender: string,
+    employeePhotoUrl: string
+  ) => void;
   supervisorsOrg: OrgNode[];
   supervisorChain: OrgNode[];
   nextAvailableId: number;
   formState: FormStateEnum;
   formTargetNode: number;
-  onUpdateNewName: Function;
+  onUpdateNewName: (field: string, newValue: string) => void;
   nameValid: boolean;
   formValuesState: AddNewOrgNodeFormState;
 }) => {
@@ -59,8 +65,7 @@ const OrgView = ({
                 .map((sup, supIndex) => (
                   <a
                     href="#"
-                    // TODO: is sup.employee.id the right key? Shouldn't it be the position id?
-                    key={sup.employee.id}
+                    key={sup.positionId}
                     className={
                       "text-base font-semibold py-0 text-blue no-underline opacity-100 block border-l " +
                       "pl-1 border-hot-pink overflow-scroll flex-no-wrap"
@@ -180,12 +185,12 @@ const mapDispatchToProps = dispatch => {
   return {
     onSelectOrgNode: positionId => dispatch(selectOrgNode(positionId)),
     onAddNewOrgNode: (
-      newPositionId,
-      currentNodeId,
-      employeeFirstName,
-      employeeLastName,
-      employeeGender,
-      employeePhotoUrl
+      newPositionId: number,
+      currentNodeId: number,
+      employeeFirstName: string,
+      employeeLastName: string,
+      employeeGender: string,
+      employeePhotoUrl: string
     ) => {
       dispatch(
         addOrgNode(

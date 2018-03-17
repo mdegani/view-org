@@ -16,8 +16,14 @@ export default ({
 }: {
   formState: FormStateEnum;
   formTargetNode: number;
-  onAddNewOrgNode: Function; // TODO: type, see type below...
-  onUpdateNewName: Function;
+  onAddNewOrgNode: (
+    currentNodeId: number,
+    employeeFirstName: string,
+    employeeLastName: string,
+    employeeGender: string,
+    employeePhotoUrl: string
+  ) => void;
+  onUpdateNewName: (field: string, newValue: string) => void;
   nameValid: boolean;
   formValuesState: AddNewOrgNodeFormState;
 }) => {
