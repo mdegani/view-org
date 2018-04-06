@@ -41,10 +41,10 @@ export const getOrgLevelOne = (orgNode: OrgNode[]): OrgSectionNode[] =>
 // need better name for targetId
 export const getNextSupervisorNode = (
   organization: OrgNode[],
-  targetId: OrgNode
+  orgNode: OrgNode
 ): OrgNode | undefined =>
   organization.find(node => {
-    return node.positionId === targetId.supervisorPositionId;
+    return node.positionId === orgNode.supervisorPositionId;
   });
 
 // TODO: this function has no test and looks crappy

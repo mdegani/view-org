@@ -30,7 +30,6 @@ describe("fullOrgNodeList", () => {
   });
 });
 
-// NOMOCK: could use a two item OrgNode[]
 describe("getOrgNodeById", () => {
   it("should get an OrgNode by positionId", () => {
     const expected: OrgNode = createOrgNode({
@@ -41,7 +40,6 @@ describe("getOrgNodeById", () => {
   });
 });
 
-// NOMOCK: could use a two item OrgNode[]
 describe("getDirectReportsOfOrgNode", () => {
   it("should get OrgNode[] by supervisorPositionId", () => {
     const expected: OrgNode[] = createOrg([
@@ -106,12 +104,7 @@ describe("getAllSupervisorNodes", () => {
 
 describe("getNextSupervisorNode", () => {
   it("should get next level supervisor OrgNode", () => {
-    expect(
-      getNextSupervisorNode(
-        fakeOrg,
-        Object.assign({}, fakeOrg[3], { orgLevel: 1 })
-      )
-    ).toEqual(fakeOrg[2]);
+    expect(getNextSupervisorNode(fakeOrg, fakeOrg[3])).toEqual(fakeOrg[2]);
   });
 });
 
@@ -128,9 +121,9 @@ const fakeOrgForSup3Horizontal = [
 ].map(createOrdNodeWithSup);
 
 const filteredEeList3 = [
-  { positionId: 4, supervisorPositionId: 3, allSupervisors: [3, 4] }, // orgLevel was 1
-  { positionId: 5, supervisorPositionId: 3, allSupervisors: [3, 5] }, // orgLevel was 1
-  { positionId: 6, supervisorPositionId: 4, allSupervisors: [3, 4, 6] } // orgLevel was 2
+  { positionId: 4, supervisorPositionId: 3, allSupervisors: [3, 4] },
+  { positionId: 5, supervisorPositionId: 3, allSupervisors: [3, 5] },
+  { positionId: 6, supervisorPositionId: 4, allSupervisors: [3, 4, 6] }
 ].map(createOrdNodeWithSupFiltered);
 
 describe("horizontal organization functions", () => {
@@ -169,37 +162,3 @@ describe("horizontal organization functions", () => {
     });
   });
 });
-
-// const employees: Employee[] = [
-//   { employeeId: 101, employeeName: 'employee 101' },
-//   { employeeId: 102, employeeName: 'employee 102' },
-//   {
-//     employeeId: 103,
-//     employeeName: 'employee 103',
-//   },
-//   {
-//     employeeId: 104,
-//     employeeName: 'employee 104',
-//   },
-//   { employeeId: 105, employeeName: 'employee 105' },
-//   {
-//     employeeId: 106,
-//     employeeName: 'employee 106',
-//   },
-//   { employeeId: 107, employeeName: 'employee 107' },
-// ];
-
-// describe('combining organization and employee data', () => {
-//   it('should map callback that maps the employees to an organization', () => {
-//     const expected = {
-//       positionId: 2,
-//       supervisorPositionId: 1,
-//       allSupervisors: undefined,
-//       orgSort: undefined,
-//       employeeId: 102,
-//       employeeName: 'employee 102',
-//     };
-//     const actual = fakeOrg.map(addEmployeeInfoToOrganizationNode(employees))[1];
-//     expect(actual).toEqual(expected);
-//   });
-// });

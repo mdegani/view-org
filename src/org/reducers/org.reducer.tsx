@@ -12,7 +12,7 @@ const orgReducer = (
 ): OrgState => {
   switch (action.type) {
     case "SELECT_ORG_NODE":
-      return Object.assign({}, state, { selectedOrgNode: +action.positionId });
+      return { ...state, ...{ selectedOrgNode: +action.positionId } };
     case "ADD_ORG_NODE":
       return {
         ...state,
