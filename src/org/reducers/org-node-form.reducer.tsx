@@ -1,12 +1,12 @@
 import { OrgNodeFormState, FormStateEnum } from "../../org/types/org.types";
 import { orgNodeFormActions } from "../actions/org-node-form.actions";
 
-const initialState: OrgNodeFormState = {
+export const initialState: OrgNodeFormState = {
   state: FormStateEnum.hidden,
   targetNode: 123
 };
 
-const orgReducer = (
+export const orgNodeFormReducer = (
   state: OrgNodeFormState = initialState,
   action: orgNodeFormActions
 ): OrgNodeFormState => {
@@ -28,4 +28,4 @@ const orgReducer = (
   }
 };
 
-export default orgReducer;
+export default orgNodeFormReducer;
