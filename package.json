@@ -10,6 +10,7 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "react-scripts-ts": "2.14.0",
+    "rebass": "^2.0.0-0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-observable": "^0.18.0",

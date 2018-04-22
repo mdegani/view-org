@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Flex, Box, Label } from "rebass";
 
 export default ({
   children,
@@ -7,10 +8,15 @@ export default ({
   children: React.ReactNode;
   text: string;
 }) => {
+  // className="block tracking-wide font-semibold"
   return (
-    <label className="block tracking-wide text-blue text-xs font-semibold mb-2">
-      {text}
-      {children}
-    </label>
+    <Flex>
+      <Box mb={2}>
+        <Label color="blue" fontSize={2}>
+          {text}
+        </Label>
+        {children}
+      </Box>
+    </Flex>
   );
 };

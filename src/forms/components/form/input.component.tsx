@@ -5,6 +5,7 @@ import {
   saveFormValueString,
   FormInstance
 } from "../../../forms/actions/from.actions";
+import { Input } from "rebass";
 
 const textInput = ({
   placeholder,
@@ -21,12 +22,7 @@ const textInput = ({
 }) => {
   return (
     <>
-      <input
-        className={[
-          "appearance-none block w-full bg-yellow-lightest text-grey-darker border ",
-          "border-hot-pink rounded-sm p-2 mb-3 shadow"
-        ].join("")}
-        type="text"
+      <Input
         placeholder={placeholder}
         onChange={onChange(formName, fieldName)}
         value={value(formName, fieldName)}
@@ -59,6 +55,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Input = connect(mapStateToProps, mapDispatchToProps)(textInput);
+const VOInput = connect(mapStateToProps, mapDispatchToProps)(textInput);
 
-export default Input;
+export default VOInput;
