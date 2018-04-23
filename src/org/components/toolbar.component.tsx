@@ -5,6 +5,12 @@ import { deleteOrgNode, deleteAllOrgNodes } from "../actions/org.actions";
 import { setOpenNewOrgNodeForm } from "../actions/org-node-form.actions";
 import { OrgNode, CombinedState } from "../types/org.types";
 import { getOrgNodeById, getIterativeSupervisors } from "../logic/org-logic";
+import { Toolbar, Heading, NavLink, Image, Fixed } from "rebass";
+
+// TODO: there has to be a better way!
+const FixedFullWidth = Fixed.extend`
+  width: 100%;
+`;
 
 const component = ({
   organization,
@@ -24,48 +30,36 @@ const component = ({
   }
 
   return getOrgNodeById(organization, +selectedOrgNode) ? (
-    <nav className="bg-black w-full fixed flex flex-col">
-      <div className="font-bold text-base text-hot-pink py-2">
-        Organization View
-      </div>
-      <div className="flex justify-between">
-        <div className="text-2xl p-2 bg-white overflow-scroll flex-no-wrap w-full">
-          {getOrgNodeById(organization, +selectedOrgNode)!.employee.lastName +
-            ", " +
-            getOrgNodeById(organization, +selectedOrgNode)!.employee.firstName}
-          <img
-            src={
-              getOrgNodeById(organization, +selectedOrgNode)!.employee.photoUrl
-            }
-            alt=""
-            style={{ maxWidth: "20px" }}
-          />
-        </div>
-        <a
-          href="#"
-          className="text-sm no-underline opacity-100 px-3 ph-1 mb-2 inline-block text-white"
+    <FixedFullWidth width={"100%"}>
+      <Toolbar bg="black" top={true} left={true} right={true} width={1}>
+        <Heading className="font-bold text-base text-hot-pink py-2">
+          Organization View
+        </Heading>
+        <NavLink
+          ml="auto"
           onClick={() => onSetOpenNewOrgNodeForm(+selectedOrgNode)}
         >
           +
-        </a>
-        <a
-          href="#"
-          className="text-sm no-underline opacity-100 px-3 py-1 mb-2 inline-block text-white"
-          onClick={() => onDeleteAllOrgNodes()}
-        >
-          del all
-        </a>
-        <a
-          href="#"
-          className="text-sm no-underline opacity-100 px-3 ph-1 mb-2 inline-block text-white"
-          onClick={() => onDeleteOrgNode(+selectedOrgNode)}
-        >
+        </NavLink>
+        <NavLink onClick={() => onDeleteAllOrgNodes()}>del all</NavLink>
+        <NavLink onClick={() => onDeleteOrgNode(+selectedOrgNode)}>
           del one
-        </a>
-      </div>
-    </nav>
+        </NavLink>
+      </Toolbar>
+      <Toolbar bg="gray" color="black">
+        {getOrgNodeById(organization, +selectedOrgNode)!.employee.lastName +
+          ", " +
+          getOrgNodeById(organization, +selectedOrgNode)!.employee.firstName}
+        <Image
+          src={
+            getOrgNodeById(organization, +selectedOrgNode)!.employee.photoUrl
+          }
+          width={20}
+        />
+      </Toolbar>
+    </FixedFullWidth>
   ) : (
-    <div>No Employees!</div>
+    <Heading>No Employees!</Heading>
   );
 };
 
@@ -97,6 +91,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Toolbar = connect(mapStateToProps, mapDispatchToProps)(component);
+const VOToolbar = connect(mapStateToProps, mapDispatchToProps)(component);
 
-export default Toolbar;
+export default VOToolbar;

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
-import Toolbar from "./toolbar.component";
+import VOToolbar from "./toolbar.component";
 import ViewOrg from "./view-org.component";
 import NodeForm from "./node-form.component";
 import { selectOrgNode, addOrgNode } from "../actions/org.actions";
@@ -54,8 +54,8 @@ const OrgView = ({
 }) => {
   return (
     <div className="App">
-      <Toolbar />
-      <div className="px-8" style={{ paddingTop: "5.3rem" }}>
+      <VOToolbar />
+      <div className="px-8">
         {formState === FormStateEnum.hidden ? (
           <>
             <div>
