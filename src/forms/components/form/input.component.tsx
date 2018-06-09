@@ -28,9 +28,7 @@ const textInput = ({
         value={value(formName, fieldName)}
       />
       {/* {!valid ? (
-        <p className="text-red text-xs italic font-normal">
-          Please fill out this field.
-        </p>
+        <p className="text-red text-xs italic font-normal">Required field.</p>
       ) : (
         undefined
       )} */}

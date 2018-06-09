@@ -8,11 +8,10 @@ export default ({
   children: React.ReactNode;
   text: string;
 }) => {
-  // className="block tracking-wide font-semibold"
   return (
     <Flex>
       <Box mb={2}>
-        <Label color="blue" fontSize={2}>
+        <Label color="blue" fontSize={2} fontWeight="bold">
           {text}
         </Label>
         {children}

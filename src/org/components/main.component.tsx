@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
+import { Link, Text, Container } from "rebass";
 import VOToolbar from "./toolbar.component";
 import ViewOrg from "./view-org.component";
 import NodeForm from "./node-form.component";
@@ -11,6 +12,7 @@ import {
   FormInstance,
   resetForms
 } from "../../forms/actions/from.actions";
+import { isNameValid } from "../../forms/selectors/forms.selector";
 import {
   getOrgBySupervisor,
   getIterativeSupervisors
@@ -22,6 +24,25 @@ import {
   AddNewOrgNodeFormState
 } from "../types/org.types";
 
+import system from "system-components";
+
+const LinkSuperiors = system(
+  {
+    is: Link,
+    weight: "bold",
+    py: 0,
+    pl: 1,
+    color: "blue",
+    borderLeft: "1px solid hotPink"
+  },
+  "borders"
+).extend`
+  overflow: scroll;
+  display: block;
+  flex-wrap: nowrap;
+  text-decoration: none;
+`;
+
 const OrgView = ({
   onSelectOrgNode,
   onAddNewOrgNode,
@@ -31,7 +52,7 @@ const OrgView = ({
   formState,
   formTargetNode,
   onUpdateNewName,
-  nameValid,
+  nameValid = false,
   formValuesState
 }: {
   onSelectOrgNode: (positionId: number) => void;
@@ -55,38 +76,30 @@ const OrgView = ({
   return (
     <div className="App">
       <VOToolbar />
-      <div className="px-8">
+      <Container>
         {formState === FormStateEnum.hidden ? (
-          <>
+          <Container pt={110}>
             <div>
               {/* filtering out positionId -1, temporarily, until we figure out how to handle 🕴 */}
               {supervisorChain
                 .filter(sup => sup.positionId !== -1)
                 .map((sup, supIndex) => (
-                  <a
+                  <LinkSuperiors
                     href="#"
                     key={sup.positionId}
-                    className={
-                      "text-base font-semibold py-0 text-blue no-underline opacity-100 block border-l " +
-                      "pl-1 border-hot-pink overflow-scroll flex-no-wrap"
-                    }
                     onClick={e => onSelectOrgNode(sup.positionId)}
                   >
-                    {supIndex > 0 ? (
-                      <span className="text-sm text-hot-pink block">⌄</span>
-                    ) : (
-                      undefined
-                    )}
+                    {supIndex > 0 ? <Text color="hotpink">⌄</Text> : undefined}
                     {/* TODO: showing employee name, concatenated */}
                     {sup.employee.lastName + ", " + sup.employee.firstName}
-                  </a>
+                  </LinkSuperiors>
                 ))}
             </div>
             <ViewOrg
               supervisorsOrg={supervisorsOrg}
               onSelectOrgNode={onSelectOrgNode}
             />
-          </>
+          </Container>
         ) : (
           <NodeForm
             formState={formState}
@@ -97,7 +110,7 @@ const OrgView = ({
             formValuesState={formValuesState}
           />
         )}
-      </div>
+      </Container>
     </div>
   );
 };
@@ -177,7 +190,8 @@ const mapStateToProps = (state: CombinedState) => {
     nextAvailableId: nextAvailableIdSelector(state),
     formState: state.orgNodeFormReducer.state,
     formTargetNode: state.orgNodeFormReducer.targetNode,
-    formValuesState: addNewNodeFormState(state)
+    formValuesState: addNewNodeFormState(state),
+    nameValid: isNameValid(state)
   };
 };
 

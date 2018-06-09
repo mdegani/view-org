@@ -32,7 +32,7 @@ const component = ({
   return getOrgNodeById(organization, +selectedOrgNode) ? (
     <FixedFullWidth width={"100%"}>
       <Toolbar bg="black" top={true} left={true} right={true} width={1}>
-        <Heading className="font-bold text-base text-hot-pink py-2">
+        <Heading weight="bold" fontSize={3} color="hotpink" py={2}>
           Organization View
         </Heading>
         <NavLink

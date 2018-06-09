@@ -1,5 +1,14 @@
 import * as React from "react";
 import { OrgNode } from "../types/org.types";
+import { Border, Text, Flex, Box, Container } from "rebass";
+import styled from "styled-components";
+import { space } from "styled-system";
+
+const Ul = styled.ul`
+  list-style: none;
+  padding-left: 0;
+  ${space};
+` as React.ReactType;
 
 export default ({
   supervisorsOrg,
@@ -9,8 +18,9 @@ export default ({
   onSelectOrgNode: Function;
 }) => {
   return (
-    <div className="max-w-sm">
-      <ul className="list-reset pl-0 ml-0 py-4 mx-auto">
+    <Container>
+      <Box pl={2} />
+      <Ul p={2}>
         {!supervisorsOrg.length ? <div>none</div> : null}
         {supervisorsOrg
           .sort(
@@ -19,30 +29,31 @@ export default ({
           )
           .map(orgNode => {
             return (
-              <li key={orgNode.positionId} className="p-0 flex">
-                <button
-                  className={
-                    "flex items-start flex-auto text-sm font-semibold p-1 mt-1 no-underline" +
-                    "opacity-100 block border-l pl-1 border-hot-pink border inline-block overflow-scroll flex-no-wrap"
-                  }
+              <Border
+                is="li"
+                key={orgNode.positionId}
+                width={1}
+                borderColor="hotpink"
+                mt={1}
+                p={0}
+              >
+                <Flex
+                  width={1}
+                  p={1}
                   onClick={e => onSelectOrgNode(orgNode.positionId)}
+                  is="a"
                 >
-                  {(orgNode.allSupervisors!.splice(2) || []).map(sup => (
-                    <span
-                      key={sup}
-                      className="inline-block"
-                      style={{ minWidth: "2rem" }}
-                    />
-                  ))}
-                  {/* TODO: whole name, or abbreviated name */}
-                  {orgNode.employee.lastName +
-                    ", " +
-                    orgNode.employee.firstName}
-                </button>
-              </li>
+                  <Box width={orgNode.allSupervisors!.length + "rem"} />
+                  <Text color="black" fontSize={1} fontWeight="bold">
+                    {orgNode.employee.lastName +
+                      ", " +
+                      orgNode.employee.firstName}
+                  </Text>
+                </Flex>
+              </Border>
             );
           })}
-      </ul>
-    </div>
+      </Ul>
+    </Container>
   );
 };

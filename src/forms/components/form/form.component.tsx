@@ -1,18 +1,18 @@
 import * as React from "react";
+import system from "system-components";
+
+const Form = system({
+  is: "form"
+}).extend`
+  padding-top: 120px;
+`;
 
 export default ({
   children,
-  className,
   onSubmit
 }: {
   children: React.ReactNode;
-  className: string;
-  // tslint:disable-next-line:no-any
-  onSubmit: any;
+  onSubmit: Function;
 }) => {
-  return (
-    <form className={className} onSubmit={onSubmit}>
-      {children}
-    </form>
-  );
+  return <Form onSubmit={onSubmit}>{children}</Form>;
 };
