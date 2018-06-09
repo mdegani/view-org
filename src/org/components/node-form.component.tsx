@@ -1,8 +1,9 @@
 import * as React from "react";
 import { FormStateEnum, AddNewOrgNodeFormState } from "../types/org.types";
-import Label from "../../forms/components/form/label.component";
-import Input from "../../forms/components/form/input.component";
-import Button from "../../forms/components/button/button.component";
+import { Flex, Container, Image, Box } from "rebass";
+import VOLabel from "../../forms/components/form/label.component";
+import VOInput from "../../forms/components/form/input.component";
+import SubmitButton from "../../forms/components/button/button.component";
 import Form from "../../forms/components/form/form.component";
 import { FormInstance } from "../../forms/actions/from.actions";
 
@@ -29,7 +30,6 @@ export default ({
 }) => {
   return (
     <Form
-      className="w-full max-w-md"
       onSubmit={() => {
         onAddNewOrgNode(
           formTargetNode,
@@ -40,26 +40,28 @@ export default ({
         );
       }}
     >
-      <div className="flex flex-wrap -mx-3 mb-6">
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-          <Label text="First Name">
-            <Input
+      <Flex mx={3}>
+        <Container width={1} px={1}>
+          <VOLabel text="First Name">
+            <VOInput
               placeholder="Jane"
               fieldName="firstName"
               formName={FormInstance.NewNodeForm}
             />
-          </Label>
-          <Label text="Last Name">
-            <Input
+          </VOLabel>
+          <VOLabel text="Last Name">
+            <VOInput
               placeholder="Doe"
               fieldName="lastName"
               formName={FormInstance.NewNodeForm}
             />
-          </Label>
-          <img src={formValuesState.picture} alt="employee picture" />
-        </div>
-      </div>
-      <Button />
+          </VOLabel>
+          <Image src={formValuesState.picture} alt="employee picture" />
+        </Container>
+      </Flex>
+      <Box p={3}>
+        <SubmitButton /> Valid:{nameValid ? "VALID" : "NOT VALID"}
+      </Box>
     </Form>
   );
 };
